@@ -6,7 +6,7 @@ const path = require('path');
 const restify = require('restify');
 
 // Import required bot services. See https://aka.ms/bot-services to learn more about the different parts of a bot.
-const { BotFrameworkAdapter, ConversationState, MemoryStorage, TurnContext } = require('botbuilder');
+const { BotFrameworkAdapter, ConversationState, MemoryStorage } = require('botbuilder');
 // Import required bot configuration.
 const { BotConfiguration } = require('botframework-config');
 
@@ -25,10 +25,10 @@ try {
     // Read bot configuration from .bot file.
     botConfig = BotConfiguration.loadSync(BOT_FILE, process.env.botFileSecret);
 } catch (err) {
-    console.error(`\nError reading bot file. Please ensure you have valid botFilePath and botFileSecret set for your environment.`);
-    console.error(`\n - You can find the botFilePath and botFileSecret in the Azure App Service application settings.`);
-    console.error(`\n - If you are running this bot locally, consider adding a .env file with botFilePath and botFileSecret.`);
-    console.error(`\n - See https://aka.ms/about-bot-file to learn more about .bot file its use and bot configuration.\n\n`);
+    console.error('\nError reading bot file. Please ensure you have valid botFilePath and botFileSecret set for your environment.');
+    console.error('\n - You can find the botFilePath and botFileSecret in the Azure App Service application settings.');
+    console.error('\n - If you are running this bot locally, consider adding a .env file with botFilePath and botFileSecret.');
+    console.error('\n - See https://aka.ms/about-bot-file to learn more about .bot file its use and bot configuration.\n\n');
     process.exit();
 }
 
@@ -54,9 +54,9 @@ const adapter = new BotFrameworkAdapter({
 // Catch-all for any unhandled errors in your bot.
 adapter.onTurnError = async (context, error) => {
     // This check writes out errors to console log .vs. app insights.
-    console.error(`\n [onTurnError]: ${ error }`);
+    console.error(`\n [onTurnError]: ${error}`);
     // Send a message to the user
-    await context.sendActivity(`Oops. Something went wrong!`);
+    await context.sendActivity('Oops. Something went wrong!');
     // Clear out state
     await conversationState.clear(context);
     // Save state changes.
@@ -92,27 +92,31 @@ conversationState = new ConversationState(memoryStorage);
 const bot = new EchoBot(conversationState);
 
 // Create HTTP server
-let server = restify.createServer();
+const server = restify.createServer();
+server.use(restify.plugins.bodyParser());
 let activity = {};
-server.listen(process.env.port || process.env.PORT || 3978, function() {
-    console.log(`\n${ server.name } listening to ${ server.url }`);
-    console.log(`\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator`);
-    console.log(`\nTo talk to your bot, open echoBot-with-counter.bot file in the Emulator`);
+
+server.listen(process.env.port || process.env.PORT || 3978, () => {
+    console.log(`\n${server.name} listening to ${server.url}`);
+    console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');
+    console.log('\nTo talk to your bot, open echoBot-with-counter.bot file in the Emulator');
 });
 
 // Listen for incoming activities and route them to your bot main dialog.
 server.post('/api/messages', (req, res) => {
     adapter.processActivity(req, res, async (context) => {
-        // route to main dialog.
+    // route to main dialog.
         activity = context.activity;
         await bot.onTurn(context);
     });
 });
 
-server.post('/', async (req, res) => {
-    console.log(req);
-    const reference = TurnContext.getConversationReference(activity);
-    await adapter.continueConversation(reference, async (context) => {
-        await context.sendActivity(`Что-то пришло извне`);
-    });
+const { deployEvent } = require('./eventService');
+
+server.post('/event/deploy', async (req, res) => {
+    await deployEvent({ req, activity, adapter });
+    res.send(200);
 });
+
+const { save } = require('./userService');
+(() => save())();
