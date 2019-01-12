@@ -1,0 +1,41 @@
+{
+  "name": "autoDeploy",
+  "padlock": "vR6F6FTQ0xgEQG4NUlgnFA==!kSZSl/1Z86ra8H/Tqo0iWHpuvjnz4whKw+vsC9eEZOVw0CTPr0GYQFwtxL/a/Y3r",
+  "version": "2.0",
+  "services": [
+    {
+      "tenantId": "0911e520-5e0c-439d-afe7-1183780a1a83",
+      "subscriptionId": "c2fc434c-de93-4f45-a6d7-fc3fa4e680ff",
+      "resourceGroup": "Default",
+      "serviceName": "autoDeploy",
+      "type": "abs",
+      "name": "autoDeploy",
+      "id": "1"
+    },
+    {
+      "connectionString": "yovQ5tsZipY3cAfoDZVclw==!W7snu7vIFfKqB6QAVcYVbP/cv3bE11A+GLqprFnV1WIpW+talqNaVP5rsoTs3cSmuhQUdsgh+DY12PjLO0AD3iSd6JqrCaXF5B70R5fN1IQwSZ2kH6IfjP3BAsnG0bkssd6AFaryH/izjoa5jS03jKd65T5v7AVhpDDFRjHL7LG75PWoaNC02B9n6igNOVTYtdNDtn91lvylKIOrq/tfPw==",
+      "tenantId": "0911e520-5e0c-439d-afe7-1183780a1a83",
+      "subscriptionId": "c2fc434c-de93-4f45-a6d7-fc3fa4e680ff",
+      "resourceGroup": "Default",
+      "serviceName": "autodeploy94a4",
+      "type": "blob",
+      "id": "2"
+    },
+    {
+      "appId": "",
+      "appPassword": "",
+      "endpoint": "http://localhost:3978/api/messages",
+      "type": "endpoint",
+      "name": "development",
+      "id": "3"
+    },
+    {
+      "appId": "251e05a6-9016-4614-b080-5d72146c77e8",
+      "appPassword": "9UevnaWQAeSd6GtqU5vSoQ==!+ufIN3X178FTf0RGX9KwVgDJmvV2yY9oOcUeLa3pneI=",
+      "endpoint": "https://autodeploy-94a4.azurewebsites.net/api/messages",
+      "type": "endpoint",
+      "name": "production",
+      "id": "4"
+    }
+  ]
+}
