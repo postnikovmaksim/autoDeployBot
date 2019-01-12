@@ -4,6 +4,7 @@
 // bot.js is your bot's main entry point to handle incoming activities.
 
 const { ActivityTypes } = require('botbuilder');
+const { saveOrUpdateUser } = require('./userService');
 
 // Turn counter property
 const TURN_COUNTER_PROPERTY = 'turnCounterProperty';
@@ -25,24 +26,22 @@ class EchoBot {
      *
      * @param {TurnContext} on turn context object.
      */
-    async onTurn (turnContext) {
-        console.log(turnContext.activity);
-        // Handle message activity type. User's responses via text or speech or card interactions flow back to the bot as Message activity.
-        // Message activities may contain text, speech, interactive cards, and binary or unknown attachments.
-        // see https://aka.ms/about-bot-activity-message to learn more about the message and other activity types
-        if (turnContext.activity.type === ActivityTypes.Message) {
+    async onTurn (context) {
+        saveOrUpdateUser({ activity: context.activity });
+
+        if (context.activity.type === ActivityTypes.Message) {
             // read from state.
-            let count = await this.countProperty.get(turnContext);
+            let count = await this.countProperty.get(context);
             count = count === undefined ? 1 : ++count;
-            await turnContext.sendActivity(`${count}: You said "${turnContext.activity.text}"`);
+            await context.sendActivity(`${count}: You said "${context.activity.text}"`);
             // increment and set turn counter.
-            await this.countProperty.set(turnContext, count);
+            await this.countProperty.set(context, count);
         } else {
             // Generic handler for all other activity types.
-            await turnContext.sendActivity(`[${turnContext.activity.type} event detected]`);
+            await context.sendActivity(`[${context.activity.type} event detected]`);
         }
         // Save state changes
-        await this.conversationState.saveChanges(turnContext);
+        await this.conversationState.saveChanges(context);
     }
 }
 

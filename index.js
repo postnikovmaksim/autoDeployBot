@@ -94,7 +94,6 @@ const bot = new EchoBot(conversationState);
 // Create HTTP server
 const server = restify.createServer();
 server.use(restify.plugins.bodyParser());
-let activity = {};
 
 server.listen(process.env.port || process.env.PORT || 3978, () => {
     console.log(`\n${server.name} listening to ${server.url}`);
@@ -106,7 +105,6 @@ server.listen(process.env.port || process.env.PORT || 3978, () => {
 server.post('/api/messages', (req, res) => {
     adapter.processActivity(req, res, async (context) => {
     // route to main dialog.
-        activity = context.activity;
         await bot.onTurn(context);
     });
 });
@@ -114,9 +112,6 @@ server.post('/api/messages', (req, res) => {
 const { deployEvent } = require('./eventService');
 
 server.post('/event/deploy', async (req, res) => {
-    await deployEvent({ req, activity, adapter });
+    await deployEvent({ req, adapter });
     res.send(200);
 });
-
-const { save } = require('./userService');
-(() => save())();
