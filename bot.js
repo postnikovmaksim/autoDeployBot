@@ -8,7 +8,7 @@ class EchoBot {
         if (context.activity.type === ActivityTypes.Message) {
             const message = context.activity.text;
 
-            if (message.search(/\/deploy_box\d+\b/g) === 0) {
+            if (message.search(/\\deploy_box\d+\b/g) === 0) {
                 const boxName = message.substr(message.search(/box\d+\b/), message.match(/box\d+\b/)[0].length);
                 const options = {
                     deploy: {
@@ -20,7 +20,7 @@ class EchoBot {
                 return;
             }
 
-            if (message.search(/\/list\b/g) === 0) {
+            if (message.search(/\\list\b/g) === 0) {
                 const subscription = await getAllSubscription({ activity: context.activity });
                 let result = '';
 
@@ -34,11 +34,11 @@ class EchoBot {
                 return;
             }
 
-            if (message.search(/\/help\b/g) === 0) {
+            if (message.search(/\\help\b/g) === 0) {
                 await context.sendActivity(
-                    '/help - описание всех доступных команд\n' +
-                    '/deploy_box*** - подписаться на событие deploy для бокса\n' +
-                    '/list - отобразить текушие подписки на события'
+                    '\\help - описание всех доступных команд\n' +
+                    '\\deploy_box*** - подписаться на событие deploy для бокса\n' +
+                    '\\list - отобразить текушие подписки на события'
                 );
                 return;
             }
