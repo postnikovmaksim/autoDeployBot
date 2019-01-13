@@ -45,7 +45,7 @@ async function saveUser ({ userId, activity }) {
 async function updateUser ({ user, options }) {
     const collection = await getCollection();
     return collection.updateOne(
-        { id: user.id },
+        { id: user.userId },
         { $set: { options: mapOptions({ user, options }) } }
     );
 }
