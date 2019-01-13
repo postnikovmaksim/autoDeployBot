@@ -1,35 +1,40 @@
-const MongoClient = require('mongodb').MongoClient;
-const user = 'moedelo';
-const password = 'moedelo1';
+const { getConnect } = require('./mongoService');
 const dbname = 'auto_deploy_bot';
 const collectionname = 'users';
 
-const url = `mongodb://${user}:${password}@ds033400.mlab.com:33400/${dbname}`;
-const mongoClient = new MongoClient(url, { useNewUrlParser: true });
-
 module.exports = {
-    async saveOrUpdateUser ({ activity }) {
-        const userIds = await getAllUserId();
-        const userExist = userIds.find(id => id === activity.from.id);
+    async saveOrUpdateUser ({ activity, options }) {
+        const users = await getAllUsers();
+        const userExist = users.find(user => user.userId === activity.from.id);
 
-        if (!userExist) {
+        if (!userExist && activity) {
             await saveUser({
                 userId: activity.from.id,
-                activity: mapActivity(activity)
+                activity: activity,
+                options: options
+            })
+        } else if (options) {
+            await updateUser({
+                user: userExist,
+                options: options
             })
         }
     },
 
     async getUsers () {
+        return getAllUsers();
+    },
+
+    async getAllSubscription ({ activity }) {
         const collection = await getCollection();
-        return collection.find().toArray();
+        const user = await collection.findOne({ userId: activity.from.id });
+        return user.options;
     }
 };
 
-async function getAllUserId () {
+async function getAllUsers () {
     const collection = await getCollection();
-    const result = await collection.find().toArray();
-    return result.map(item => item.userId);
+    return collection.find().toArray();
 }
 
 async function saveUser ({ userId, activity }) {
@@ -37,12 +42,32 @@ async function saveUser ({ userId, activity }) {
     await collection.insertOne({ userId, activity })
 }
 
+async function updateUser ({ user, options }) {
+    const collection = await getCollection();
+    return collection.updateOne(
+        { id: user.id },
+        { $set: { options: mapOptions({ user, options }) } }
+    );
+}
+
 async function getCollection () {
-    const client = await mongoClient.connect();
-    const db = client.db(dbname);
+    const connect = await getConnect();
+    const db = connect.db(dbname);
     return db.collection(collectionname);
 }
 
-function mapActivity (activity) {
-    return activity
+function mapOptions ({ user, options }) {
+    const oldOptions = user.options;
+
+    if (!oldOptions) {
+        return options;
+    }
+
+    return {
+        ...user.options,
+        deploy: {
+            ...user.options.deploy,
+            ...options.deploy
+        }
+    }
 }
