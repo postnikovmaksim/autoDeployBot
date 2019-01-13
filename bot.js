@@ -24,7 +24,7 @@ class EchoBot {
                 const subscription = await getAllSubscription({ activity: context.activity });
                 let result = '';
 
-                if (subscription.deploy) {
+                if (subscription && subscription.deploy) {
                     result += 'deploy:';
                     for (const key in subscription.deploy) {
                         result += `\n&nbsp;&nbsp;&nbsp;&nbsp;${key}`;
