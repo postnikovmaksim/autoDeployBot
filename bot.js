@@ -43,7 +43,7 @@ class EchoBot {
                 return;
             }
 
-            await context.sendActivity('Команда не распознана, используйте /help, что бы посмотреть доступные команды');
+            await context.sendActivity('Команда не распознана, используйте \\help, что бы посмотреть доступные команды');
         }
     }
 }
