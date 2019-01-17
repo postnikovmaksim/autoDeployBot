@@ -1,6 +1,6 @@
 const { ActivityTypes } = require('botbuilder');
-const { saveOrUpdateUser, getAllSubscription } = require('./userService');
-const { saveSubscriptions } = require('./subscriptionsServices');
+const { saveOrUpdateUser, getUser } = require('./userService');
+const { saveSubscriptions, getSubscriptions } = require('./subscriptionsServices');
 
 class EchoBot {
     async onTurn (context) {
@@ -18,15 +18,15 @@ class EchoBot {
             }
 
             if (message.search(/\\list\b/g) === 0) {
-                const subscription = await getAllSubscription({ activity: context.activity });
+                const user = await getUser({ userId: context.activity.from.id });
+                const subscriptions = await getSubscriptions({ userId: user.id });
                 let result = '';
 
-                if (subscription && subscription.deploy) {
+                if (subscriptions.length) {
                     result += 'deploy:';
-                    for (const key in subscription.deploy) {
-                        result += `\n&nbsp;&nbsp;&nbsp;&nbsp;${key}`;
-                    }
+                    subscriptions.forEach(eventName => result += `\n${eventName}`);
                 }
+
                 await context.sendActivity(result || 'У вас нет действующих подписок');
                 return;
             }

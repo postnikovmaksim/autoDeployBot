@@ -10,7 +10,6 @@ module.exports = {
 
         const ids = await getUserIds({ eventName: `deploy_${buildTarget}` });
         const activitys = await getActivitys({ ids });
-        console.log(activitys);
         activitys.forEach(async activity => {
             const reference = TurnContext.getConversationReference(activity);
             await adapter.continueConversation(reference, async (context) => {

@@ -9,7 +9,7 @@ module.exports = {
             await saveUser({
                 userId: activity.from.id,
                 name: activity.from.name,
-                activity: activity
+                activity: { ...activity, text: '' }
             })
         }
     },

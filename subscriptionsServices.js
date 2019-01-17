@@ -14,6 +14,11 @@ module.exports = {
     async getUserIds ({ eventName }) {
         const result = await get({ eventName });
         return result.map(r => r.userId);
+    },
+
+    async getSubscriptions ({ userId }) {
+        const result = await get({ userId });
+        return result.map(r => r.eventName);
     }
 };
 
