@@ -27,7 +27,7 @@ module.exports = {
 
 function get ({ ids, userId }) {
     let sql = 'SELECT * FROM Users WHERE 1 = 1';
-    ids && (sql += ` AND id IN (${ids.join(',')})`);
+    ids && ids.length && (sql += ` AND id IN (${ids.join(',')})`);
     userId && (sql += ` AND userId = '${userId}'`);
 
     return query({ sqlString: sql })
