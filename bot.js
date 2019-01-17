@@ -1,5 +1,6 @@
 const { ActivityTypes } = require('botbuilder');
 const { saveOrUpdateUser, getAllSubscription } = require('./userService');
+const { saveSubscriptions } = require('./subscriptionsServices');
 
 class EchoBot {
     async onTurn (context) {
@@ -10,12 +11,8 @@ class EchoBot {
 
             if (message.search(/\\deploy_box\d+\b/g) === 0) {
                 const boxName = message.substr(message.search(/box\d+\b/), message.match(/box\d+\b/)[0].length);
-                const options = {
-                    deploy: {
-                        [boxName]: true
-                    }
-                };
-                await saveOrUpdateUser({ activity: context.activity, options });
+
+                await saveSubscriptions({ userId: context.activity.from.id, eventName: `deploy_${boxName}` });
                 await context.sendActivity(`Включена подписка на событие deploy для ${boxName}`);
                 return;
             }

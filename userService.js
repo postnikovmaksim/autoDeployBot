@@ -1,73 +1,43 @@
-const { getConnect } = require('./mongoService');
-const dbname = 'auto_deploy_bot';
-const collectionname = 'users';
+const { query } = require('./mysqlService');
 
 module.exports = {
-    async saveOrUpdateUser ({ activity, options }) {
-        const users = await getAllUsers();
-        const userExist = users.find(user => user.userId === activity.from.id);
+    async saveOrUpdateUser ({ activity }) {
+        const users = await getUsers();
+        const userExist = users && users.find(user => user.userId === activity.from.id);
 
         if (!userExist && activity) {
             await saveUser({
                 userId: activity.from.id,
-                activity: activity,
-                options: options
-            })
-        } else if (options) {
-            await updateUser({
-                user: userExist,
-                options: options
+                name: activity.from.name,
+                activity: activity
             })
         }
     },
 
-    async getUsers () {
-        return getAllUsers();
+    async getUser ({ userId }) {
+        const result = await get({ userId });
+        return result[0];
     },
 
-    async getAllSubscription ({ activity }) {
-        const collection = await getCollection();
-        const user = await collection.findOne({ userId: activity.from.id });
-        return user.options;
+    async getActivitys ({ ids }) {
+        const result = await get({ ids });
+        return result.map(r => JSON.parse(r.activity));
     }
 };
 
-async function getAllUsers () {
-    const collection = await getCollection();
-    return collection.find().toArray();
+function get ({ ids, userId }) {
+    let sql = 'SELECT * FROM Users WHERE 1 = 1';
+    ids && (sql += ` AND id IN (${ids.join(',')})`);
+    userId && (sql += ` AND userId = '${userId}'`);
+
+    return query({ sqlString: sql })
 }
 
-async function saveUser ({ userId, activity }) {
-    const collection = await getCollection();
-    await collection.insertOne({ userId, activity })
+async function getUsers () {
+    return query({ sqlString: 'SELECT * FROM Users' });
 }
 
-async function updateUser ({ user, options }) {
-    const collection = await getCollection();
-    return collection.updateOne(
-        { userId: user.userId },
-        { $set: { options: mapOptions({ user, options }) } }
-    );
-}
-
-async function getCollection () {
-    const connect = await getConnect();
-    const db = connect.db(dbname);
-    return db.collection(collectionname);
-}
-
-function mapOptions ({ user, options }) {
-    const oldOptions = user.options;
-
-    if (!oldOptions) {
-        return options;
-    }
-
-    return {
-        ...user.options,
-        deploy: {
-            ...user.options.deploy,
-            ...options.deploy
-        }
-    }
+async function saveUser ({ userId, name, activity }) {
+    const sql = `INSERT INTO Users (userId, userName, activity) VALUES ('${userId}', '${name}', '${JSON.stringify(activity)}')`;
+    return query({ sqlString: sql });
 }
