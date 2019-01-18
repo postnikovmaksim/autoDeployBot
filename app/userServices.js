@@ -38,6 +38,7 @@ async function getUsers () {
 }
 
 async function saveUser ({ userId, name, activity }) {
-    const sql = `INSERT INTO Users (userId, userName, activity) VALUES ('${userId}', '${name}', '${JSON.stringify(activity)}')`;
+    const act = JSON.stringify(activity).replace('\\', '');
+    const sql = `INSERT INTO Users (userId, userName, activity) VALUES ('${userId}', '${name}', '${act}')`;
     return query({ sqlString: sql });
 }

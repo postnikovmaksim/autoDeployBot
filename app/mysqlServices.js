@@ -10,7 +10,6 @@ let connection;
 module.exports = {
     async query ({ sqlString }) {
         if (!connection) {
-            console.log(getConfig());
             connection = await mysql.connect(getConfig());
         }
         console.log(sqlString);
