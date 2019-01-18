@@ -10,6 +10,7 @@ let connection;
 module.exports = {
     async query ({ sqlString }) {
         if (!connection) {
+            console.log(getConfig());
             connection = await mysql.connect(getConfig());
         }
         console.log(sqlString);
@@ -28,9 +29,9 @@ function getConfig () {
     }
 
     return {
-        host: 'sql7.freesqldatabase.com',
-        user: 'sql7274473',
-        password: 'hpRtviZyvA',
-        database: 'sql7274473'
+        host: 'localhost',
+        user: 'root',
+        password: 'moedelo',
+        database: 'messenger_bot'
     }
 }
