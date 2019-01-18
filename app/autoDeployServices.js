@@ -1,9 +1,11 @@
 const { TurnContext } = require('botbuilder');
+const moment = require('moment');
 const { getActivitys } = require('./userServices');
 const { getUserIds } = require('./subscriptionsServices');
 
 module.exports = {
     async autoDeployEvent ({ req, adapter }) {
+        const buildDate = moment(req.body.timestamp).format('hh:mm:ss DD.MM.YYYY');
         const buildResult = req.body.build_result;
         const buildName = req.body.build_name;
         const buildTarget = req.body.build_status_url.match(/Box\d\d/g).toString().toLowerCase();
@@ -18,7 +20,7 @@ module.exports = {
             const reference = TurnContext.getConversationReference(activity);
             await adapter.continueConversation(reference, async (context) => {
                 try {
-                    await context.sendActivity(`${buildResult} deploy ${buildName} on ${buildTarget}`);
+                    await context.sendActivity(`${buildDate} ${buildResult} deploy ${buildName} on ${buildTarget}`);
                 } catch (e) {
                     console.log(e);
                 }
