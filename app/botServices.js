@@ -68,8 +68,8 @@ class EchoBot {
                     '\\add_deploy_box** - подписаться на событие deploy для бокса\n' +
                     '\\remove_deploy_box** - удалить подписку на событие deploy для бокса\n' +
                     '\\remove_all_deploy - удалить все подписки на deploy\n' +
-                    '\\add_newRelic_<<nameApplication>> - подписаться на событие в newRelic\n' +
-                    '\\remove_newRelic_<<nameApplication>> - удалить подписку на событие в newRelic\n' +
+                    '\\add_newRelic_nameApplication - подписаться на событие в newRelic\n' +
+                    '\\remove_newRelic_nameApplication - удалить подписку на событие в newRelic\n' +
                     '\\remove_all_newRelic - удалить все подписки на newRelic\n' +
                     '\\remove_all - удалить все подписки \n' +
                     '\\list - отобразить текушие подписки на события'
