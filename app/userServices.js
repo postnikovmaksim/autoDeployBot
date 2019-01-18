@@ -1,4 +1,4 @@
-const { query } = require('./mysqlService');
+const { query } = require('./mysqlServices');
 
 module.exports = {
     async saveOrUpdateUser ({ activity }) {
