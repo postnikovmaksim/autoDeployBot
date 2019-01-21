@@ -1,56 +1,43 @@
 const mysql = require('mysql');
 
 let connection = null;
-let count = 0;
 
 module.exports = {
     async query ({ sqlString }) {
+        console.log(sqlString);
+
         await createConnectionAsync();
-        return queryAsync(sqlString);
+        return new Promise((resolve, reject) => {
+            connection.query(sqlString, async (err, rows) => {
+                if (err) {
+                    if (err.fatal) {
+                        connection = null;
+                    }
+                    reject(new Error(err));
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
     }
 };
 
 function createConnectionAsync () {
     return new Promise((resolve, reject) => {
-        if (connection) return;
-
-        connection = mysql.createConnection(getConfig());
-        connection.connect(async err => {
-            if (err) {
-                console.log(err);
-                await reconnect(resolve, reject, err);
-            } else {
-                count = 0;
-                resolve(connection);
-            }
-        });
-    });
-}
-
-function queryAsync (sqlString) {
-    return new Promise((resolve, reject) => {
-        connection.query(sqlString, async (err, rows) => {
-            if (err) {
-                if (err.fatal) {
-                    await reconnect(resolve, reject, err);
+        if (connection) {
+            resolve(connection);
+        } else {
+            connection = mysql.createConnection(getConfig());
+            connection.connect(err => {
+                if (err) {
+                    connection = null;
+                    reject(new Error(err));
+                } else {
+                    resolve(connection);
                 }
-                reject(new Error(err));
-            } else {
-                resolve(rows);
-            }
-        });
+            });
+        }
     });
-}
-
-async function reconnect (resolve, reject, err) {
-    connection.end();
-    connection = null;
-    if (count < 3) {
-        resolve(await createConnectionAsync());
-    } else {
-        count = 0;
-        reject(new Error(err));
-    }
 }
 
 function getConfig () {
