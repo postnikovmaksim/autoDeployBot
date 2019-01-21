@@ -7,7 +7,7 @@ module.exports = {
         console.log(req.body);
 
         const level = req.body.severity;
-        const applicationName = req.body.targets.name;
+        const applicationName = req.body.targets[0].name;
         const details = req.body.details;
         const url = req.body.incident_url;
 
@@ -18,7 +18,6 @@ module.exports = {
 
         const activitys = await getActivitys({ ids });
         activitys.forEach(async activity => {
-            console.log(1);
             const reference = TurnContext.getConversationReference(activity);
             await adapter.continueConversation(reference, async (context) => {
                 await context.sendActivity(`${level} ${applicationName} ${details} ${url}`);
