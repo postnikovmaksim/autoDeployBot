@@ -1,13 +1,57 @@
-const mysql = require('async-mysql');
+const mysql = require('mysql');
+
+let connection = null;
+let count = 0;
 
 module.exports = {
     async query ({ sqlString }) {
-        const connection = await mysql.connect(getConfig());
-        const result = await connection.query(sqlString);
-        await connection.end();
-        return result;
+        await createConnectionAsync();
+        return queryAsync(sqlString);
     }
 };
+
+function createConnectionAsync () {
+    return new Promise((resolve, reject) => {
+        if (connection) return;
+
+        connection = mysql.createConnection(getConfig());
+        connection.connect(async err => {
+            if (err) {
+                console.log(err);
+                await reconnect(resolve, reject, err);
+            } else {
+                count = 0;
+                resolve(connection);
+            }
+        });
+    });
+}
+
+function queryAsync (sqlString) {
+    return new Promise((resolve, reject) => {
+        connection.query(sqlString, async (err, rows) => {
+            if (err) {
+                if (err.fatal) {
+                    await reconnect(resolve, reject, err);
+                }
+                reject(new Error(err));
+            } else {
+                resolve(rows);
+            }
+        });
+    });
+}
+
+async function reconnect (resolve, reject, err) {
+    connection.end();
+    connection = null;
+    if (count < 3) {
+        resolve(await createConnectionAsync());
+    } else {
+        count = 0;
+        reject(new Error(err));
+    }
+}
 
 function getConfig () {
     if (process.env.NODE_ENV === 'production') {
