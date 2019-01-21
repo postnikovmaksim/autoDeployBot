@@ -1,14 +1,11 @@
 const mysql = require('async-mysql');
 
-let connection;
-
 module.exports = {
     async query ({ sqlString }) {
-        if (!connection) {
-            connection = await mysql.connect(getConfig());
-        }
-        console.log(sqlString);
-        return connection.query(sqlString);
+        const connection = await mysql.connect(getConfig());
+        const result = await connection.query(sqlString);
+        await connection.end();
+        return result;
     }
 };
 
