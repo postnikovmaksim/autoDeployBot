@@ -1,21 +1,14 @@
-const moment = require('moment');
 const mysql = require('mysql');
-
-let connection;
-let dateCreateConnection;
 
 module.exports = {
     async query ({ sqlString }) {
         console.log(sqlString);
 
-        await createConnectionAsync();
+        const connection = await createConnectionAsync();
         return new Promise((resolve, reject) => {
             connection.query(sqlString, async (err, rows) => {
+                connection.end();
                 if (err) {
-                    if (err.fatal) {
-                        connection.end();
-                        connection = null;
-                    }
                     reject(new Error(err));
                 } else {
                     resolve(rows);
@@ -27,32 +20,15 @@ module.exports = {
 
 function createConnectionAsync () {
     return new Promise((resolve, reject) => {
-        if (connection && hasPassedTime()) {
-            resolve(connection);
-        } else {
-            end();
-            connection = mysql.createConnection(getConfig());
-            connection.connect(err => {
-                if (err) {
-                    connection.end();
-                    connection = null;
-                    reject(new Error(err));
-                } else {
-                    dateCreateConnection = moment();
-                    resolve(connection);
-                }
-            });
-        }
+        const connection = mysql.createConnection(getConfig());
+        connection.connect(err => {
+            if (err) {
+                reject(new Error(err));
+            } else {
+                resolve(connection);
+            }
+        });
     });
-}
-
-function end () {
-    console.log('endConnection');
-    connection && connection.end();
-}
-
-function hasPassedTime () {
-    return moment(dateCreateConnection).add(10, 'seconds').isAfter(moment());
 }
 
 function getConfig () {
