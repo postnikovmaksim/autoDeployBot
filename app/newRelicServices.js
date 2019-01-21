@@ -4,6 +4,8 @@ const { getUserIds } = require('./subscriptionsServices');
 
 module.exports = {
     async newRelicEvent ({ req, adapter }) {
+        console.log(req.body);
+
         const level = req.body.severity;
         const applicationName = req.body.targets.name;
         const details = req.body.details;
