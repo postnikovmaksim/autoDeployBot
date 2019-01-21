@@ -30,7 +30,7 @@ function createConnectionAsync () {
         if (connection && hasPassedTime()) {
             resolve(connection);
         } else {
-            connection && connection.end();
+            end();
             connection = mysql.createConnection(getConfig());
             connection.connect(err => {
                 if (err) {
@@ -44,6 +44,11 @@ function createConnectionAsync () {
             });
         }
     });
+}
+
+function end () {
+    console.log('endConnection');
+    connection && connection.end();
 }
 
 function hasPassedTime () {
