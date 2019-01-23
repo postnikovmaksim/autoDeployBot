@@ -5,7 +5,7 @@ const { getUserIds } = require('./subscriptionsServices');
 
 module.exports = {
     async autoDeployEvent ({ req, adapter }) {
-        const buildDate = moment(req.body.timestamp).format('hh:mm:ss DD.MM.YYYY');
+        const buildDate = moment(req.body.timestamp).format('hh:mm:ss DD.MM.YYYY').add('hours', 3);
         const buildResult = req.body.build_result;
         const buildName = req.body.build_name;
         const buildTarget = req.body.build_status_url.match(/Box\d\d/g).toString().toLowerCase();
