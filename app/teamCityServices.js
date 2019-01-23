@@ -40,7 +40,8 @@ async function get ({ uri }) {
         uri: `https://ci.moedelo.org/${uri}`,
         auth: {
             'user': 'postnikov',
-            'pass': 'L1mkZ68p1'
+            'pass': 'L1mkZ68p1',
+            'sendImmediately': false
         }
     };
 
