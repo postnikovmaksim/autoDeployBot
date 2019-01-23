@@ -2,20 +2,20 @@ const { TurnContext } = require('botbuilder');
 const moment = require('moment');
 const { getActivitys } = require('./userServices');
 const { getUserIds } = require('./subscriptionsServices');
-const { getCommitMessages } = require('./teamCityServices');
+// const { getCommitMessages } = require('./teamCityServices');
 
 module.exports = {
     async autoDeployEvent ({ req, adapter }) {
         const buildDate = moment(req.body.timestamp).add(3, 'hours').format('hh:mm:ss DD.MM.YYYY');
         const buildResult = req.body.build_result;
         const buildName = req.body.build_name;
-        const buildNumber = req.body.build_number;
+        // const buildNumber = req.body.build_number;
         const buildStatusUrl = req.body.build_status_url;
         const buildTarget = buildStatusUrl.match(/Box\d\d/g).toString().toLowerCase();
-        const commitMessages = await getCommitMessages({ buildNumber });
+        // const commitMessages = await getCommitMessages({ buildNumber });
 
         const message = `${buildDate} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
-            `\n изменения: ${commitMessages.join(', ')}` +
+            // `\n изменения: ${commitMessages.join(', ')}` +
             buildResult === 'failed' ? `\n ${buildStatusUrl}` : '';
 
         const ids = await getUserIds({ eventName: `deploy_${buildTarget}` });
