@@ -2,10 +2,9 @@ const mysql = require('mysql');
 
 module.exports = {
     async query ({ sqlString }) {
-        console.log(sqlString);
-
         const connection = await createConnectionAsync();
         return new Promise((resolve, reject) => {
+            console.log('Выполянем запрос', sqlString);
             connection.query(sqlString, async (err, rows) => {
                 connection.end();
                 if (err) {
