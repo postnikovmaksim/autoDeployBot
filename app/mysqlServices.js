@@ -9,8 +9,10 @@ module.exports = {
             connection.query(sqlString, async (err, rows) => {
                 connection.end();
                 if (err) {
+                    console.log('При обращении к базе произошла ошибка', err);
                     reject(new Error(err));
                 } else {
+                    console.log('Запрос выполнен успешно', JSON.stringify(rows));
                     resolve(rows);
                 }
             });
