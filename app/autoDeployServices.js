@@ -20,7 +20,10 @@ module.exports = {
             `\n изменения: ${changeMessage}` +
             buildResult === 'failed' ? `\n ${buildStatusUrl}` : '';
 
-        console.log('message:', JSON.stringify(req.body));
+        console.log('buildTarget:', buildTarget);
+        console.log('buildDate:', buildDate);
+        console.log('changeMessage:', changeMessage);
+        console.log('message:', message);
 
         const ids = await getUserIds({ eventName: `deploy_${buildTarget}` });
         if (!ids.length) {
