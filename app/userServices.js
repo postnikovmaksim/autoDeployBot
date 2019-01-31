@@ -48,6 +48,6 @@ async function saveUser ({ userId, name, activity }) {
 }
 
 async function updateUser ({ userId, name, activity }) {
-    const sql = `update Users set activity = '${activity}', userName = '${name}' where userId = '${userId}')`;
+    const sql = `update Users set activity = '${activity}', userName = '${name}' where userId = '${userId}'`;
     return query({ sqlString: sql });
 }
