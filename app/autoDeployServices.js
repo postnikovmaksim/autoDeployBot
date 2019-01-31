@@ -5,6 +5,7 @@ const { getUserIds } = require('./subscriptionsServices');
 
 module.exports = {
     async autoDeployEvent ({ req, adapter }) {
+        console.log('DeployEvent:', JSON.stringify(req.body));
         const {
             teamcityProperties,
             buildResult,
@@ -18,6 +19,8 @@ module.exports = {
         const message = `${buildDate} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
             `\n изменения: ${changeMessage}` +
             buildResult === 'failed' ? `\n ${buildStatusUrl}` : '';
+
+        console.log('message:', JSON.stringify(req.body));
 
         const ids = await getUserIds({ eventName: `deploy_${buildTarget}` });
         if (!ids.length) {
