@@ -4,10 +4,16 @@ const { query } = require('./mysqlServices');
 module.exports = {
     async saveOrUpdateUser ({ context }) {
         const user = await getUser({ userId: context.activity.from.id });
+        const reference = TurnContext.getConversationReference(context.request);
 
         if (!user) {
-            const reference = TurnContext.getConversationReference(context.request);
             await saveUser({
+                userId: context.activity.from.id,
+                name: context.activity.from.name,
+                activity: JSON.stringify(reference)
+            })
+        } else {
+            await updateUser({
                 userId: context.activity.from.id,
                 name: context.activity.from.name,
                 activity: JSON.stringify(reference)
@@ -37,7 +43,11 @@ async function getUser ({ userId }) {
 }
 
 async function saveUser ({ userId, name, activity }) {
-    const act = JSON.stringify(activity).replace('\\', '');
-    const sql = `INSERT INTO Users (userId, userName, activity) VALUES ('${userId}', '${name}', '${act}')`;
+    const sql = `INSERT INTO Users (userId, userName, activity) VALUES ('${userId}', '${name}', '${activity}')`;
+    return query({ sqlString: sql });
+}
+
+async function updateUser ({ userId, name, activity }) {
+    const sql = `update Users set activity = '${activity}', userName = '${name}' where userId = '${userId}')`;
     return query({ sqlString: sql });
 }
