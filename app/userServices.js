@@ -6,6 +6,8 @@ module.exports = {
         const user = await getUser({ userId: context.activity.from.id });
         const reference = TurnContext.getConversationReference(context.request);
 
+        console.log(context);
+
         if (!user) {
             await saveUser({
                 userId: context.activity.from.id,
