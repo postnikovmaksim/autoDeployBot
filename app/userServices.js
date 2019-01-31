@@ -11,6 +11,12 @@ module.exports = {
                 name: activity.from.name,
                 activity: { ...activity, text: '' }
             })
+        } else {
+            await updateUser({
+                userId: activity.from.id,
+                name: activity.from.name,
+                activity: { ...activity, text: '' }
+            })
         }
     },
 
@@ -40,5 +46,11 @@ async function getUsers () {
 async function saveUser ({ userId, name, activity }) {
     const act = JSON.stringify(activity).replace('\\', '');
     const sql = `INSERT INTO Users (userId, userName, activity) VALUES ('${userId}', '${name}', '${act}')`;
+    return query({ sqlString: sql });
+}
+
+async function updateUser ({ userId, name, activity }) {
+    const act = JSON.stringify(activity).replace('\\', '');
+    const sql = `update Users set activity = '${act}', name = '${name}' where userId = '${userId}'`;
     return query({ sqlString: sql });
 }
