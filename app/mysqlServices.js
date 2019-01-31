@@ -29,7 +29,7 @@ function createConnectionAsync () {
                 console.log('При создании конекшена, произошла ошибка', err);
                 reject(new Error(err));
             } else {
-                console.log('Соединение успешно установлено', err);
+                console.log('Соединение успешно установлено');
                 resolve(connection);
             }
         });
