@@ -51,6 +51,6 @@ async function saveUser ({ userId, name, activity }) {
 
 async function updateUser ({ userId, name, activity }) {
     const act = JSON.stringify(activity).replace('\\', '');
-    const sql = `update Users set activity = '${act}', name = '${name}' where userId = '${userId}'`;
+    const sql = `update Users set activity = '${act}', userName = '${name}' where userId = '${userId}'`;
     return query({ sqlString: sql });
 }
