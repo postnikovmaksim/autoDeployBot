@@ -16,9 +16,9 @@ module.exports = {
         const buildDate = teamcityProperties.find(p => p.name === 'build.formatted.timestamp').value;
         const changeMessage = teamcityProperties.find(p => p.name === 'ChangeMessage').value;
 
-        const message = `${buildDate} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
+        const message = `${moment(buildDate).format('DD.MM.YYYY')} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
             `\n изменения: ${changeMessage}` +
-            buildResult === 'failed' ? `\n ${buildStatusUrl}` : '';
+            (buildResult === 'failed' ? `\n ${buildStatusUrl}` : '');
 
         console.log('buildTarget:', buildTarget);
         console.log('buildDate:', buildDate);
