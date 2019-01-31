@@ -1,4 +1,3 @@
-const { TurnContext } = require('botbuilder');
 const moment = require('moment');
 const { getActivitys } = require('./userServices');
 const { getUserIds } = require('./subscriptionsServices');
@@ -29,8 +28,7 @@ module.exports = {
 
         const activitys = await getActivitys({ ids });
         activitys.forEach(async activity => {
-            const reference = TurnContext.getConversationReference(activity);
-            await adapter.continueConversation(reference, async (context) => {
+            await adapter.continueConversation(activity, async (context) => {
                 try {
                     await context.sendActivity(message);
                 } catch (e) {

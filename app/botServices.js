@@ -9,7 +9,7 @@ const newRelicRegx = /newRelic_\w+\b/g;
 class EchoBot {
     async onTurn (context) {
         console.log('Получено сообщение от пользователя:', context.activity.text);
-        await saveOrUpdateUser({ activity: context.activity });
+        await saveOrUpdateUser({ context });
 
         if (context.activity.type === ActivityTypes.Message) {
             const message = context.activity.text;
