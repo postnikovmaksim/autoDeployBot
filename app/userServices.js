@@ -21,8 +21,9 @@ module.exports = {
         }
     },
 
-    getUser ({ userId }) {
-        return getUser({ userId });
+    async getUser ({ userId }) {
+        const result = await getUser({ userId });
+        return result[0];
     },
 
     async getActivitys ({ ids }) {
