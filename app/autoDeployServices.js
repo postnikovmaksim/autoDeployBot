@@ -16,7 +16,7 @@ module.exports = {
         const changeMessage = teamcityProperties.find(p => p.name === 'ChangeMessage').value;
 
         const message = `${moment(buildDate).format('DD.MM.YYYY')} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
-            `\n изменения: ${changeMessage}` +
+            `\n изменения: ${new Buffer.from(changeMessage, 'base64').toString('utf8')}` +
             (buildResult === 'failed' ? `\n ${buildStatusUrl}` : '');
 
         console.log('message:', message);
