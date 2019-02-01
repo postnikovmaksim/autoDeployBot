@@ -37,7 +37,8 @@ function createConnectionAsync () {
 function getConfig () {
     if (process.env.NODE_ENV === 'production') {
         return {
-            host: '148.251.238.183:49265',
+            host: '148.251.238.183',
+            port: '49265',
             user: 'user_skype',
             password: 'YMwTZAwhmJ0deC6I54q2SE9d',
             database: 'bot_skype'
