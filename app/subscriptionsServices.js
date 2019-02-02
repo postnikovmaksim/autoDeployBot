@@ -38,31 +38,31 @@ module.exports = {
 };
 
 function save ({ userId, eventName }) {
-    const sql = `INSERT INTO UsersSubscriptions (userId, eventName) VALUES ('${userId}', '${eventName}')`;
+    const sql = `insert into userssubscriptions (userId, eventName) values ('${userId}', '${eventName}')`;
 
     return query({ sqlString: sql });
 }
 
 function get ({ userId, eventName }) {
-    let sql = `SELECT * FROM UsersSubscriptions WHERE 1 = 1`;
-    userId && (sql += ` AND userId = '${userId}'`);
-    eventName && (sql += ` AND eventName = '${eventName}'`);
+    let sql = `select * from userssubscriptions where 1 = 1`;
+    userId && (sql += ` and userId = '${userId}'`);
+    eventName && (sql += ` and eventName = '${eventName}'`);
 
     return query({ sqlString: sql });
 }
 
 function remove ({ userId, eventName }) {
-    let sql = `DELETE FROM UsersSubscriptions WHERE 1 = 1`;
-    userId && (sql += ` AND userId = '${userId}'`);
-    eventName && (sql += ` AND eventName = '${eventName}'`);
+    let sql = `delete from userssubscriptions where 1 = 1`;
+    userId && (sql += ` and userId = '${userId}'`);
+    eventName && (sql += ` and eventName = '${eventName}'`);
 
     return query({ sqlString: sql });
 }
 
 function removeByType ({ userId, regx }) {
-    let sql = `DELETE FROM UsersSubscriptions WHERE 1 = 1`;
-    userId && (sql += ` AND userId = '${userId}'`);
-    regx && (sql += ` AND eventName REGEXP '${regx}'`);
+    let sql = `delete from userssubscriptions where 1 = 1`;
+    userId && (sql += ` and userId = '${userId}'`);
+    regx && (sql += ` and eventName regexp '${regx}'`);
 
     return query({ sqlString: sql });
 }
