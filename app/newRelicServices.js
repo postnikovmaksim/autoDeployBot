@@ -4,8 +4,6 @@ const { getUserIds } = require('./subscriptionsServices');
 
 module.exports = {
     async newRelicEvent ({ req, adapter }) {
-        console.log(req.body);
-
         const level = req.body.severity;
         const applicationName = req.body.targets[0].name;
         const details = req.body.details;
@@ -16,11 +14,16 @@ module.exports = {
             return;
         }
 
+        const message = `${level} ${applicationName} ${details} ${url}`;
+        console.log(message);
         const activitys = await getActivitys({ ids });
-        activitys.forEach(async activity => {
-            const reference = TurnContext.getConversationReference(activity);
+        activitys.forEach(async reference => {
             await adapter.continueConversation(reference, async (context) => {
-                await context.sendActivity(`${level} ${applicationName} ${details} ${url}`);
+                try {
+                    await context.sendActivity(message);
+                } catch (e) {
+                    console.log(e);
+                }
             })
         })
     }

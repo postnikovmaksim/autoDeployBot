@@ -11,7 +11,7 @@ module.exports = {
                     console.log('При обращении к базе произошла ошибка', err);
                     reject(new Error(err));
                 } else {
-                    console.log('Запрос выполнен успешно', JSON.stringify(rows));
+                    console.log(`Запрос выполнен успешно, найденно ${rows.length}`);
                     resolve(rows);
                 }
             });

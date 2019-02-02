@@ -4,7 +4,6 @@ const { getUserIds } = require('./subscriptionsServices');
 
 module.exports = {
     async autoDeployEvent ({ req, adapter }) {
-        console.log('DeployEvent:', JSON.stringify(req.body));
         const {
             teamcityProperties,
             buildResult,
@@ -15,7 +14,7 @@ module.exports = {
         const buildDate = teamcityProperties.find(p => p.name === 'build.formatted.timestamp').value;
         const changeMessage = teamcityProperties.find(p => p.name === 'ChangeMessage').value;
 
-        const message = `${moment(buildDate).format('DD.MM.YYYY')} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
+        const message = `${moment(buildDate).format('DD.MM.YYYY HH:mm')} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
             `\n изменения: ${new Buffer.from(changeMessage, 'base64').toString('utf8')}` +
             (buildResult === 'failed' ? `\n ${buildStatusUrl}` : '');
 
