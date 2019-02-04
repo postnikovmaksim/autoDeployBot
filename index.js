@@ -26,7 +26,7 @@ server.post('/event/newrelic', async (req, res) => {
     res.send(200);
 });
 
-server.post('/event/MasterAutoComplete', async (req, res) => {
+server.post('/event/master_auto_complete', async (req, res) => {
     await consoleEvent({ req, adapter });
     res.send(200);
 });

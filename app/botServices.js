@@ -5,7 +5,7 @@ const { saveSubscriptions, getSubscriptions, removeSubscriptions,
 
 const deployBoxRegx = /deploy_box\d+\b/g;
 const newRelicRegx = /newRelic_\w+\b/g;
-const MasterAutoCompleteRegx = /MasterAutoComplete\b/g;
+const MasterAutoCompleteRegx = /master_auto_complete\b/g;
 
 class EchoBot {
     async onTurn (context) {
@@ -35,7 +35,7 @@ class EchoBot {
                 return;
             }
 
-            if (message.search(/\\add_MasterAutoComplete\b/g) === 0) {
+            if (message.search(/\\add_master_auto_complete\b/g) === 0) {
                 await createSubscriptions({ context, message, regx: MasterAutoCompleteRegx });
                 return;
             }
@@ -73,7 +73,7 @@ class EchoBot {
                 await context.sendActivity(
                     '\\help - описание всех доступных команд\n' +
                     '\\add_deploy_box** - подписаться на событие deploy для бокса\n' +
-                    '\\add_MasterAutoComplete - подписаться на отчет по работе консоли' +
+                    '\\add_master_auto_complete - подписаться на отчет по работе консоли' +
                     '\\remove_deploy_box** - удалить подписку на событие deploy для бокса\n' +
                     '\\remove_all_deploy - удалить все подписки на deploy\n' +
                     '\\add_newRelic_nameApplication - подписаться на событие в newRelic\n' +
