@@ -21,6 +21,7 @@ module.exports = {
 
 function createConnectionAsync () {
     return new Promise((resolve, reject) => {
+        console.log(getConfig());
         const connection = mysql.createConnection(getConfig());
         connection.connect(err => {
             if (err) {
