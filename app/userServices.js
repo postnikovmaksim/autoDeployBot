@@ -3,7 +3,7 @@ const { query } = require('./mysqlServices');
 
 module.exports = {
     async saveOrUpdateUser ({ context }) {
-        const user = await getUser({ userId: context.activity.from.id });
+        const user = await this.getUser({ userId: context.activity.from.id });
         const reference = TurnContext.getConversationReference(context.activity);
 
         console.log('user', user);
