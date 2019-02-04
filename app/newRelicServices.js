@@ -1,4 +1,3 @@
-const { TurnContext } = require('botbuilder');
 const { getActivitys } = require('./userServices');
 const { getUserIds } = require('./subscriptionsServices');
 
