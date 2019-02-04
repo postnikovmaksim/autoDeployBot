@@ -13,8 +13,9 @@ module.exports = {
         const buildTarget = buildStatusUrl.match(/Box\d\d/g).toString().toLowerCase();
         const buildDate = teamcityProperties.find(p => p.name === 'build.formatted.timestamp').value;
         const changeMessage = teamcityProperties.find(p => p.name === 'ChangeMessage').value;
+        const timestamp = moment(buildDate).add(3, 'hour').format('DD.MM.YYYY HH:mm');
 
-        const message = `${moment(buildDate).format('DD.MM.YYYY HH:mm')} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
+        const message = `${timestamp} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
             `\n изменения: ${new Buffer.from(changeMessage, 'base64').toString('utf8')}` +
             (buildResult === 'failed' ? `\n ${buildStatusUrl}` : '');
 
