@@ -73,7 +73,7 @@ class EchoBot {
                 await context.sendActivity(
                     '\\help - описание всех доступных команд\n' +
                     '\\add_deploy_box** - подписаться на событие deploy для бокса\n' +
-                    '\\add_master_auto_complete - подписаться на отчет по работе консоли' +
+                    '\\add_master_auto_complete - подписаться на отчет по работе консоли\n' +
                     '\\remove_deploy_box** - удалить подписку на событие deploy для бокса\n' +
                     '\\remove_all_deploy - удалить все подписки на deploy\n' +
                     '\\add_newRelic_nameApplication - подписаться на событие в newRelic\n' +
