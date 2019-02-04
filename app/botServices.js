@@ -5,7 +5,7 @@ const { saveSubscriptions, getSubscriptions, removeSubscriptions,
 
 const deployBoxRegx = /deploy_box\d+\b/g;
 const newRelicRegx = /newRelic_\w+\b/g;
-const consoleRegx = /MasterAutoComplete\b/g;
+const MasterAutoCompleteRegx = /MasterAutoComplete\b/g;
 
 class EchoBot {
     async onTurn (context) {
@@ -36,7 +36,7 @@ class EchoBot {
             }
 
             if (message.search(/\\add_MasterAutoComplete\b/g) === 0) {
-                await createSubscriptions({ context, message, regx: consoleRegx });
+                await createSubscriptions({ context, message, regx: MasterAutoCompleteRegx });
                 return;
             }
 

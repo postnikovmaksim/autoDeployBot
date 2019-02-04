@@ -1,7 +1,7 @@
 const { adapter, bot, port } = require('./botFrameworkServices');
 const { autoDeployEvent } = require('./app/autoDeployServices');
 const { newRelicEvent } = require('./app/newRelicServices');
-const { consoleEvent } = require('./app/consoleServices');
+const { consoleEvent } = require('./app/masterAutoCompleteServices');
 const { server } = require('./httpServerServices');
 
 server.listen(port, () => {
