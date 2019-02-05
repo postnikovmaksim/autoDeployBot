@@ -34,16 +34,14 @@ server.post('/event/master_auto_complete', async (req, res) => {
 });
 
 server.get('/awakening', async (req, res) => {
-    awakening();
+    console.log('awakening', moment().format('DD-MM-YYYY HH:mm'));
     res.send(200);
 });
 
 // из-за ограничений тарифа, бот постоянно выгружается из памяти, что приводит к потере запросов.
 // будем будить бота по таймеру
 function awakening () {
-    console.log('awakening', moment().format('DD-MM-YYYY HH:mm'));
-    request.get({ uri: 'https://autodeploy-94a4.azurewebsites.net/awakening' });
-    setTimeout(awakening, 60000)
+    setInterval(() => request.get({ uri: 'https://autodeploy-94a4.azurewebsites.net/awakening' }), 60000)
 }
 
 (() => awakening())();
