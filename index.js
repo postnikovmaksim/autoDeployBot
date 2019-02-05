@@ -1,3 +1,4 @@
+const request = require('request-promise-native');
 const { adapter, bot, port } = require('./botFrameworkServices');
 const { autoDeployEvent } = require('./app/autoDeployServices');
 const { newRelicEvent } = require('./app/newRelicServices');
@@ -30,3 +31,18 @@ server.post('/event/master_auto_complete', async (req, res) => {
     await consoleEvent({ req, adapter });
     res.send(200);
 });
+
+server.post('/awakening', async (req, res) => {
+    awakening();
+    res.send(200);
+});
+
+// из-за ограничений тарифа, бот постоянно выгружается из памяти, что приводит к потере запросов.
+// будем будить бота по таймеру
+function awakening () {
+    console.log('awakening');
+    request.get({ method: 'POST', uri: 'https://autodeploy-94a4.azurewebsites.net/awakening' });
+    setInterval(awakening, 60000)
+}
+
+(() => awakening())();
