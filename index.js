@@ -43,7 +43,7 @@ server.get('/awakening', async (req, res) => {
 function awakening () {
     console.log('awakening', moment().format('DD-MM-YYYY HH:mm'));
     request.get({ uri: 'https://autodeploy-94a4.azurewebsites.net/awakening' });
-    setInterval(awakening, 60000)
+    setTimeout(awakening, 60000)
 }
 
-//(() => awakening())();
+(() => awakening())();
