@@ -4,6 +4,8 @@ const { getUserIds } = require('./subscriptionsServices');
 
 module.exports = {
     async autoDeployEvent ({ req, adapter }) {
+        console.log('body:', req.body);
+
         const {
             teamcityProperties,
             buildResult,
