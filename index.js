@@ -41,7 +41,7 @@ server.get('/awakening', async (req, res) => {
 // из-за ограничений тарифа, бот постоянно выгружается из памяти, что приводит к потере запросов.
 // будем будить бота по таймеру
 function awakening () {
-    console.log('awakening', moment());
+    console.log('awakening', moment().format('DD-MM-YYYY HH:mm'));
     request.get({ uri: 'https://autodeploy-94a4.azurewebsites.net/awakening' });
     setInterval(awakening, 60000)
 }
