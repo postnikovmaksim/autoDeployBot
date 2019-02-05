@@ -46,4 +46,4 @@ function awakening () {
     setInterval(awakening, 60000)
 }
 
-(() => awakening())();
+//(() => awakening())();
