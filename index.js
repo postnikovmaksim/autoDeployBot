@@ -1,3 +1,4 @@
+const moment = require('moment');
 const request = require('request-promise-native');
 const { adapter, bot, port } = require('./botFrameworkServices');
 const { autoDeployEvent } = require('./app/autoDeployServices');
@@ -40,7 +41,7 @@ server.get('/awakening', async (req, res) => {
 // из-за ограничений тарифа, бот постоянно выгружается из памяти, что приводит к потере запросов.
 // будем будить бота по таймеру
 function awakening () {
-    console.log('awakening');
+    console.log('awakening', moment());
     request.get({ uri: 'https://autodeploy-94a4.azurewebsites.net/awakening' });
     setInterval(awakening, 60000)
 }
