@@ -32,7 +32,7 @@ server.post('/event/master_auto_complete', async (req, res) => {
     res.send(200);
 });
 
-server.post('/awakening', async (req, res) => {
+server.get('/awakening', async (req, res) => {
     awakening();
     res.send(200);
 });
@@ -41,7 +41,7 @@ server.post('/awakening', async (req, res) => {
 // будем будить бота по таймеру
 function awakening () {
     console.log('awakening');
-    request.get({ method: 'POST', uri: 'https://autodeploy-94a4.azurewebsites.net/awakening' });
+    request.get({ uri: 'https://autodeploy-94a4.azurewebsites.net/awakening' });
     setInterval(awakening, 60000)
 }
 
