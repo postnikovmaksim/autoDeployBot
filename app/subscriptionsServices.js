@@ -26,9 +26,9 @@ module.exports = {
         return remove({ userId: user.id, eventName });
     },
 
-    async removeAllTypeSubscriptions ({ userId, regx }) {
+    async removeAllTypeSubscriptions ({ userId, like }) {
         const user = await getUser({ userId });
-        return removeByType({ userId: user.id, regx });
+        return removeByType({ userId: user.id, like });
     },
 
     async removeAllSubscriptions ({ userId }) {
@@ -59,10 +59,10 @@ function remove ({ userId, eventName }) {
     return query({ sqlString: sql });
 }
 
-function removeByType ({ userId, regx }) {
+function removeByType ({ userId, like }) {
     let sql = `delete from userssubscriptions where 1 = 1`;
     userId && (sql += ` and userId = '${userId}'`);
-    regx && (sql += ` and eventName regexp '${regx}'`);
+    like && (sql += ` and eventName like '%${like}%'`);
 
     return query({ sqlString: sql });
 }

@@ -4,15 +4,13 @@ const { getUserIds } = require('./subscriptionsServices');
 
 module.exports = {
     async autoDeployEvent ({ req, adapter }) {
-        console.log('body:', { ...req.body.build, teamcityProperties: null });
-
         const {
             teamcityProperties,
             buildResult,
             buildName,
             buildStatusUrl
         } = req.body.build;
-        const buildTarget = buildStatusUrl.match(/Box\d\d/g).toString().toLowerCase();
+        const buildTarget = teamcityProperties.find(p => p.name === 'BoxSelector').value;
         const buildDate = teamcityProperties.find(p => p.name === 'build.formatted.timestamp').value;
         const changeMessage = teamcityProperties.find(p => p.name === 'ChangeMessage').value;
         const timestamp = moment(buildDate).add(3, 'hour').format('DD.MM.YYYY HH:mm');
@@ -24,6 +22,7 @@ module.exports = {
         console.log('message:', message);
 
         const ids = await getUserIds({ eventName: `deploy_${buildTarget}` });
+
         if (!ids.length) {
             return;
         }
