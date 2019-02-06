@@ -87,17 +87,17 @@ class EchoBot {
 
             if (deploySubscriptions.length) {
                 result += 'deploy:';
-                deploySubscriptions.filter.forEach(eventName => result += `\n${eventName}`);
+                deploySubscriptions.forEach(eventName => result += `\n${eventName}`);
             }
 
             if (newRelicSubscriptions.length) {
                 result += 'newRelic:';
-                newRelicSubscriptions.filter.forEach(eventName => result += `\n${eventName}`);
+                newRelicSubscriptions.forEach(eventName => result += `\n${eventName}`);
             }
 
             if (outherSubscriptions.length) {
                 result += 'outher:';
-                outherSubscriptions.filter.forEach(eventName => result += `\n${eventName}`);
+                outherSubscriptions.forEach(eventName => result += `\n${eventName}`);
             }
 
             await context.sendActivity(result || 'У вас нет действующих подписок');
