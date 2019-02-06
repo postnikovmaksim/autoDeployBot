@@ -1,11 +1,17 @@
 const { ActivityTypes } = require('botbuilder');
 const { saveOrUpdateUser, getUser } = require('./userServices');
-const { saveSubscriptions, getSubscriptions, removeSubscriptions,
-    removeAllTypeSubscriptions, removeAllSubscriptions } = require('./subscriptionsServices');
+const {
+    saveSubscriptions,
+    getSubscriptions,
+    removeSubscriptions,
+    removeAllTypeSubscriptions,
+    removeAllSubscriptions
+} = require('./subscriptionsServices');
 
 const deployBoxRegx = /deploy_box\d+\b/g;
 const newRelicRegx = /newRelic_\w+\b/g;
 const MasterAutoCompleteRegx = /master_auto_complete\b/g;
+const zabbixRegx = /zabbix\b/g;
 
 class EchoBot {
     async onTurn (context) {
@@ -35,6 +41,11 @@ class EchoBot {
                 return;
             }
 
+            if (message.search(/\\add_zabbix\b/g) === 0) {
+                await createSubscriptions({ context, message, regx: zabbixRegx });
+                return;
+            }
+
             if (message.search(/\\add_master_auto_complete\b/g) === 0) {
                 await createSubscriptions({ context, message, regx: MasterAutoCompleteRegx });
                 return;
@@ -47,6 +58,11 @@ class EchoBot {
 
             if (message.search(/\\remove_all_newRelic\b/g) === 0) {
                 await deleteAllTypeSubscriptions({ context, message, regx: newRelicRegx });
+                return;
+            }
+
+            if (message.search(/\\remove_zabbix\b/g) === 0) {
+                await deleteAllTypeSubscriptions({ context, message, regx: zabbixRegx });
                 return;
             }
 
@@ -73,12 +89,15 @@ class EchoBot {
                 await context.sendActivity(
                     '\\help - описание всех доступных команд\n' +
                     '\\add_deploy_box** - подписаться на событие deploy для бокса\n' +
-                    '\\add_master_auto_complete - подписаться на отчет по работе консоли\n' +
                     '\\remove_deploy_box** - удалить подписку на событие deploy для бокса\n' +
                     '\\remove_all_deploy - удалить все подписки на deploy\n' +
                     '\\add_newRelic_nameApplication - подписаться на событие в newRelic\n' +
                     '\\remove_newRelic_nameApplication - удалить подписку на событие в newRelic\n' +
                     '\\remove_all_newRelic - удалить все подписки на newRelic\n' +
+                    '\\add_master_auto_complete - подписаться на отчет по работе консоли\n' +
+                    '\\remove_master_auto_complete - подписаться на отчет по работе консоли\n' +
+                    '\\add_zabbix - подписаться на отчет по работе zabbix\n' +
+                    '\\remove_zabbix - подписаться на отчет по работе zabbix\n' +
                     '\\remove_all - удалить все подписки \n' +
                     '\\list - отобразить текушие подписки на события'
                 );

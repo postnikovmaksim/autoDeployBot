@@ -4,6 +4,7 @@ const { adapter, bot, port } = require('./botFrameworkServices');
 const { autoDeployEvent } = require('./app/autoDeployServices');
 const { newRelicEvent } = require('./app/newRelicServices');
 const { consoleEvent } = require('./app/masterAutoCompleteServices');
+const { zabbixEvent } = require('./app/zabbixService');
 const { server } = require('./httpServerServices');
 
 server.listen(port, () => {
@@ -30,6 +31,11 @@ server.post('/event/newrelic', async (req, res) => {
 
 server.post('/event/master_auto_complete', async (req, res) => {
     await consoleEvent({ req, adapter });
+    res.send(200);
+});
+
+server.post('/event/zabbix', async (req, res) => {
+    await zabbixEvent({ req, adapter });
     res.send(200);
 });
 
