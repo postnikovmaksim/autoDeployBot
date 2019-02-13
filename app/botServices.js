@@ -123,7 +123,9 @@ class EchoBot {
                 '\\remove_zabbix - подписаться на отчет по работе zabbix\n' +
                 '\n' +
                 '\\remove_all - удалить все подписки \n' +
-                '\\list - отобразить текушие подписки на события'
+                '\\list - отобразить текушие подписки на события\n' +
+                '\n' +
+                'более подробно https://confluence.mdtest.org/pages/viewpage.action?pageId=26280901'
             );
             return;
         }
