@@ -2,13 +2,13 @@ const { getActivitys } = require('./userServices');
 const { getUserIds } = require('./subscriptionsServices');
 
 module.exports = {
-    async newRelicEvent ({ req, adapter }) {
+    async newrelicEvent ({ req, adapter }) {
         const level = req.body.severity;
         const applicationName = req.body.targets[0].name;
         const details = req.body.details;
         const url = req.body.incident_url;
 
-        const ids = await getUserIds({ eventName: `newRelic_${applicationName}` });
+        const ids = await getUserIds({ eventName: `newrelic_${applicationName}` });
         if (!ids.length) {
             return;
         }

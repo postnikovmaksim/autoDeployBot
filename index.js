@@ -2,7 +2,7 @@ const moment = require('moment');
 const request = require('request-promise-native');
 const { adapter, bot, port } = require('./botFrameworkServices');
 const { autoDeployEvent } = require('./app/autoDeployServices');
-const { newRelicEvent } = require('./app/newRelicServices');
+const { newrelicEvent } = require('./app/newrelicServices');
 const { consoleEvent } = require('./app/masterAutoCompleteServices');
 const { zabbixEvent } = require('./app/zabbixService');
 const { server } = require('./httpServerServices');
@@ -25,7 +25,7 @@ server.post('/event/deploy', async (req, res) => {
 });
 
 server.post('/event/newrelic', async (req, res) => {
-    await newRelicEvent({ req, adapter });
+    await newrelicEvent({ req, adapter });
     res.send(200);
 });
 

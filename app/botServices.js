@@ -3,7 +3,7 @@ const { saveOrUpdateUser, getUser } = require('./userServices');
 const subscriptionsServices = require('./subscriptionsServices');
 
 const deployBoxRegx = /deploy_box\d+\b/g;
-const newRelicRegx = /newRelic_\w+\b/g;
+const newrelicRegx = /newrelic_\w+\b/g;
 const masterAutoCompleteRegx = /master_auto_complete\b/g;
 const zabbixRegx = /zabbix\b/g;
 
@@ -34,19 +34,19 @@ class EchoBot {
             return;
         }
 
-        // newRelic
-        if (message.search(/\\add_newRelic_\w+\b/g) === 0) {
-            await createSubscriptions({ context, message, regx: newRelicRegx });
+        // newrelic
+        if (message.search(/\\add_newrelic_\w+\b/g) === 0) {
+            await createSubscriptions({ context, message, regx: newrelicRegx });
             return;
         }
 
-        if (message.search(/\\remove_newRelic_\w+\b/g) === 0) {
-            await deleteSubscriptions({ context, message, regx: newRelicRegx });
+        if (message.search(/\\remove_newrelic_\w+\b/g) === 0) {
+            await deleteSubscriptions({ context, message, regx: newrelicRegx });
             return;
         }
 
-        if (message.search(/\\remove_all_newRelic\b/g) === 0) {
-            await deleteAllTypeSubscriptions({ context, message, like: 'newRelic' });
+        if (message.search(/\\remove_all_newrelic\b/g) === 0) {
+            await deleteAllTypeSubscriptions({ context, message, like: 'newrelic' });
             return;
         }
 
@@ -80,8 +80,8 @@ class EchoBot {
             const user = await getUser({ userId: context.activity.from.id });
             const subscriptions = await subscriptionsServices.getSubscriptions({ userId: user.id });
             const deploySubscriptions = subscriptions.filter(s => !!s.match(deployBoxRegx));
-            const newRelicSubscriptions = subscriptions.filter(s => !!s.match(newRelicRegx));
-            const outherSubscriptions = subscriptions.filter(s => !s.match(deployBoxRegx) && !s.match(newRelicRegx));
+            const newrelicSubscriptions = subscriptions.filter(s => !!s.match(newrelicRegx));
+            const outherSubscriptions = subscriptions.filter(s => !s.match(deployBoxRegx) && !s.match(newrelicRegx));
 
             let result = '';
 
@@ -90,9 +90,9 @@ class EchoBot {
                 deploySubscriptions.forEach(eventName => result += `\n${eventName}`);
             }
 
-            if (newRelicSubscriptions.length) {
-                result += 'newRelic:';
-                newRelicSubscriptions.forEach(eventName => result += `\n${eventName}`);
+            if (newrelicSubscriptions.length) {
+                result += 'newrelic:';
+                newrelicSubscriptions.forEach(eventName => result += `\n${eventName}`);
             }
 
             if (outherSubscriptions.length) {
@@ -112,9 +112,9 @@ class EchoBot {
                 '\\remove_deploy_box** - удалить подписку на событие deploy для бокса\n' +
                 '\\remove_all_deploy - удалить все подписки на deploy\n' +
                 '\n' +
-                '\\add_newRelic_nameApplication - подписаться на событие в newRelic\n' +
-                '\\remove_newRelic_nameApplication - удалить подписку на событие в newRelic\n' +
-                '\\remove_all_newRelic - удалить все подписки на newRelic\n' +
+                '\\add_newrelic_nameApplication - подписаться на событие в newrelic\n' +
+                '\\remove_newrelic_nameApplication - удалить подписку на событие в newrelic\n' +
+                '\\remove_all_newrelic - удалить все подписки на newrelic\n' +
                 '\n' +
                 '\\add_master_auto_complete - подписаться на отчет по работе консоли\n' +
                 '\\remove_master_auto_complete - подписаться на отчет по работе консоли\n' +
