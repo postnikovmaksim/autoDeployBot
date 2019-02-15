@@ -26,9 +26,19 @@ module.exports = {
         return result[0];
     },
 
-    async getActivitys ({ ids }) {
+    async getReference ({ ids }) {
         const result = await get({ ids });
         return result.map(r => JSON.parse(r.activity));
+    },
+
+    async updateReference ({ context, reply }) {
+        const reference = TurnContext.getReplyConversationReference(context.activity, reply);
+
+        await updateUser({
+            userId: context.activity.from.id,
+            name: context.activity.from.name,
+            activity: JSON.stringify(reference)
+        })
     }
 };
 

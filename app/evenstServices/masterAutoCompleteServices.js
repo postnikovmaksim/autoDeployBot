@@ -1,8 +1,10 @@
-const { getActivitys } = require('./userServices');
-const { getUserIds } = require('./subscriptionsServices');
+const { adapter } = require('./../../botFrameworkServices');
+const { getReference, updateReference } = require('./../userServices');
+const { getUserIds } = require('./../subscriptionsServices');
+const { asyncForEach } = require('./../utils');
 
 module.exports = {
-    async consoleEvent ({ req, adapter }) {
+    async consoleEvent ({ req }) {
         const ids = await getUserIds({ eventName: `master_auto_complete` });
 
         if (!ids.length) {
@@ -24,10 +26,15 @@ module.exports = {
         }
 
         const text = messages.join('\r\n');
-        const activities = await getActivitys({ ids });
-        activities.forEach(async (reference) => {
+        const reference = await getReference({ ids });
+        asyncForEach(reference, async reference => {
             await adapter.continueConversation(reference, async (context) => {
-                await context.sendActivity(text);
+                try {
+                    const reply = await context.sendActivity(text);
+                    updateReference({ context, reply });
+                } catch (e) {
+                    console.log(e);
+                }
             })
         })
     }

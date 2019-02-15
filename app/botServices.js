@@ -51,16 +51,22 @@ class EchoBot {
         }
 
         // zabbix
-        if (message.search(/\\add_zabbix\b/g) === 0) {
+        if (message.search(/\\add_zabbix_\w+\b/g) === 0) {
             await createSubscriptions({ context, message, regx: zabbixRegx });
             return;
         }
 
-        if (message.search(/\\remove_zabbix\b/g) === 0) {
+        if (message.search(/\\remove_zabbix_\w+\b/g) === 0) {
             await deleteSubscriptions({ context, message, regx: zabbixRegx });
             return;
         }
 
+        if (message.search(/\\remove_all_zabbix\b/g) === 0) {
+            await deleteAllTypeSubscriptions({ context, message, like: 'zabbix' });
+            return;
+        }
+
+        // outher
         if (message.search(/\\add_master_auto_complete\b/g) === 0) {
             await createSubscriptions({ context, message, regx: masterAutoCompleteRegx });
             return;
@@ -116,11 +122,12 @@ class EchoBot {
                 '\\remove_newrelic_nameApplication - удалить подписку на событие в newrelic\n' +
                 '\\remove_all_newrelic - удалить все подписки на newrelic\n' +
                 '\n' +
+                '\\add_zabbix_nameApplication - подписаться на событие в zabbix\n' +
+                '\\remove_zabbix_nameApplication - удалить подписку на событие в zabbix\n' +
+                '\\remove_all_zabbix - удалить все подписки на zabbix\n' +
+                '\n' +
                 '\\add_master_auto_complete - подписаться на отчет по работе консоли\n' +
                 '\\remove_master_auto_complete - подписаться на отчет по работе консоли\n' +
-                '\n' +
-                '\\add_zabbix - подписаться на отчет по работе zabbix\n' +
-                '\\remove_zabbix - подписаться на отчет по работе zabbix\n' +
                 '\n' +
                 '\\remove_all - удалить все подписки \n' +
                 '\\list - отобразить текушие подписки на события\n' +

@@ -1,9 +1,11 @@
 const moment = require('moment');
-const { getActivitys } = require('./userServices');
-const { getUserIds } = require('./subscriptionsServices');
+const { adapter } = require('./../../botFrameworkServices');
+const { getReference, updateReference } = require('./../userServices');
+const { getUserIds } = require('./../subscriptionsServices');
+const { asyncForEach } = require('./../utils');
 
 module.exports = {
-    async autoDeployEvent ({ req, adapter }) {
+    async autoDeployEvent ({ req }) {
         const {
             teamcityProperties,
             buildResult,
@@ -27,11 +29,12 @@ module.exports = {
             return;
         }
 
-        const activitys = await getActivitys({ ids });
-        activitys.forEach(async activity => {
+        const reference = await getReference({ ids });
+        asyncForEach(reference, async activity => {
             await adapter.continueConversation(activity, async (context) => {
                 try {
-                    await context.sendActivity(message);
+                    const reply = await context.sendActivity(message);
+                    updateReference({ context, reply });
                 } catch (e) {
                     console.log(e);
                 }

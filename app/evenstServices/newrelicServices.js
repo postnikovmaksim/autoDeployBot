@@ -1,8 +1,10 @@
-const { getActivitys } = require('./userServices');
-const { getUserIds } = require('./subscriptionsServices');
+const { adapter } = require('./../../botFrameworkServices');
+const { getReference, updateReference } = require('./../userServices');
+const { getUserIds } = require('./../subscriptionsServices');
+const { asyncForEach } = require('./../utils');
 
 module.exports = {
-    async newrelicEvent ({ req, adapter }) {
+    async newrelicEvent ({ req }) {
         const level = req.body.severity;
         const applicationName = req.body.targets[0].name;
         const details = req.body.details;
@@ -14,12 +16,12 @@ module.exports = {
         }
 
         const message = `${level} ${applicationName} ${details} ${url}`;
-        console.log(message);
-        const activitys = await getActivitys({ ids });
-        activitys.forEach(async reference => {
+        const reference = await getReference({ ids });
+        asyncForEach(reference, async reference => {
             await adapter.continueConversation(reference, async (context) => {
                 try {
-                    await context.sendActivity(message);
+                    const reply = await context.sendActivity(message);
+                    updateReference({ context, reply });
                 } catch (e) {
                     console.log(e);
                 }

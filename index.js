@@ -1,11 +1,11 @@
 const moment = require('moment');
 const request = require('request-promise-native');
-const { adapter, bot, port } = require('./botFrameworkServices');
-const { autoDeployEvent } = require('./app/autoDeployServices');
-const { newrelicEvent } = require('./app/newrelicServices');
-const { consoleEvent } = require('./app/masterAutoCompleteServices');
-const { zabbixEvent } = require('./app/zabbixService');
 const { server } = require('./httpServerServices');
+const { adapter, bot, port } = require('./botFrameworkServices');
+const { autoDeployEvent } = require('./app/evenstServices/autoDeployServices');
+const { newrelicEvent } = require('./app/evenstServices/newrelicServices');
+const { consoleEvent } = require('./app/evenstServices/masterAutoCompleteServices');
+const { zabbixErrorEvent, zabbixOkEvent } = require('./app/evenstServices/zabbixService');
 
 server.listen(port, () => {
     console.log(`\n${server.name} listening to ${server.url}`);
@@ -20,22 +20,27 @@ server.post('/api/messages', (req, res) => {
 });
 
 server.post('/event/deploy', async (req, res) => {
-    await autoDeployEvent({ req, adapter });
+    await autoDeployEvent({ req });
     res.send(200);
 });
 
 server.post('/event/newrelic', async (req, res) => {
-    await newrelicEvent({ req, adapter });
+    await newrelicEvent({ req });
     res.send(200);
 });
 
 server.post('/event/master_auto_complete', async (req, res) => {
-    await consoleEvent({ req, adapter });
+    await consoleEvent({ req });
     res.send(200);
 });
 
-server.post('/event/zabbix', async (req, res) => {
-    await zabbixEvent({ req, adapter });
+server.post('/event/zabbix/error', async (req, res) => {
+    await zabbixErrorEvent({ req });
+    res.send(200);
+});
+
+server.post('/event/zabbix/ok', async (req, res) => {
+    await zabbixOkEvent({ req });
     res.send(200);
 });
 
