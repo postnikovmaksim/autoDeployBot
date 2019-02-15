@@ -104,16 +104,19 @@ class EchoBot {
             if (deploySubscriptions.length) {
                 result += 'deploy:';
                 deploySubscriptions.forEach(eventName => result += `\n${eventName}`);
+                result += '\n';
             }
 
             if (newrelicSubscriptions.length) {
                 result += 'newrelic:';
                 newrelicSubscriptions.forEach(eventName => result += `\n${eventName}`);
+                result += '\n';
             }
 
             if (outherSubscriptions.length) {
                 result += 'outher:';
                 outherSubscriptions.forEach(eventName => result += `\n${eventName}`);
+                result += '\n';
             }
 
             await context.sendActivity(result || 'У вас нет действующих подписок');
