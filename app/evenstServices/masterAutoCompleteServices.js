@@ -1,16 +1,7 @@
-const { adapter } = require('./../../botFrameworkServices');
-const { getReference, updateReference } = require('./../userServices');
-const { getUserIds } = require('./../subscriptionsServices');
-const { asyncForEach } = require('./../utils');
+const { sendMessage } = require('../dialogServices');
 
 module.exports = {
     async consoleEvent ({ req }) {
-        const ids = await getUserIds({ eventName: `master_auto_complete` });
-
-        if (!ids.length) {
-            return;
-        }
-
         const messages = [];
         messages.push('*Отчёт о работе консоли:* \r\n');
         messages.push(`    Всего пользователей: ${req.body.totalUsers}\r\n` +
@@ -26,16 +17,6 @@ module.exports = {
         }
 
         const text = messages.join('\r\n');
-        const reference = await getReference({ ids });
-        asyncForEach(reference, async reference => {
-            await adapter.continueConversation(reference, async (context) => {
-                try {
-                    const reply = await context.sendActivity(text);
-                    updateReference({ context, reply });
-                } catch (e) {
-                    console.log(e);
-                }
-            })
-        })
+        sendMessage({ message: text, eventName: `master_auto_complete` });
     }
 };

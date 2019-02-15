@@ -6,6 +6,7 @@ const { autoDeployEvent } = require('./app/evenstServices/autoDeployServices');
 const { newrelicEvent } = require('./app/evenstServices/newrelicServices');
 const { consoleEvent } = require('./app/evenstServices/masterAutoCompleteServices');
 const { zabbixErrorEvent, zabbixOkEvent } = require('./app/evenstServices/zabbixService');
+const { testMessageEvent } = require('./app/evenstServices/testMessageService');
 
 server.listen(port, () => {
     console.log(`\n${server.name} listening to ${server.url}`);
@@ -41,6 +42,11 @@ server.post('/event/zabbix/error', async (req, res) => {
 
 server.post('/event/zabbix/ok', async (req, res) => {
     await zabbixOkEvent({ req });
+    res.send(200);
+});
+
+server.post('/event/test', async (req, res) => {
+    await testMessageEvent({ req });
     res.send(200);
 });
 

@@ -1,8 +1,5 @@
 const moment = require('moment');
-const { adapter } = require('./../../botFrameworkServices');
-const { getReference, updateReference } = require('./../userServices');
-const { getUserIds } = require('./../subscriptionsServices');
-const { asyncForEach } = require('./../utils');
+const { sendMessage } = require('../dialogServices');
 
 module.exports = {
     async autoDeployEvent ({ req }) {
@@ -21,25 +18,7 @@ module.exports = {
             `\n изменения: ${new Buffer.from(changeMessage, 'base64').toString('utf8')}` +
             (buildResult === 'failed' ? `\n ${buildStatusUrl}` : '');
 
-        console.log('message:', message);
-
-        const ids = await getUserIds({ eventName: `deploy_${buildTarget}` });
-
-        if (!ids.length) {
-            return;
-        }
-
-        const reference = await getReference({ ids });
-        asyncForEach(reference, async activity => {
-            await adapter.continueConversation(activity, async (context) => {
-                try {
-                    const reply = await context.sendActivity(message);
-                    updateReference({ context, reply });
-                } catch (e) {
-                    console.log(e);
-                }
-            })
-        })
+        sendMessage({ message, eventName: `deploy_${buildTarget}` });
     }
 };
 

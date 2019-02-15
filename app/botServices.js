@@ -6,6 +6,7 @@ const deployBoxRegx = /deploy_box\d+\b/g;
 const newrelicRegx = /newrelic_\w+\b/g;
 const masterAutoCompleteRegx = /master_auto_complete\b/g;
 const zabbixRegx = /zabbix\b/g;
+const testRegx = /test\b/g;
 
 class EchoBot {
     async onTurn (context) {
@@ -74,6 +75,15 @@ class EchoBot {
 
         if (message.search(/\\remove_master_auto_complete\b/g) === 0) {
             await deleteSubscriptions({ context, message, regx: masterAutoCompleteRegx });
+            return;
+        }
+        if (message.search(/\\add_test\b/g) === 0) {
+            await createSubscriptions({ context, message, regx: testRegx });
+            return;
+        }
+
+        if (message.search(/\\remove_test\b/g) === 0) {
+            await deleteSubscriptions({ context, message, regx: testRegx });
             return;
         }
 
