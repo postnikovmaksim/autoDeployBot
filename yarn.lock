@@ -296,43 +296,43 @@ binary-search-bounds@2.0.3:
   resolved "https://registry.yarnpkg.com/binary-search-bounds/-/binary-search-bounds-2.0.3.tgz#5ff8616d6dd2ca5388bc85b2d6266e2b9da502dc"
   integrity sha1-X/hhbW3SylOIvIWy1iZuK52lAtw=
 
-botbuilder-azure@^4.1.5:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/botbuilder-azure/-/botbuilder-azure-4.2.0.tgz#9e36fc6ac4fe61326fa7a7df79736b36cde010a9"
-  integrity sha512-WL8dHtVESE/qTFTGcJwlFeKyUeewoyoNr5ENavu1W40N8UjZB32ivmX2dvd0Zm4TIbeBwgmomF2gE9rE+0Rv3w==
+botbuilder-azure@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/botbuilder-azure/-/botbuilder-azure-4.2.1.tgz#840041a0b2d04f7bd8eb868b375b20b87cab6ea2"
+  integrity sha512-YbdIF3Xp3m1Ei3EnPY3YyPPrH/u10pBplMTluPnc1Qptd1z5mRtuG02kLsG22SivQN7rhyA8WNSgHlAjXShpeg==
   dependencies:
     "@types/node" "^9.3.0"
     azure-storage "^2.10.2"
-    botbuilder "^4.2.0"
+    botbuilder "^4.2.1"
     documentdb "1.14.5"
     flat "^4.0.0"
     semaphore "^1.1.0"
 
-botbuilder-core@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/botbuilder-core/-/botbuilder-core-4.2.0.tgz#fde2f1da889168076773be3914cfdec58603fec4"
-  integrity sha512-aP9C3hymP5DeI88ntg5rG9apaB03FkqhPu/ReEeZmh89WPxWarK5EgXqH0MIS4uomoF24pRY9CXlHscJ37iH1Q==
+botbuilder-core@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/botbuilder-core/-/botbuilder-core-4.2.1.tgz#b4917e07377b01de11a03df8c97b5c2962436586"
+  integrity sha512-U8n+eY9Cjce0GkMyyE0mv4HBjCjtyuczz6usl9XF2N7nY61jYDah4W5e4zqYdLdlqnBwfxG8ptS9pdnmVsC2ww==
   dependencies:
     assert "^1.4.1"
-    botframework-schema "^4.2.0"
+    botframework-schema "^4.2.1"
 
-botbuilder@^4.1.5, botbuilder@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/botbuilder/-/botbuilder-4.2.0.tgz#4133e7ef8bda1505ce894d607cc9f438292d9bfd"
-  integrity sha512-RqR9j/Dd1ljPFrnYOLt/8g61+5pec+yRFAU0nKSU5S+He+E7t62RzZDsXJuv3KExjDJelUXwTjZFp+vPDIOqQA==
+botbuilder@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/botbuilder/-/botbuilder-4.2.1.tgz#ae4fe62de7c2640b66730efef6ca919c3fbceeeb"
+  integrity sha512-58664aLhN1WQwAxMBK7LZQhFh8DHwenvpgz6ADFgeZLZS28NACfX+Uta8k2+WF6RK3g+VKoGOhV/yI71c5ccVg==
   dependencies:
     "@types/filenamify" "^2.0.1"
     "@types/node" "^9.3.0"
     async-file "^2.0.2"
-    botbuilder-core "^4.2.0"
-    botframework-connector "^4.2.0"
+    botbuilder-core "^4.2.1"
+    botframework-connector "^4.2.1"
     filenamify "^2.0.0"
     rimraf "^2.6.2"
 
-botframework-config@^4.1.5:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/botframework-config/-/botframework-config-4.2.0.tgz#f5d3c267f61c2b4f7c94e805c4d176d9bdcd4021"
-  integrity sha512-ccVDKPdhe1BjS8CbP6e1raAnpJs7U/XT5Hh5VNlCM5E1/Zb8sBziQWDx1cJlxgvKeihqYdJdnXRghDtwyC/hmA==
+botframework-config@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/botframework-config/-/botframework-config-4.2.1.tgz#9406597d1a197d9787656e6c9a862cad3e31a62c"
+  integrity sha512-Et2g0SSyb6ggY+sVtPBGr18mBNTEM4eKvVgKRzl0H5w0LaOZLCU+vu5brr99L517sJxrpVOo0DrzRUEi76k67A==
   dependencies:
     fs-extra "^7.0.0"
     process "^0.11.10"
@@ -340,15 +340,15 @@ botframework-config@^4.1.5:
     url "^0.11.0"
     uuid "^3.3.2"
 
-botframework-connector@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/botframework-connector/-/botframework-connector-4.2.0.tgz#e396a790796ec731ee85ae2ac1f7c0fa7662ae43"
-  integrity sha512-DQtBpB4a6i/lbVBEkYS9IB0WAGJeCY04EiCl1yeh7F9K6uSwE78nNFXJtsWam1PGsinvMwHIHvFyUF5GorUgkA==
+botframework-connector@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/botframework-connector/-/botframework-connector-4.2.1.tgz#f90bd907ee09b8196acc9880ec4f5927e759e591"
+  integrity sha512-O2RmSG4AFyNc7h9zD2a7kdIBw8jF3Thpl8Pwfs/BpKGhRrCIJAMasV0+UbIV2Iwi2NEl7WzdpXjUsnpmB57XgQ==
   dependencies:
     "@types/jsonwebtoken" "7.2.8"
     "@types/node" "^9.3.0"
     base64url "^3.0.0"
-    botframework-schema "^4.2.0"
+    botframework-schema "^4.2.1"
     form-data "^2.3.3"
     jsonwebtoken "8.0.1"
     ms-rest-azure-js "1.0.176"
@@ -357,10 +357,10 @@ botframework-connector@^4.2.0:
     node-fetch "^2.2.1"
     rsa-pem-from-mod-exp "^0.8.4"
 
-botframework-schema@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/botframework-schema/-/botframework-schema-4.2.0.tgz#fb4daca4b9b568b808974fabab03cdadf3b76877"
-  integrity sha512-IfU27JWFuIADK8q2plUL1v6KuZtv6aR255gZrPrCKRHDPzEz7jGW0ZJoAAkIl9jgMfBPv+Xz6GD5HIHcB+kYGQ==
+botframework-schema@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/botframework-schema/-/botframework-schema-4.2.1.tgz#25b257bc985ecb57e02f6073d1b6c7d817c4c09c"
+  integrity sha512-0aJ5UIjs6dKZYdovnlnoIb7+wBId3cubQzwC0tH6S//JhayqrKqMcD8vPPgwZHhBhBx8ZFNmKD3MJtCvZZ1GYA==
   dependencies:
     "@types/node" "^9.3.0"
     ms-rest-js "1.0.455"

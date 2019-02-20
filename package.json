@@ -13,9 +13,9 @@
   "author": "Microsoft",
   "license": "MIT",
   "dependencies": {
-    "botbuilder": "^4.1.5",
-    "botbuilder-azure": "^4.1.5",
-    "botframework-config": "^4.1.5",
+    "botbuilder": "^4.2.1",
+    "botbuilder-azure": "^4.2.1",
+    "botframework-config": "^4.2.1",
     "dotenv": "^6.1.0",
     "moment": "^2.23.0",
     "mysql": "^2.16.0",
