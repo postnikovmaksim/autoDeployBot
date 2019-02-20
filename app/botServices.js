@@ -97,7 +97,8 @@ class EchoBot {
             const subscriptions = await subscriptionsServices.getSubscriptions({ userId: user.id });
             const deploySubscriptions = subscriptions.filter(s => !!s.match(deployBoxRegx));
             const newrelicSubscriptions = subscriptions.filter(s => !!s.match(newrelicRegx));
-            const outherSubscriptions = subscriptions.filter(s => !s.match(deployBoxRegx) && !s.match(newrelicRegx));
+            const zabbixSubscriptions = subscriptions.filter(s => !!s.match(zabbixRegx));
+            const outherSubscriptions = subscriptions.filter(s => !s.match(deployBoxRegx) && !s.match(newrelicRegx) && !s.match(zabbixRegx));
 
             let result = '';
 
@@ -110,6 +111,12 @@ class EchoBot {
             if (newrelicSubscriptions.length) {
                 result += 'newrelic:';
                 newrelicSubscriptions.forEach(eventName => result += `\n${eventName}`);
+                result += '\n';
+            }
+
+            if (zabbixSubscriptions.length) {
+                result += 'zabbix:';
+                zabbixSubscriptions.forEach(eventName => result += `\n${eventName}`);
                 result += '\n';
             }
 
