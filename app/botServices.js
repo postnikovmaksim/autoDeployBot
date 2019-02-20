@@ -3,9 +3,9 @@ const { saveOrUpdateUser, getUser } = require('./userServices');
 const subscriptionsServices = require('./subscriptionsServices');
 
 const deployBoxRegx = /deploy_box\d+\b/g;
-const newrelicRegx = /newrelic_\w+\b/g;
+const newrelicRegx = /newrelic_\S+\b/g;
 const masterAutoCompleteRegx = /master_auto_complete\b/g;
-const zabbixRegx = /zabbix\b/g;
+const zabbixRegx = /zabbix_\S+\b/g;
 const testRegx = /test\b/g;
 
 class EchoBot {
@@ -36,12 +36,12 @@ class EchoBot {
         }
 
         // newrelic
-        if (message.search(/\\add_newrelic_\w+\b/g) === 0) {
+        if (message.search(/\\add_newrelic_/g) === 0) {
             await createSubscriptions({ context, message, regx: newrelicRegx });
             return;
         }
 
-        if (message.search(/\\remove_newrelic_\w+\b/g) === 0) {
+        if (message.search(/\\remove_newrelic_\b/g) === 0) {
             await deleteSubscriptions({ context, message, regx: newrelicRegx });
             return;
         }
@@ -52,12 +52,12 @@ class EchoBot {
         }
 
         // zabbix
-        if (message.search(/\\add_zabbix_\w+\b/g) === 0) {
+        if (message.search(/\\add_zabbix_\b/g) === 0) {
             await createSubscriptions({ context, message, regx: zabbixRegx });
             return;
         }
 
-        if (message.search(/\\remove_zabbix_\w+\b/g) === 0) {
+        if (message.search(/\\remove_zabbix_\b/g) === 0) {
             await deleteSubscriptions({ context, message, regx: zabbixRegx });
             return;
         }
