@@ -45,7 +45,7 @@ server.post('/event/zabbix/ok', async (req, res) => {
     res.send(200);
 });
 
-server.post('/event/test', async (req, res) => {
+server.get('/event/test', async (req, res) => {
     await testMessageEvent({ req });
     res.send(200);
 });
