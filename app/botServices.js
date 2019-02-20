@@ -41,7 +41,7 @@ class EchoBot {
             return;
         }
 
-        if (message.search(/\\remove_newrelic_\b/g) === 0) {
+        if (message.search(/\\remove_newrelic_/g) === 0) {
             await deleteSubscriptions({ context, message, regx: newrelicRegx });
             return;
         }
@@ -52,12 +52,12 @@ class EchoBot {
         }
 
         // zabbix
-        if (message.search(/\\add_zabbix_\b/g) === 0) {
+        if (message.search(/\\add_zabbix_/g) === 0) {
             await createSubscriptions({ context, message, regx: zabbixRegx });
             return;
         }
 
-        if (message.search(/\\remove_zabbix_\b/g) === 0) {
+        if (message.search(/\\remove_zabbix_/g) === 0) {
             await deleteSubscriptions({ context, message, regx: zabbixRegx });
             return;
         }
