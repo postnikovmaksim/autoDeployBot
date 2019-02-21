@@ -2,11 +2,11 @@ const moment = require('moment');
 const request = require('request-promise-native');
 const { server } = require('./httpServerServices');
 const { adapter, bot, port } = require('./botFrameworkServices');
-const { autoDeployEvent } = require('./app/evenstServices/autoDeployServices');
-const { newrelicEvent } = require('./app/evenstServices/newrelicServices');
-const { consoleEvent } = require('./app/evenstServices/masterAutoCompleteServices');
-const { zabbixErrorEvent, zabbixOkEvent } = require('./app/evenstServices/zabbixService');
-const { testMessageEvent } = require('./app/evenstServices/testMessageService');
+const { autoDeployEvent } = require('./app/eventsServices/autoDeployServices');
+const { newrelicEvent } = require('./app/eventsServices/newrelicServices');
+const { consoleEvent } = require('./app/eventsServices/masterAutoCompleteServices');
+const { zabbixErrorEvent, zabbixOkEvent } = require('./app/eventsServices/zabbixService');
+const { testMessageEvent } = require('./app/eventsServices/testMessageService');
 
 server.listen(port, () => {
     console.log(`\n${server.name} listening to ${server.url}`);

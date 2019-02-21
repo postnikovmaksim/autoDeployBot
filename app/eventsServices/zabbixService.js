@@ -1,7 +1,15 @@
+const moment = require('moment');
 const { sendMessage } = require('../dialogServices');
+const { saveEvent } = require('./commonEventServices');
 
 module.exports = {
     async zabbixErrorEvent ({ req }) {
+        await saveEvent({
+            name: 'newrelic',
+            date: moment(),
+            json: JSON.stringify(req.body)
+        });
+
         const {
             problemResolvedTime,
             problemResolvedDate,
