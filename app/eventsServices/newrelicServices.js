@@ -18,5 +18,6 @@ module.exports = {
         const message = `${level} ${applicationName} ${details} ${url}`;
 
         sendMessage({ message, eventName: `newrelic_${applicationName}` });
+        sendMessage({ message, eventName: `newrelic_all` });
     }
 };

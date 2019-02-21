@@ -5,7 +5,7 @@ const { saveEvent } = require('./commonEventServices');
 module.exports = {
     async zabbixErrorEvent ({ req }) {
         await saveEvent({
-            name: 'newrelic',
+            name: 'zabbix_error',
             date: moment(),
             json: JSON.stringify(req.body)
         });
@@ -23,10 +23,17 @@ module.exports = {
         const message = `Обнаружена проблема ${problemResolvedTime} ${problemResolvedDate}: ${problemName}\n` +
         `host: ${host}, severity: ${severity}, tags${JSON.stringify(tags)}, app:${tags.Application}`;
 
-        await sendMessage({ message });
+        await sendMessage({ message, eventName: `zabbix_${tags.Application}` });
+        await sendMessage({ message, eventName: `zabbix_all` });
     },
 
     async zabbixOkEvent ({ req }) {
+        await saveEvent({
+            name: 'zabbix_ok',
+            date: moment(),
+            json: JSON.stringify(req.body)
+        });
+
         const {
             problemStarted,
             problemDate,
@@ -41,6 +48,7 @@ module.exports = {
             `сообщение проблемы: ${problemName}\n` +
             `host: ${host}, severity: ${severity}, tags${JSON.stringify(tags)}, app:${tags.Application}`;
 
-        await sendMessage({ message });
+        await sendMessage({ message, eventName: `zabbix_${tags.Application}` });
+        await sendMessage({ message, eventName: `zabbix_all` });
     }
 };
