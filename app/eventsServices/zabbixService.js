@@ -6,7 +6,7 @@ module.exports = {
     async zabbixErrorEvent ({ req }) {
         await saveEvent({
             name: 'zabbix_error',
-            date: moment(),
+            date: moment().format('YYYY-MM-DD HH:mm:ss'),
             json: JSON.stringify(req.body)
         });
 
@@ -30,7 +30,7 @@ module.exports = {
     async zabbixOkEvent ({ req }) {
         await saveEvent({
             name: 'zabbix_ok',
-            date: moment(),
+            date: moment().format('YYYY-MM-DD HH:mm:ss'),
             json: JSON.stringify(req.body)
         });
 
