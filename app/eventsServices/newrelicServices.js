@@ -6,7 +6,7 @@ module.exports = {
     async newrelicEvent ({ req }) {
         await saveEvent({
             name: 'newrelic',
-            date: moment().format('YYYY-MM-DD HH:mm:ss'),
+            date: moment().add(3, 'hour').format('YYYY-MM-DD HH:mm:ss'),
             json: JSON.stringify(req.body)
         });
 
