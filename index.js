@@ -35,13 +35,8 @@ server.post('/event/master_auto_complete', async (req, res) => {
     res.send(200);
 });
 
-server.post('/event/zabbix/error', async (req, res) => {
+server.post('/event/zabbix', async (req, res) => {
     await zabbixErrorEvent({ req });
-    res.send(200);
-});
-
-server.post('/event/zabbix/ok', async (req, res) => {
-    await zabbixOkEvent({ req });
     res.send(200);
 });
 
