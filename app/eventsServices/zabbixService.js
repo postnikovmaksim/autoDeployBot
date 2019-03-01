@@ -29,10 +29,11 @@ async function zabbixErrorEvent ({ req }) {
         tags
     } = req.body;
 
+    const aplicatonName = getAplicatonName(tags);
     const message = `Обнаружена проблема ${problemResolvedTime} ${problemResolvedDate}: ${problemName}\n` +
-    `host: ${host}, severity: ${severity}, tags${JSON.stringify(tags)}, app:${tags.Application}`;
+    `host: ${host}, severity: ${severity}`;
 
-    await sendMessage({ message, eventName: `zabbix_${tags.Application}` });
+    await sendMessage({ message, eventName: `zabbix_${aplicatonName}` });
     await sendMessage({ message, eventName: `zabbix_all` });
 }
 
@@ -52,11 +53,16 @@ async function zabbixOkEvent ({ req }) {
         tags
     } = req.body;
 
+    const aplicatonName = getAplicatonName(tags);
     const message = `Решена проблемма\n` +
         `дата создания проблемы: ${problemStarted} ${problemDate}\n` +
         `сообщение проблемы: ${problemName}\n` +
-        `host: ${host}, severity: ${severity}, tags${JSON.stringify(tags)}, app:${tags.Application}`;
+        `host: ${host}, severity: ${severity}`;
 
-    await sendMessage({ message, eventName: `zabbix_${tags.Application}` });
+    await sendMessage({ message, eventName: `zabbix_${aplicatonName}` });
     await sendMessage({ message, eventName: `zabbix_all` });
+}
+
+function getAplicatonName (tags) {
+    return tags.match(/Application:\S+,/)[0].replace('Application:', '').replace(',', '');
 }
