@@ -26,7 +26,7 @@ async function zabbixErrorEvent ({ req }) {
         problemAge,
         host,
         severity,
-        tags
+        tagsaa
     } = req.body;
 
     const aplicatonName = getAplicatonName(tags);
