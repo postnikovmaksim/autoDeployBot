@@ -5,7 +5,7 @@ const { adapter, bot, port } = require('./botFrameworkServices');
 const { autoDeployEvent } = require('./app/eventsServices/autoDeployServices');
 const { newrelicEvent } = require('./app/eventsServices/newrelicServices');
 const { consoleEvent } = require('./app/eventsServices/masterAutoCompleteServices');
-const { zabbixErrorEvent, zabbixOkEvent } = require('./app/eventsServices/zabbixService');
+const { zabbixEvent } = require('./app/eventsServices/zabbixService');
 const { testMessageEvent } = require('./app/eventsServices/testMessageService');
 
 server.listen(port, () => {
@@ -36,7 +36,7 @@ server.post('/event/master_auto_complete', async (req, res) => {
 });
 
 server.post('/event/zabbix', async (req, res) => {
-    await zabbixErrorEvent({ req });
+    await zabbixEvent({ req });
     res.send(200);
 });
 
