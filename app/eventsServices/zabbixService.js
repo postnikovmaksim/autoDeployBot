@@ -11,10 +11,10 @@ module.exports = {
         });
 
         if (req.body.problemResolvedTime) {
-            await zabbixOkEvent({ req })
+            await zabbixOkEvent({ req });
+        } else {
+            await zabbixErrorEvent({ req });
         }
-
-        await zabbixErrorEvent({ req });
     }
 };
 
