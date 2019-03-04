@@ -39,7 +39,7 @@ class EchoBot {
 
         // newrelic
         if (message.search(/\\add_newrelic_/) === 0) {
-            const appName = getEventName({ message, newrelicRegx }).replace('newrelic_', '');
+            const appName = message.match(newrelicRegx)[0].replace('newrelic_', '');
             if (newrelicAppName.isValidName(appName)) {
                 await createSubscriptions({ context, message, regx: newrelicRegx });
             } else {
@@ -60,7 +60,7 @@ class EchoBot {
 
         // zabbix
         if (message.search(/\\add_zabbix_/) === 0) {
-            const appName = getEventName({ message, newrelicRegx }).replace('zabbix_', '');
+            const appName = message.match(newrelicRegx)[0].replace('zabbix_', '');
             if (zabbixAppName.isValidName(appName)) {
                 await createSubscriptions({ context, message, regx: zabbixRegx });
             } else {
@@ -145,7 +145,7 @@ async function deleteAllSubscriptions ({ context }) {
 }
 
 function getEventName ({ message, regx }) {
-    return message.substr(message.search(regx), message.match(regx)[0].length)
+    return message.match(regx)[0];
 }
 
 async function sendList ({ context }) {
