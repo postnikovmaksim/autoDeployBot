@@ -20,17 +20,16 @@ module.exports = {
 
 async function zabbixErrorEvent ({ req }) {
     const {
-        problemResolvedTime,
-        problemResolvedDate,
+        problemStarted,
+        problemDate,
         problemName,
-        problemAge,
         host,
         severity,
         tags
     } = req.body;
 
     const aplicatonName = getAplicatonName(tags);
-    const message = `Обнаружена проблема ${problemResolvedTime} ${problemResolvedDate}: ${problemName}\n` +
+    const message = `Обнаружена проблема ${problemStarted} ${problemDate}: ${problemName}\n` +
     `host: ${host}, severity: ${severity}`;
 
     await sendMessage({ message, eventName: `zabbix_${aplicatonName}` });
@@ -45,17 +44,18 @@ async function zabbixOkEvent ({ req }) {
     });
 
     const {
-        problemStarted,
-        problemDate,
+        problemResolvedTime,
+        problemResolvedDate,
         problemName,
+        problemAge,
         host,
         severity,
         tags
     } = req.body;
 
     const aplicatonName = getAplicatonName(tags);
-    const message = `Решена проблемма\n` +
-        `дата создания проблемы: ${problemStarted} ${problemDate}\n` +
+    const message = `Решена проблема (время существования проблемы ${problemAge}\n` +
+        `дата создания проблемы: ${problemResolvedTime} ${problemResolvedDate}\n` +
         `сообщение проблемы: ${problemName}\n` +
         `host: ${host}, severity: ${severity}`;
 
