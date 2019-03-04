@@ -1,6 +1,8 @@
 const { ActivityTypes } = require('botbuilder');
 const { saveOrUpdateUser, getUser } = require('./userServices');
 const subscriptionsServices = require('./subscriptionsServices');
+const newrelicAppName = require('./eventsName/newrelicAppName');
+const zabbixAppName = require('./eventsName/zabbixAppName');
 
 const deployBoxRegx = /deploy_\S+/;
 const newrelicRegx = /newrelic_\S+/;
@@ -37,7 +39,12 @@ class EchoBot {
 
         // newrelic
         if (message.search(/\\add_newrelic_/) === 0) {
-            await createSubscriptions({ context, message, regx: newrelicRegx });
+            const appName = getEventName({ message, newrelicRegx }).replace('newrelic_', '');
+            if (newrelicAppName.isValidName(appName)) {
+                await createSubscriptions({ context, message, regx: newrelicRegx });
+            } else {
+                await responseIsNotValidName(context, appName);
+            }
             return;
         }
 
@@ -53,7 +60,12 @@ class EchoBot {
 
         // zabbix
         if (message.search(/\\add_zabbix_/) === 0) {
-            await createSubscriptions({ context, message, regx: zabbixRegx });
+            const appName = getEventName({ message, newrelicRegx }).replace('zabbix_', '');
+            if (zabbixAppName.isValidName(appName)) {
+                await createSubscriptions({ context, message, regx: zabbixRegx });
+            } else {
+                await responseIsNotValidName(context, appName);
+            }
             return;
         }
 
@@ -104,6 +116,10 @@ class EchoBot {
 
         await context.sendActivity('Команда не распознана, используйте \\help, что бы посмотреть доступные команды');
     }
+}
+
+async function responseIsNotValidName (context, appName) {
+    await context.sendActivity(`Имя [${appName}] не валидно. Подписка не создана`);
 }
 
 async function createSubscriptions ({ context, message, regx }) {
