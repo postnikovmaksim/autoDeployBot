@@ -54,7 +54,7 @@ async function zabbixOkEvent ({ req }) {
     } = req.body;
 
     const aplicatonName = getAplicatonName(tags);
-    const message = `[${aplicatonName}] Решена проблема (время существования проблемы ${problemAge}\n` +
+    const message = `[${aplicatonName}] Решена проблема (время существования проблемы ${problemAge})\n` +
         `дата создания проблемы: ${problemResolvedTime} ${problemResolvedDate}\n` +
         `сообщение проблемы: ${problemName}\n` +
         `host: ${host}, severity: ${severity}`;
