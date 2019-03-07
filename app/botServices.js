@@ -1,5 +1,6 @@
 const { ActivityTypes } = require('botbuilder');
 const { saveOrUpdateUser, getUser } = require('./userServices');
+const groupsServices = require('./groupsServices');
 const subscriptionsServices = require('./subscriptionsServices');
 
 const deployBoxRegx = /deploy_\S+/;
@@ -7,6 +8,8 @@ const newrelicRegx = /newrelic_\S+/;
 const zabbixRegx = /zabbix_\S+/;
 const masterAutoCompleteRegx = /master_auto_complete/;
 const testRegx = /test/;
+const groupRegx = /group_\S+/;
+const createGroupRegx = /\\create_group_/;
 
 class EchoBot {
     async onTurn (context) {
@@ -102,6 +105,16 @@ class EchoBot {
             return;
         }
 
+        if (message.search(/\\show_groups/) === 0) {
+            await sendGroups({ context });
+            return;
+        }
+
+        if (message.search(/\\create_group_/) === 0) {
+            await createGroup({ context, message, createGroupRegx });
+            return;
+        }
+
         await context.sendActivity('Команда не распознана, используйте \\help, что бы посмотреть доступные команды');
     }
 }
@@ -169,6 +182,24 @@ async function sendList ({ context }) {
     await context.sendActivity(result || 'У вас нет действующих подписок');
 }
 
+async function sendGroups ({ context }) {
+    const groups = await groupsServices.getGroups();
+    // console.log(groups);
+    let result = '';
+    groups.forEach(grp => result += `${grp.Id} ${grp.Name}\n`);
+    await context.sendActivity(result || 'Ни одной группы не найдено. Создайте первую');
+}
+
+async function createGroup ({ context, message, regx }) {
+    let groupName = getGroupName(message, regx);
+    console.log('groupName : ', groupName);
+    await context.sendActivity(`${groupName} was succesfully created\n`);
+}
+
+function getGroupName (message, regex) {
+    return message.replace(regex, '');
+}
+
 async function sendHelp ({ context }) {
     await context.sendActivity(
         '\\help - описание всех доступных команд\n' +
@@ -190,6 +221,11 @@ async function sendHelp ({ context }) {
         '\n' +
         '\\remove_all - удалить все подписки \n' +
         '\\list - отобразить текушие подписки на события\n' +
+        '\n' +
+        '\n' +
+        '\\show_groups - отобразить текущие группы\n' +
+        'Подписка/отписка по аналогии как выше, добавить только "group_/name/_*", например: \ngroup_/*GroupName*/_add_deploy_box**\n' +
+        '\n' +
         '\n' +
         'более подробно https://confluence.mdtest.org/pages/viewpage.action?pageId=26280901'
     );
