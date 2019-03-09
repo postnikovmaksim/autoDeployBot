@@ -10,8 +10,11 @@ const newrelicRegx = /newrelic_\S+/;
 const zabbixRegx = /zabbix_\S+/;
 const masterAutoCompleteRegx = /master_auto_complete/;
 const testRegx = /test/;
-const groupRegx = /group_\S+/;
-const createGroupRegx = /\\create_group_/;
+const createGroupRegx = /\\create_channel_\"(\S+)\"$/;
+const addChannelByIdRegex = /\\add_channel_(\d+)$/;
+const addChannelByNameRegex = /\\add_channel_\"(\S+)\"$/;
+const removeChannelByIdRegex = /\\remove_channel_(\d+)$/;
+const removeChannelByNameRegex = /\\remove_channel_\"(\S+)\"$/;
 
 class EchoBot {
     async onTurn (context) {
@@ -117,13 +120,34 @@ class EchoBot {
             return;
         }
 
-        if (message.search(/\\show_groups/) === 0) {
-            await sendGroups({ context });
+        // channels
+        if (message.search(/\\show_channels/) === 0) {
+            await sendChannels({ context });
             return;
         }
 
-        if (message.search(/\\create_group_/) === 0) {
-            await createGroup({ context, message, createGroupRegx });
+        if (message.search(createGroupRegx) === 0) {
+            await createChannel({ context, message, regex: createGroupRegx });
+            return;
+        }
+
+        if (message.search(addChannelByIdRegex) === 0) {
+            await subscribeChannelById({ context, message, regex: addChannelByIdRegex });
+            return;
+        }
+
+        if (message.search(addChannelByNameRegex) === 0) {
+            await subscribeChannelByName({ context, message, regex: addChannelByNameRegex });
+            return;
+        }
+
+        if (message.search(removeChannelByIdRegex) === 0) {
+            await unsubscribeChannelById({ context, message, regex: removeChannelByIdRegex });
+            return;
+        }
+
+        if (message.search(removeChannelByNameRegex) === 0) {
+            await unsubscribeChannelByName({ context, message, regex: removeChannelByNameRegex });
             return;
         }
 
@@ -198,22 +222,67 @@ async function sendList ({ context }) {
     await context.sendActivity(result || 'У вас нет действующих подписок');
 }
 
-async function sendGroups ({ context }) {
-    const groups = await groupsServices.getGroups();
-    // console.log(groups);
+async function sendChannels ({ context }) {
+    const groups = await groupsServices.getChannels();
     let result = '';
     groups.forEach(grp => result += `${grp.Id} ${grp.Name}\n`);
-    await context.sendActivity(result || 'Ни одной группы не найдено. Создайте первую');
+    await context.sendActivity(result || 'Ни одного канала не найдено. Создайте первый');
 }
 
-async function createGroup ({ context, message, regx }) {
-    let groupName = getGroupName(message, regx);
-    console.log('groupName : ', groupName);
-    await context.sendActivity(`${groupName} was succesfully created\n`);
+async function createChannel ({ context, message, regex }) {
+    if (!regex.test(message)){
+        await context.sendActivity("Некорректное название канала");
+        return;
+    }
+
+    let channelName = getChannelName({ message, regex });
+    await groupsServices.createChannel({ channelName });
+    await context.sendActivity(`Канал уведомлений ${channelName} был успешно создан\n`);
 }
 
-function getGroupName (message, regex) {
-    return message.replace(regex, '');
+function getChannelName ({ message, regex }) {
+    let m, result;
+    m = regex.exec(message);
+    result = m[1];//0 - полное совпадение, берём первую группу
+    return result;
+}
+
+async function subscribeChannelById({ context, message, regex }) {
+    const channelId = regex.exec(message)[1];
+    const user = await getUser({ userId: context.activity.from.id });
+    await groupsServices.subscribeChannel({ channelId, userId: user.id });
+    await context.sendActivity(`channelId: ${channelId}`);
+}
+
+async function subscribeChannelByName({ context, message, regex }) {
+    const channelName = getChannelName({ message, regex });
+    const channelId = await groupsServices.getChannelIdByName({ channelName });
+    const user = await getUser({ userId: context.activity.from.id });
+    if (channelId) {
+        await groupsServices.subscribeChannel({ channelId, userId: user.id});
+        await context.sendActivity(`Подписка на канал ${channelName} активна.`); 
+        return;
+    }
+
+    await context.sendActivity(`Канал с названием ${channelName} не был найден`);
+}
+
+async function unsubscribeChannelById({ context, message, regex }) {
+    const channelId = regex.exec(message)[1]; 
+    const user = await getUser({ userId: context.activity.from.id });
+    await groupsServices.unsubscribeChannelById({ channelId, userId: user.id });
+    await context.sendActivity(`Вы отписались от канала ${channelId}`);
+}
+
+async function unsubscribeChannelByName({ context, message, regex }) {
+    const channelName = getChannelName({ message, regex });
+    const user = await getUser({ userId: context.activity.from.id });    
+    const channelId = await groupsServices.getChannelIdByName({ channelName });
+
+    if (channelId) {
+        await groupsServices.unsubscribeChannelById({ channelId, userId: user.id });
+        await context.sendActivity(`Вы отписались от канала ${channelName}`);
+    }
 }
 
 async function sendHelp ({ context }) {
@@ -239,8 +308,10 @@ async function sendHelp ({ context }) {
         '\\list - отобразить текушие подписки на события\n' +
         '\n' +
         '\n' +
-        '\\show_groups - отобразить текущие группы\n' +
-        'Подписка/отписка по аналогии как выше, добавить только "group_/name/_*", например: \ngroup_/*GroupName*/_add_deploy_box**\n' +
+        '\\show_channels - отобразить текущие каналы\n' +
+        '\\create_channel_"channelName" - создать новый канал оповещений' +
+        '\\add_channel_{id} - подписаться на канал по Id' +
+        '\\add_channel_"{ChannelName}" - подписаться на канал по названию' +
         '\n' +
         '\n' +
         'более подробно https://confluence.mdtest.org/pages/viewpage.action?pageId=26280901'
