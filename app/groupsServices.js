@@ -42,7 +42,7 @@ function createChannel({ channelName }) {
 }
 
 function subscribeById({ channelId, userId }) {
-    let sql = `insert ignore into channelsusers (groupId, userId) value (${channelId}, ${userId})`;
+    let sql = `insert ignore into channelsusers (channelId, userId) value (${channelId}, ${userId})`;
     return query({sqlString: sql});
 }
 
@@ -52,6 +52,13 @@ function getChannelIdByName({ channelName }) {
 }
 
 function unsubscribeChannelById({ channelId, userId }) {
-    let sql = `delete from channelsusers where userId = ${userId} and groupId = ${channelId}`;
+    let sql = `delete from channelsusers where userId = ${userId} and channelId = ${channelId}`;
+    return query({ sqlString: sql });
+}
+
+function getSubscribedChannels({ userId }) {
+    let sql = `select ch.Id as Id, ch.Name as Name from channels ch 
+                join channelsusers cu on cu.channelId = ch.id
+                where cu.userId = ${userId} `;
     return query({ sqlString: sql });
 }
