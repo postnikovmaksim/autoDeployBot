@@ -2,8 +2,7 @@ const { query } = require('./mysqlServices');
 
 module.exports = {
     async getChannels () {
-        const groups = await getAll();
-        return groups;
+        return await getAll();
     },
 
     async createChannel({ channelName }) {
@@ -27,6 +26,12 @@ module.exports = {
     async unsubscribeChannelById({ channelId, userId }) {
         if (channelId && userId) {
             return await unsubscribeChannelById({ channelId, userId });
+        }
+    },
+
+    async getSubscribedChannels({ userId }) {
+        if (userId) {
+            return await getSubscribedChannels({ userId });
         }
     }
 };

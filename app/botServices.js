@@ -15,6 +15,10 @@ const addChannelByIdRegex = /\\add_channel_(\d+)$/;
 const addChannelByNameRegex = /\\add_channel_\"(\S+)\"$/;
 const removeChannelByIdRegex = /\\remove_channel_(\d+)$/;
 const removeChannelByNameRegex = /\\remove_channel_\"(\S+)\"$/;
+const listChannelsRegex = /\\list_channels$/;
+const addDeployEventToChannelWithIdRegex = /\\(\d+)_add_deploy_\S+$/;
+const addDeployEventToChannelWithNameRegex = /\"(\S+)\"_add_deploy_\S+$/;
+
 
 class EchoBot {
     async onTurn (context) {
@@ -110,18 +114,18 @@ class EchoBot {
             return;
         }
 
-        if (message.search(/\\list/) === 0) {
+        if (message.search(/\\list$/) === 0) {
             await sendList({ context });
             return;
         }
 
-        if (message.search(/\\help/) === 0) {
+        if (message.search(/\\help$/) === 0) {
             await sendHelp({ context });
             return;
         }
 
         // channels
-        if (message.search(/\\show_channels/) === 0) {
+        if (message.search(/\\show_all_channels$/) === 0) {
             await sendChannels({ context });
             return;
         }
@@ -151,6 +155,14 @@ class EchoBot {
             return;
         }
 
+        if (message.search(listChannelsRegex) === 0) {
+            await getChannelsSubscriptions({ context });
+            return;
+        }
+
+        if (message.search(addDeployEventToChannelWithIdRegex) === 0) {
+            await createChannelSubscription({context, message });
+        }
         await context.sendActivity('Команда не распознана, используйте \\help, что бы посмотреть доступные команды');
     }
 }
@@ -285,6 +297,33 @@ async function unsubscribeChannelByName({ context, message, regex }) {
     }
 }
 
+async function getChannelsSubscriptions({ context }) {
+    const user = await getUser({ userId: context.activity.from.id });
+    const groups = await groupsServices.getSubscribedChannels({ userId: user.id });
+
+    if (groups && groups.length) {
+        let result = '';
+        groups.forEach(grp => result += `${grp.Id} ${grp.Name}\n`);
+        await context.sendActivity(`Ваши подписки на каналы:\n ${result}`);
+        return;
+    }
+
+    await context.sendActivity(`Вы ещё не подписались ни на один канал оповещений`);
+}
+
+async function createChannelSubscription({ context, message }) {
+    const user = await getUser({ userId: context.activity.from.id });
+    const groupId = getGroupId({ message, regex: addDeployEventToChannelWithIdRegex });
+    let box = message.replace(/add_deploy_box/, '');
+    console.log(box);
+}
+
+function getGroupId({ message, regex }) {
+    let r = regex.exec(message);
+    if (r && r[0]) {
+        return r[1];
+    }
+}
 async function sendHelp ({ context }) {
     await context.sendActivity(
         '\\help - описание всех доступных команд\n' +
@@ -308,10 +347,11 @@ async function sendHelp ({ context }) {
         '\\list - отобразить текушие подписки на события\n' +
         '\n' +
         '\n' +
-        '\\show_channels - отобразить текущие каналы\n' +
+        '\\show_all_channels - отобразить текущие каналы\n' +
         '\\create_channel_"channelName" - создать новый канал оповещений' +
         '\\add_channel_{id} - подписаться на канал по Id' +
         '\\add_channel_"{ChannelName}" - подписаться на канал по названию' +
+        `\\list_channels - каналы, подписка на которые активна` + 
         '\n' +
         '\n' +
         'более подробно https://confluence.mdtest.org/pages/viewpage.action?pageId=26280901'
