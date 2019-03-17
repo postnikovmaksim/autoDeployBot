@@ -24,7 +24,7 @@ function createConnectionAsync () {
         const connection = mysql.createConnection(getConfig());
         connection.connect(err => {
             if (err) {
-                console.log('При создании конекшена, произошла ошибка', err);
+                console.log('При создании конекшена произошла ошибка', err);
                 reject(new Error(err));
             } else {
                 console.log('Соединение успешно установлено');
