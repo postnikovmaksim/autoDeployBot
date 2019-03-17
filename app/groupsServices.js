@@ -1,5 +1,5 @@
 const { query } = require('./mysqlServices');
-const { sendMessage } = require('../dialogServices');
+const { sendMessage } = require('../app/dialogServices');
 
 module.exports = {
     async getChannels () {
