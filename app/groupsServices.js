@@ -33,6 +33,11 @@ module.exports = {
         if (userId) {
             return await getSubscribedChannels({ userId });
         }
+    },
+
+    async isChannelExists({ id, name }) {
+        const count = await getCount({ id, name });
+        return count && count.length && count[0].count;
     }
 };
 
@@ -64,6 +69,15 @@ function unsubscribeChannelById({ channelId, userId }) {
 function getSubscribedChannels({ userId }) {
     let sql = `select ch.Id as Id, ch.Name as Name from channels ch 
                 join channelsusers cu on cu.channelId = ch.id
-                where cu.userId = ${userId} `;
+                where cu.userId = ${userId} 
+                order by ch.Id`;
+    return query({ sqlString: sql });
+}
+
+function getCount({ id, name }) {
+    let sql = `select count(1) as count from channels where 1=1`;
+    id && id > 0 && (sql += ` and id = ${id}`);
+    name && name.length && (sql += ` and Name = ${name}`);
+
     return query({ sqlString: sql });
 }

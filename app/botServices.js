@@ -248,6 +248,12 @@ async function createChannel ({ context, message, regex }) {
     }
 
     let channelName = getChannelName({ message, regex });
+    const isChannelExists = groupsServices.isChannelExists({ name: channelName });
+    if (isChannelExists) {
+        await context.sendActivity(`Канал "${channelName}" уже существует.`);
+        return;
+    }
+
     await groupsServices.createChannel({ channelName });
     await context.sendActivity(`Канал уведомлений ${channelName} был успешно создан\n`);
 }
@@ -262,8 +268,14 @@ function getChannelName ({ message, regex }) {
 async function subscribeChannelById({ context, message, regex }) {
     const channelId = regex.exec(message)[1];
     const user = await getUser({ userId: context.activity.from.id });
+    const isExists = await groupsServices.isChannelExists({ id: channelId });
+    if (!isExists) {
+        await context.sendActivity(`Канала с Id '${channelId}' не существует`);
+        return;
+    }
+
     await groupsServices.subscribeChannel({ channelId, userId: user.id });
-    await context.sendActivity(`channelId: ${channelId}`);
+    await context.sendActivity(`Вы успешно подписались на канал с id ${channelId}`); //todo возвращать полный объект канала
 }
 
 async function subscribeChannelByName({ context, message, regex }) {
@@ -348,10 +360,10 @@ async function sendHelp ({ context }) {
         '\n' +
         '\n' +
         '\\show_all_channels - отобразить текущие каналы\n' +
-        '\\create_channel_"channelName" - создать новый канал оповещений' +
-        '\\add_channel_{id} - подписаться на канал по Id' +
-        '\\add_channel_"{ChannelName}" - подписаться на канал по названию' +
-        `\\list_channels - каналы, подписка на которые активна` + 
+        '\\create_channel_"channelName" - создать новый канал оповещений\n' +
+        '\\add_channel_{id} - подписаться на канал по Id\n' +
+        '\\add_channel_"{ChannelName}" - подписаться на канал по названию\n' +
+        `\\list_channels - каналы, подписка на которые активна\n` + 
         '\n' +
         '\n' +
         'более подробно https://confluence.mdtest.org/pages/viewpage.action?pageId=26280901'
