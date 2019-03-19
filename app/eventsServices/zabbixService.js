@@ -1,6 +1,7 @@
 const moment = require('moment');
 const { sendMessage } = require('../dialogServices');
 const { saveEvent } = require('./commonEventServices');
+const { sendToChannels } = require('./channelsSenderService');
 
 module.exports = {
     async zabbixEvent ({ req }) {
@@ -34,6 +35,7 @@ async function zabbixErrorEvent ({ req }) {
 
     await sendMessage({ message, eventName: `zabbix_${aplicatonName}` });
     await sendMessage({ message, eventName: `zabbix_all` });
+    await sendToChannels({ message, eventName: `zabbix_${aplicatonName}`});
 }
 
 async function zabbixOkEvent ({ req }) {

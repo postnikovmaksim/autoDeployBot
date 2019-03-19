@@ -1,4 +1,5 @@
 const { sendMessage } = require('../dialogServices');
+const { sendToChannels } = require('./channelsSenderService');
 
 module.exports = {
     async consoleEvent ({ req }) {
@@ -18,5 +19,6 @@ module.exports = {
 
         const text = messages.join('\r\n');
         sendMessage({ message: text, eventName: `master_auto_complete` });
+        sendToChannels({ message: text, eventName: `master_auto_complete` });
     }
 };

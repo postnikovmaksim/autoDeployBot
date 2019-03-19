@@ -1,6 +1,7 @@
 const moment = require('moment');
 const { sendMessage } = require('../dialogServices');
 const { saveEvent } = require('./commonEventServices');
+const { sendToChannels } = require('./channelsSenderService');
 
 module.exports = {
     async newrelicEvent ({ req }) {
@@ -19,5 +20,6 @@ module.exports = {
 
         sendMessage({ message, eventName: `newrelic_${applicationName}` });
         sendMessage({ message, eventName: `newrelic_all` });
+        sendToChannels({ message, eventName: `newrelic_${applicationName}`});
     }
 };

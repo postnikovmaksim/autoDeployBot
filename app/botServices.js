@@ -1,6 +1,6 @@
 const { ActivityTypes } = require('botbuilder');
 const { saveOrUpdateUser, getUser } = require('./userServices');
-const groupsServices = require('./groupsServices');
+const channelsServices = require('./channelsServices');
 const subscriptionsServices = require('./subscriptionsServices');
 const newrelicAppName = require('./eventsName/newrelicAppName');
 const zabbixAppName = require('./eventsName/zabbixAppName');
@@ -235,7 +235,7 @@ async function sendList ({ context }) {
 }
 
 async function sendChannels ({ context }) {
-    const groups = await groupsServices.getChannels();
+    const groups = await channelsServices.getChannels();
     let result = '';
     groups.forEach(grp => result += `${grp.Id} ${grp.Name}\n`);
     await context.sendActivity(result || 'Ни одного канала не найдено. Создайте первый');
@@ -248,13 +248,13 @@ async function createChannel ({ context, message, regex }) {
     }
 
     let channelName = getChannelName({ message, regex });
-    const isChannelExists = groupsServices.isChannelExists({ name: channelName });
+    const isChannelExists = channelsServices.isChannelExists({ name: channelName });
     if (isChannelExists) {
         await context.sendActivity(`Канал "${channelName}" уже существует.`);
         return;
     }
 
-    await groupsServices.createChannel({ channelName });
+    await channelsServices.createChannel({ channelName });
     await context.sendActivity(`Канал уведомлений ${channelName} был успешно создан\n`);
 }
 
@@ -268,22 +268,22 @@ function getChannelName ({ message, regex }) {
 async function subscribeChannelById({ context, message, regex }) {
     const channelId = regex.exec(message)[1];
     const user = await getUser({ userId: context.activity.from.id });
-    const isExists = await groupsServices.isChannelExists({ id: channelId });
+    const isExists = await channelsServices.isChannelExists({ id: channelId });
     if (!isExists) {
         await context.sendActivity(`Канала с Id '${channelId}' не существует`);
         return;
     }
 
-    await groupsServices.subscribeChannel({ channelId, userId: user.id });
+    await channelsServices.subscribeChannel({ channelId, userId: user.id });
     await context.sendActivity(`Вы успешно подписались на канал с id ${channelId}`); //todo возвращать полный объект канала
 }
 
 async function subscribeChannelByName({ context, message, regex }) {
     const channelName = getChannelName({ message, regex });
-    const channelId = await groupsServices.getChannelIdByName({ channelName });
+    const channelId = await channelsServices.getChannelIdByName({ channelName });
     const user = await getUser({ userId: context.activity.from.id });
     if (channelId) {
-        await groupsServices.subscribeChannel({ channelId, userId: user.id});
+        await channelsServices.subscribeChannel({ channelId, userId: user.id});
         await context.sendActivity(`Подписка на канал ${channelName} активна.`); 
         return;
     }
@@ -294,24 +294,24 @@ async function subscribeChannelByName({ context, message, regex }) {
 async function unsubscribeChannelById({ context, message, regex }) {
     const channelId = regex.exec(message)[1]; 
     const user = await getUser({ userId: context.activity.from.id });
-    await groupsServices.unsubscribeChannelById({ channelId, userId: user.id });
+    await channelsServices.unsubscribeChannelById({ channelId, userId: user.id });
     await context.sendActivity(`Вы отписались от канала ${channelId}`);
 }
 
 async function unsubscribeChannelByName({ context, message, regex }) {
     const channelName = getChannelName({ message, regex });
     const user = await getUser({ userId: context.activity.from.id });    
-    const channelId = await groupsServices.getChannelIdByName({ channelName });
+    const channelId = await channelsServices.getChannelIdByName({ channelName });
 
     if (channelId) {
-        await groupsServices.unsubscribeChannelById({ channelId, userId: user.id });
+        await channelsServices.unsubscribeChannelById({ channelId, userId: user.id });
         await context.sendActivity(`Вы отписались от канала ${channelName}`);
     }
 }
 
 async function getChannelsSubscriptions({ context }) {
     const user = await getUser({ userId: context.activity.from.id });
-    const groups = await groupsServices.getSubscribedChannels({ userId: user.id });
+    const groups = await channelsServices.getSubscribedChannels({ userId: user.id });
 
     if (groups && groups.length) {
         let result = '';

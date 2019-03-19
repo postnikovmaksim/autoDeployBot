@@ -1,5 +1,5 @@
 const { query } = require('./mysqlServices');
-const { sendMessage } = require('../app/dialogServices');
+
 
 module.exports = {
     async getChannels () {
@@ -84,15 +84,6 @@ function getCount({ id, name }) {
     let sql = `select count(1) as count from channels where 1=1`;
     id && id > 0 && (sql += ` and id = ${id}`);
     name && name.length && (sql += ` and Name = ${name}`);
-
-    return query({ sqlString: sql });
-}
-
-function getUserIds({ eventName }) {
-    let sql = `select * from messenger_bot.channelssubscriptions cs
-                    join channelsusers cu on cu.channelId = cs.channelId
-                    join users u on cu.UserId = u.Id
-                    where cs.eventName = ${eventName};`;
 
     return query({ sqlString: sql });
 }
