@@ -14,9 +14,7 @@ module.exports = {
         asyncForEach(reference, async reference => {
             await adapter.continueConversation(reference, async (context) => {
                 try {
-                    context.activity.textFormat = 'markdown';
-                    context.activity.text = message;
-                    const reply = await context.sendActivity(context.activity);
+                    const reply = await context.sendActivity(message);
                     updateReference({ context, reply });
                 } catch (e) {
                     console.log(e);
