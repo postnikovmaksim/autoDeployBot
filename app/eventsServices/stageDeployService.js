@@ -57,5 +57,5 @@ function getChangesString (changes) {
 
         console.log(text);
         return `* ${text}`;
-    }).join(`\n`);
+    }).join(`\n`) + '\n\n';
 }
