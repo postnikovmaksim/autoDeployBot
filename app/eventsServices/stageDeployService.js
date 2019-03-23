@@ -11,7 +11,7 @@ module.exports = {
             .map(({ name, status, changes }) => {
                 if (status === SUCCESS) {
                     return changes && changes.length > 0
-                        ? `${name}: успешно выложен\n ${getChangesString(changes)}`
+                        ? `${name}: успешно выложен\n${getChangesString(changes)}`
                         : null;
                 }
 
@@ -56,6 +56,6 @@ function getChangesString (changes) {
             : change.replace(/\n/, '');
 
         console.log(text);
-        return `* ${text}`;
-    }).join(`\n`) + '\n\n';
+        return `-- ${text}`;
+    }).join(`\n`);
 }
