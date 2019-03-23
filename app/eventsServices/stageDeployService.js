@@ -18,7 +18,7 @@ module.exports = {
                 return `(fire)**${name}: произошла ошибка**`
             }).filter(app => !!app);
 
-        const timeStump = moment().format('HH:mm DD-mm-YYYY');
+        const timeStump = moment().format('HH:mm DD-MM-YYYY');
         const message = `${timeStump}\n${result.join(`\n`)}`;
 
         console.log(message);
