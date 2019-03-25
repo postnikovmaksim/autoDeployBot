@@ -3,6 +3,7 @@ const request = require('request-promise-native');
 const { server } = require('./httpServerServices');
 const { adapter, bot, port } = require('./botFrameworkServices');
 const { autoDeployEvent } = require('./app/eventsServices/autoDeployServices');
+const { stageDeployEvent } = require('./app/eventsServices/stageDeployService');
 const { newrelicEvent } = require('./app/eventsServices/newrelicServices');
 const { consoleEvent } = require('./app/eventsServices/masterAutoCompleteServices');
 const { zabbixEvent } = require('./app/eventsServices/zabbixService');
@@ -22,6 +23,11 @@ server.post('/api/messages', (req, res) => {
 
 server.post('/event/deploy', async (req, res) => {
     await autoDeployEvent({ req });
+    res.send(200);
+});
+
+server.post('/event/stageDeploy', async (req, res) => {
+    await stageDeployEvent({ req });
     res.send(200);
 });
 

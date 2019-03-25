@@ -70,7 +70,7 @@ class EchoBot {
 
         // zabbix
         if (message.search(/\\add_zabbix_/) === 0) {
-            const appName = message.match(newrelicRegx)[0].replace('zabbix_', '');
+            const appName = message.match(zabbixRegx)[0].replace('zabbix_', '');
             if (zabbixAppName.isValidName(appName)) {
                 await createSubscriptions({ context, message, regx: zabbixRegx });
             } else {
