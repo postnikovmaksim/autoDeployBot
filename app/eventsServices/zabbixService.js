@@ -36,6 +36,7 @@ async function zabbixErrorEvent ({ req }) {
     await sendMessage({ message, eventName: `zabbix_${aplicatonName}` });
     await sendMessage({ message, eventName: `zabbix_all` });
     await sendToChannels({ message, eventName: `zabbix_${aplicatonName}`});
+    await sendToChannels({ message, eventName: `zabbix_all` });
 }
 
 async function zabbixOkEvent ({ req }) {

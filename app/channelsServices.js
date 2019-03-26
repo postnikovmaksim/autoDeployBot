@@ -2,7 +2,7 @@ const { query } = require('./mysqlServices');
 
 
 module.exports = {
-    async getChannels () {
+    async getChannels() {
         return await getAll();
     },
 
@@ -13,14 +13,6 @@ module.exports = {
     async subscribeChannel({ channelId, userId }) {
         if (channelId && userId) {
             return await subscribeById({ channelId, userId });
-        }
-    },
-
-    async getChannelIdByName({ channelName }) {
-        const result = await getChannelIdByName({ channelName });
-        if (result && result.length) {
-            console.log(result);
-            return result[0].id;
         }
     },
 
@@ -36,34 +28,29 @@ module.exports = {
         }
     },
 
-    async isChannelExists({ id, name }) {
-        const count = await getCount({ id, name });
-        return count && count.length && count[0].count;
-    },
-
     async getUserIds({ eventName }) {
         const userIds = await getUserIds({ eventName });
-        return userIds.map(u=> u.userId);
+        return userIds.map(u => u.userId);
+    },
+
+    async get({ id, name }) {
+        const channel = await get({ id, name });
+        return channel;
     }
 };
 
-function getAll () {
+function getAll() {
     let sql = `select Id, Name from channels`;
     return query({ sqlString: sql });
 }
 
 function createChannel({ channelName }) {
     let sql = `insert into channels (Name) values ('${channelName}')`;
-    return query({ sqlString: sql});
+    return query({ sqlString: sql });
 }
 
 function subscribeById({ channelId, userId }) {
     let sql = `insert ignore into channelsusers (channelId, userId) value (${channelId}, ${userId})`;
-    return query({sqlString: sql});
-}
-
-function getChannelIdByName({ channelName }) {
-    let sql = `select id from channels where Name = '${channelName}' limit 1`;
     return query({ sqlString: sql });
 }
 
@@ -80,10 +67,10 @@ function getSubscribedChannels({ userId }) {
     return query({ sqlString: sql });
 }
 
-function getCount({ id, name }) {
-    let sql = `select count(1) as count from channels where 1=1`;
+function get({ id, name }) {
+    let sql = `select Id, Name from channels where 1=1`;
     id && id > 0 && (sql += ` and id = ${id}`);
-    name && name.length && (sql += ` and Name = ${name}`);
+    name && (sql += ` and name = '${name}'`);
 
     return query({ sqlString: sql });
 }
