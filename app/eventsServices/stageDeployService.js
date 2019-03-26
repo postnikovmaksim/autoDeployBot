@@ -12,7 +12,7 @@ module.exports = {
             .map(({ name, status, changes }) => {
                 if (status === SUCCESS) {
                     return changes && changes.length > 0
-                        ? `${name}: успешно выложен\n${getChangesString(changes)}\n`
+                        ? `**${name}**: успешно выложен\n${getChangesString(changes)}\n`
                         : null;
                 }
 
