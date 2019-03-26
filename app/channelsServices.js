@@ -36,6 +36,13 @@ module.exports = {
     async get({ id, name }) {
         const channel = await get({ id, name });
         return channel;
+    },
+
+    async saveSubscription({ channelId, eventName }) {
+        const subscription = await getSubsciption({ channelId, eventName });
+        if (!subscription || !subscription.length) {
+            await saveSub({ channelId, eventName });
+        }
     }
 };
 
@@ -71,6 +78,17 @@ function get({ id, name }) {
     let sql = `select Id, Name from channels where 1=1`;
     id && id > 0 && (sql += ` and id = ${id}`);
     name && (sql += ` and name = '${name}'`);
+
+    return query({ sqlString: sql });
+}
+
+function getSubsciption({ channelId, eventName }) {
+    let sql = `select channelId, eventName from channelsSubscriptions where channelId = ${channelId} and eventName = '${eventName}'`;
+    return query({ sqlString: sql });
+}
+
+function saveSub({ channelId, eventName }) {
+    let sql = `insert channelssubscriptions (channelId, eventName) value (${channelId}, '${eventName}')`
 
     return query({ sqlString: sql });
 }

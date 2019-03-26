@@ -162,10 +162,6 @@ class EchoBot {
             return;
         }
 
-        if (message.search(addDeployEventToChannelWithIdRegex) === 0) {
-            await createChannelSubscription({ context, message });
-        }
-
         if (message.search(addNewrelicEventToChannelWithNameRegex) === 0) {
             await createChannelSubscription({ context, message, channelRegex: addNewrelicEventToChannelWithNameRegex, eventRegex: newrelicRegx });
             return;
@@ -344,22 +340,41 @@ async function getChannelsSubscriptions({ context }) {
 
 async function createChannelSubscription({ context, message, channelRegex, eventRegex }) {
     const user = await getUser({ userId: context.activity.from.id });
-    const channel = getChannelName({ message, regex: channelRegex });
-    const channelFixedName = channel.replace(/(\"\"\S+\"\")$/ig, '$1');
-    console.log(channelFixedName);
-    const groupId = getGroupId({ message, regex: channelRegex });
-    
-    const eventName = getEventName({ message, regx: eventRegex });
+    const channelName = getChannelName({ message, regex: channelRegex });
+    const channelFixedName = channelName.slice(1, -1);
 
-    console.log(user, groupId, eventName);
-}
-
-function getGroupId({ message, regex }) {
-    let r = regex.exec(message);
-    if (r && r[0]) {
-        return r[1];
+    const channelResponse = await channelsServices.get({ name: channelFixedName });
+    if (!channelResponse || !channelResponse.length) {
+        await context.sendActivity(`Канал ${channelFixedName} не найден`);
+        return;
     }
+
+    const channelId = channelResponse[0].Id;
+
+
+    const eventName = getEventName({ message, regx: eventRegex });
+    if (!newrelicAppName.isValidName(eventName)) {
+        return await context.sendActivity(`Название события не валидно`);
+    }
+
+    const result = await channelSubscribe({ channelId, userId: user.id, eventName });
+    if (result) {
+        await context.sendActivity(`Подписка на событие ${eventName} для канала ${channelResponse[0].Name} была сохранена успешно\n`);
+        return;
+    }
+
+    await context.sendActivity(`Ошибка при сохранении подписки`);
 }
+
+async function channelSubscribe({ channelId, userId, eventName }) {
+    if (!channelId || !userId || channelId <= 0 || userId <= 0 || !eventName || !eventName.length) {
+        return false;
+    }
+
+    await channelsServices.saveSubscription({ channelId, userId, eventName });
+    return true;
+}
+
 async function sendHelp({ context }) {
     await context.sendActivity(
         '\\help - описание всех доступных команд\n' +
@@ -390,7 +405,7 @@ async function sendHelp({ context }) {
         `\\list_channels - каналы, подписка на которые активна\n` +
         '\n' +
         '\n' +
-        'Добавление подписки на событие для каналов почти аналогично - к шаблону добавляется название (в кавычках) или Id канала:\n' + 
+        'Добавление подписки на событие для каналов почти аналогично - к шаблону добавляется название (в кавычках) или Id канала:\n' +
         '\\"{channelName}"_add_newrelic_Test ' +
         '\n' +
         'или \\{channelId}_add_newrelic_Test ' +
