@@ -10,7 +10,7 @@ module.exports = {
         if (!userIds.length) {
             return;
         }
-
+        
         const reference = await getReference({ ids: userIds });
         asyncForEach(reference, async reference => {
             await adapter.continueConversation(reference, async (context) => {
@@ -33,10 +33,13 @@ async function getIds({ eventName }) {
 
 
 async function getUserIds({ eventName }) {
-    let sql = `select * from messenger_bot.channelssubscriptions cs
+    let sql = `select distinct(u.id) from messenger_bot.channelssubscriptions cs
                     join channelsusers cu on cu.channelId = cs.channelId
                     join users u on cu.UserId = u.Id
-                    where cs.eventName = '${eventName}';`;
+                    where cs.eventName = '${eventName}';
+                                           and u.Id not in (SELECT us.userId FROM messenger_bot.userssubscriptions as us
+                                            join users as u on u.id = us.userId
+                                            where us.eventName = '${eventName}');`; //исключаем тех пользователей, которые уже подписаны на это событие, хз, может не оч
 
     return query({ sqlString: sql });
 }
