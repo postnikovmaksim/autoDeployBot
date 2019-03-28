@@ -15,40 +15,62 @@ server.listen(port, () => {
     console.log('\nTo talk to your bot, open echoBot-with-counter.bot file in the Emulator');
 });
 
-server.post('/api/messages', (req, res) => {
-    adapter.processActivity(req, res, async (context) => {
-        await bot.onTurn(context);
-    });
+server.post('/api/messages', (req, res, next) => {
+    try {
+        adapter.processActivity(req, res, async (context) => {
+            await bot.onTurn(context);
+        });
+    } catch (e) {
+        next(e);
+    }
 });
 
-server.post('/event/deploy', async (req, res) => {
-    await autoDeployEvent({ req });
-    res.send(200);
+server.post('/event/deploy', async (req, res, next) => {
+    try {
+        await autoDeployEvent({ req });
+    } catch (e) {
+        next(e);
+    }
 });
 
-server.post('/event/stageDeploy', async (req, res) => {
-    await stageDeployEvent({ req });
-    res.send(200);
+server.post('/event/stageDeploy', async (req, res, next) => {
+    try {
+        await stageDeployEvent({ req });
+    } catch (e) {
+        next(e);
+    }
 });
 
-server.post('/event/newrelic', async (req, res) => {
-    await newrelicEvent({ req });
-    res.send(200);
+server.post('/event/newrelic', async (req, res, next) => {
+    try {
+        await newrelicEvent({ req });
+    } catch (e) {
+        next(e);
+    }
 });
 
-server.post('/event/master_auto_complete', async (req, res) => {
-    await consoleEvent({ req });
-    res.send(200);
+server.post('/event/master_auto_complete', async (req, res, next) => {
+    try {
+        await consoleEvent({ req });
+    } catch (e) {
+        next(e);
+    }
 });
 
-server.post('/event/zabbix', async (req, res) => {
-    await zabbixEvent({ req });
-    res.send(200);
+server.post('/event/zabbix', async (req, res, next) => {
+    try {
+        await zabbixEvent({ req });
+    } catch (e) {
+        next(e);
+    }
 });
 
-server.get('/event/test', async (req, res) => {
-    await testMessageEvent({ req });
-    res.send(200);
+server.get('/event/test', async (req, res, next) => {
+    try {
+        await testMessageEvent({ req });
+    } catch (e) {
+        next(e);
+    }
 });
 
 server.get('/awakening', async (req, res) => {
@@ -59,7 +81,7 @@ server.get('/awakening', async (req, res) => {
 // из-за ограничений тарифа, бот постоянно выгружается из памяти, что приводит к потере запросов.
 // будем будить бота по таймеру
 function awakening () {
-    setInterval(() => request.get({ uri: 'https://autodeploy-94a4.azurewebsites.net/awakening' }), 60000)
+    setInterval(() => request.get({ uri: `${process.env.selfUrl}/awakening` }), 60000)
 }
 
 (() => awakening())();

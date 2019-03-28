@@ -2,6 +2,7 @@ const moment = require('moment');
 const { sendMessage } = require('../dialogServices');
 
 const SUCCESS = 'SUCCESS';
+const formatDate = 'HH:mm DD-MM-YYYY';
 
 module.exports = {
     async stageDeployEvent ({ req }) {
@@ -11,15 +12,15 @@ module.exports = {
             .map(({ name, status, changes }) => {
                 if (status === SUCCESS) {
                     return changes && changes.length > 0
-                        ? `${name}: успешно выложен\n${getChangesString(changes)}`
+                        ? `**${name}**: успешно выложен\n${getChangesString(changes)}\n`
                         : null;
                 }
 
                 return `(fire)**${name}: произошла ошибка**`
             }).filter(app => !!app);
 
-        const timeStump = moment().format('HH:mm DD-MM-YYYY');
-        const message = `${timeStump}\n${result.join(`\n`)}`;
+        const timeStump = moment().format(formatDate);
+        const message = `${timeStump} StageDeploy\n${result.join(`\n`)}`;
 
         console.log(message);
         sendMessage({ message, eventName: `deploy_stage` });
@@ -50,12 +51,12 @@ function joinFrontAndBack (apps) {
 }
 
 function getChangesString (changes) {
-    return changes.map(change => {
-        const text = change.search(/\n\n*/) >= 0
-            ? change.match(/.+\n\n*/)[0].replace(/\n\n*/, '')
-            : change.replace(/\n/, '');
+    return changes.map(({ comment, user, date }) => {
+        const text = comment.search(/\n\n*/) >= 0
+            ? comment.match(/.+\n\n*/)[0].replace(/\n\n*/, '')
+            : comment.replace(/\n/, '');
 
         console.log(text);
-        return `-- ${text}`;
+        return `-- ${text} (${user} ${moment(date).format(formatDate)})`;
     }).join(`\n`);
 }

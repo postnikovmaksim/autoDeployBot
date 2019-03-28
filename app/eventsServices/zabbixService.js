@@ -1,16 +1,8 @@
-const moment = require('moment');
 const { sendMessage } = require('../dialogServices');
-const { saveEvent } = require('./commonEventServices');
 const { sendToChannels } = require('./channelsSenderService');
 
 module.exports = {
     async zabbixEvent ({ req }) {
-        await saveEvent({
-            name: 'zabbix_error',
-            date: moment().add(3, 'hour').format('YYYY-MM-DD HH:mm:ss'),
-            json: JSON.stringify(req.body)
-        });
-
         if (req.body.problemResolvedTime) {
             await zabbixOkEvent({ req });
         } else {
@@ -40,12 +32,6 @@ async function zabbixErrorEvent ({ req }) {
 }
 
 async function zabbixOkEvent ({ req }) {
-    await saveEvent({
-        name: 'zabbix_ok',
-        date: moment().add(3, 'hour').format('YYYY-MM-DD HH:mm:ss'),
-        json: JSON.stringify(req.body)
-    });
-
     const {
         problemResolvedTime,
         problemResolvedDate,

@@ -32,9 +32,23 @@ const { query } = require('./app/mysqlServices');
 
     try {
         await query({
-            sqlString: `CREATE TABLE \`events\` (
+            sqlString: `CREATE TABLE \`requests\` (
                       \`id\` mediumint(9) NOT NULL AUTO_INCREMENT,
-                      \`name\` varchar(100) NOT NULL,
+                      \`url\` varchar(1000) NOT NULL,
+                      \`date\` datetime NOT NULL,
+                      \`json\` text NOT NULL,
+                      PRIMARY KEY (\`id\`)
+                    ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;`
+        })
+    } catch (e) {
+        console.log(e);
+    }
+
+    try {
+        await query({
+            sqlString: `CREATE TABLE \`errors\` (
+                      \`id\` mediumint(9) NOT NULL AUTO_INCREMENT,
+                      \`url\` varchar(1000) NOT NULL,
                       \`date\` datetime NOT NULL,
                       \`json\` text NOT NULL,
                       PRIMARY KEY (\`id\`)
