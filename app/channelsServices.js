@@ -50,6 +50,28 @@ module.exports = {
         if (!subscription || !subscription.length) {
             await saveSub({ channelId, event });
         }
+    },
+
+    async getSubscribedEventsName({ channelId }) {
+        const result = await getChannelSubsciptions({ channelId });
+
+        return result.map(r => r.eventName);
+    },
+
+    async removeSubscription({ channelId, eventName }) {
+        if (!channelId || !eventName ) {
+            throw new Error('removeSubscription: channelId or eventName cannot be null/undefined');
+        }
+
+        return await removeSubscription({ channelId, eventName });
+    },
+
+    async removeAllSubscriptionByType({ channelId, eventType }) {
+        if (!channelId || !eventType ) {
+            throw new Error('removeAllSubscriptionByType: channelId or eventType cannot be null/undefined');
+        }
+
+        await removeByEventType({ channelId, eventType });
     }
 };
 
@@ -93,13 +115,34 @@ function getSubsciption({ channelId, eventName }) {
     if (!channelId && !eventName) {
         throw new Error("ChannelID and eventName can't be undefined at the same time");
     }
-    
+
     let sql = `select channelId, eventName from channelsSubscriptions where channelId = ${channelId} and eventName = '${eventName}'`;
     return query({ sqlString: sql });
 }
 
 function saveSub({ channelId, event }) {
     let sql = `insert channelssubscriptions (channelId, eventName) value (${channelId}, '${event}')`
+
+    return query({ sqlString: sql });
+}
+
+function getChannelSubsciptions({ channelId }) {
+    if (!channelId) {
+        throw new Error("channelId cant be null/undefined");
+    }
+    let sql = `select channelId, eventName from channelssubscriptions where channelId = ${channelId}`
+    
+    return query({ sqlString: sql });
+}
+
+function removeSubscription({ channelId, eventName }) {
+    let sql = `delete from channelsSubscriptions where channelId = ${channelId} and eventName = '${eventName}'`;
+
+    return query({sqlString: sql });
+}
+
+function removeByEventType({ channelId, eventType }) {
+    let sql = `delete from channelsSubscriptions where channelId = ${channelId} and eventName like '${eventType}%'`;
 
     return query({ sqlString: sql });
 }

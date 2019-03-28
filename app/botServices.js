@@ -16,12 +16,10 @@ const addChannelByNameRegex = /\\add_channel_\"(\S+)\"$/;
 const removeChannelByIdRegex = /\\remove_channel_(\d+)$/;
 const removeChannelByNameRegex = /\\remove_channel_\"(\S+)\"$/;
 const listChannelsRegex = /\\list_channels$/;
-const addDeployEventToChannelWithIdRegex = /\\(\d+)_add_deploy_\S+$/;
-const addDeployEventToChannelWithNameRegex = /\"(\S+)\"_add_deploy_\S+$/;
-const addNewrelicEventToChannelWithIdRegex = /\\(\d+)_add_newrelic_\S+$/;
-const addNewrelicEventToChannelWithNameRegex = /\\(\S+)_add_newrelic_\S+$/;
-const universalSbuscribeChannelToEventRegex = /\\((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")_add_(?<eventType>[(newrelic|zabbix|deploy)]+)_(?<appName>\S+)$/i;
-
+const universalSubscribeChannelToEventRegex = /\\((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")_add_(?<eventType>[(newrelic|zabbix|deploy)]+)_(?<appName>\S+)$/i;
+const universalUnsubscribeChannelFromEventRegex = /\\((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")_remove_(?<eventType>[(newrelic|zabbix|deploy)]+)_(?<appName>\S+)$/i;
+const showChannelEventsRegex = /\\((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")_show_events$/i;
+const removeChannelRegex = /\\i_swear_i_want_to_delete_channel_((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")$/i;
 
 class EchoBot {
     async onTurn(context) {
@@ -163,21 +161,32 @@ class EchoBot {
             return;
         }
 
-        if (message.search(universalSbuscribeChannelToEventRegex) === 0) {
+        if (message.search(universalSubscribeChannelToEventRegex) === 0) {
             await createChannelSubscription({ context, message });
             return;
         }
+
+        if (message.search(universalUnsubscribeChannelFromEventRegex) === 0) {
+            return await removeChannelSubscription({ context, message });
+        }
+
+        if (message.search(showChannelEventsRegex) === 0) {
+            await showChannelEvents({ context, message });
+            return;
+        }
+
         await context.sendActivity('Команда не распознана, используйте \\help, что бы посмотреть доступные команды');
     }
 }
 
 async function createChannelSubscription({ context, message }) {
-    const regexResult = universalSbuscribeChannelToEventRegex.exec(message);
+    const regexResult = universalSubscribeChannelToEventRegex.exec(message);
     const groups = regexResult.groups;
     const channelId = groups['channelId'];
     const channelName = groups['channelName'];
     const eventType = groups['eventType'];
     const appName = groups['appName'];
+    const fullEventName = `${eventType}_${appName}`;
 
     const channel = await channelsServices.getChannel({ id: channelId, name: channelName });
     if (!channel) {
@@ -188,9 +197,32 @@ async function createChannelSubscription({ context, message }) {
         return await responseIsNotValidName(context, appName);
     }
 
-    const eventName = `${eventType}_${appName}`;
-    await channelsServices.saveSubscription({ channelId: channel.Id, event: `${eventName}` });
-    await context.sendActivity(`Подписка на событие ${eventName} для канала ${channel.Name} успешно сохранена`);
+    await channelsServices.saveSubscription({ channelId: channel.Id, event: `${fullEventName}` });
+    await context.sendActivity(`Подписка на событие ${fullEventName} для канала ${channel.Name} успешно сохранена`);
+}
+
+async function removeChannelSubscription({ context, message }) {
+    const regexResult = universalUnsubscribeChannelFromEventRegex.exec(message);
+    const groups = regexResult.groups; //ну похоже на то, что методом выше, да
+
+    const channelId = groups['channelId'];
+    const channelName = groups['channelName'];
+    const eventType = groups['eventType'];
+    const appName = groups['appName'];
+    const fullEventName = `${eventType}_${appName}`;
+
+    const channel = await channelsServices.getChannel({ id: channelId, name: channelName });
+    if (!channel) {
+        return await context.sendActivity(`Канал ${channelName || channelId} не найден`);
+    }
+    
+    if (appName.search(/^all$/i) === 0) {
+        await channelsServices.removeAllSubscriptionByType({ channelId, eventType });
+        return await context.sendActivity(`Вы отписали канал ${channel.Name} от всех событий с типом ${eventType}.`);
+    }
+
+    await channelsServices.removeSubscription({ channelId, eventName: fullEventName });
+    await context.sendActivity(`Вы отписали канал ${channel.Name} от события ${fullEventName}`);
 }
 
 function isvalidAppNameForChannel(eventType, appName) {
@@ -207,6 +239,21 @@ function isvalidAppNameForChannel(eventType, appName) {
 
     return true;
 }
+
+async function showChannelEvents({ context, message }) {
+    const regexResult = showChannelEventsRegex.exec(message);
+    const groups = regexResult.groups;
+    const channelId = groups['channelId'];
+    const channelName = groups['channelName'];
+
+    const channel = await channelsServices.getChannel({ id: channelId, name: channelName });
+    if (!channel) {
+        return await context.sendActivity(`Канал ${channelName || channelId} не найден`);
+    }
+
+    await sendList({ context, channelId: channel.Id });
+}
+
 
 async function responseIsNotValidName(context, appName) {
     await context.sendActivity(`Имя [${appName}] не валидно. Подписка не создана`);
@@ -238,15 +285,20 @@ function getEventName({ message, regx }) {
     return message.match(regx)[0];
 }
 
-async function sendList({ context }) {
+async function sendList({ context, channelId }) {
     const user = await getUser({ userId: context.activity.from.id });
-    const subscriptions = await subscriptionsServices.getSubscriptions({ userId: user.id });
+    const subscriptions = channelId ? await channelsServices.getSubscribedEventsName({ channelId }) : await subscriptionsServices.getSubscriptions({ userId: user.id });
+
     const deploySubscriptions = subscriptions.filter(s => !!s.match(deployBoxRegx));
     const newrelicSubscriptions = subscriptions.filter(s => !!s.match(newrelicRegx));
     const zabbixSubscriptions = subscriptions.filter(s => !!s.match(zabbixRegx));
     const outherSubscriptions = subscriptions.filter(s => !s.match(deployBoxRegx) && !s.match(newrelicRegx) && !s.match(zabbixRegx));
 
     let result = '';
+
+    if (channelId && subscriptions && subscriptions.length) {
+        result += `Подписки канала ${channelId}:\n\n`;
+    }
 
     if (deploySubscriptions.length) {
         result += 'deploy:';
@@ -271,7 +323,7 @@ async function sendList({ context }) {
         outherSubscriptions.forEach(eventName => result += `\n${eventName}`);
         result += '\n';
     }
-
+    
     await context.sendActivity(result || 'У вас нет действующих подписок');
 }
 
@@ -411,6 +463,11 @@ async function sendHelp({ context }) {
         'или \\{channelId}_add_newrelic_Test ' +
         '\n' +
         '\n' +
+        `Отписка канала от события - \n \\{id}|''{channelName}''_remove_zabbix_{приложение|all}\n` +
+        `\\'Test'_remove_newrelic_TestApp\n` +
+        `или \\'Test'_remove_newrelic_all\n` +
+        `\n` +
+        `\n` +
         'более подробно https://confluence.mdtest.org/pages/viewpage.action?pageId=26280901'
     );
 }
