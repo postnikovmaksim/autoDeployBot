@@ -34,14 +34,21 @@ module.exports = {
     },
 
     async get({ id, name }) {
-        const channel = await get({ id, name });
-        return channel;
+        const channels = await get({ id, name });
+        return channels;
     },
 
-    async saveSubscription({ channelId, eventName }) {
-        const subscription = await getSubsciption({ channelId, eventName });
+    async getChannel({ id, name }) {
+        const result = await get({ id, name });
+        if (result && result.length) {
+            return result[0];
+        }
+    },
+
+    async saveSubscription({ channelId, event }) {
+        const subscription = await getSubsciption({ channelId, eventName: event });
         if (!subscription || !subscription.length) {
-            await saveSub({ channelId, eventName });
+            await saveSub({ channelId, event });
         }
     }
 };
@@ -83,12 +90,16 @@ function get({ id, name }) {
 }
 
 function getSubsciption({ channelId, eventName }) {
+    if (!channelId && !eventName) {
+        throw new Error("ChannelID and eventName can't be undefined at the same time");
+    }
+    
     let sql = `select channelId, eventName from channelsSubscriptions where channelId = ${channelId} and eventName = '${eventName}'`;
     return query({ sqlString: sql });
 }
 
-function saveSub({ channelId, eventName }) {
-    let sql = `insert channelssubscriptions (channelId, eventName) value (${channelId}, '${eventName}')`
+function saveSub({ channelId, event }) {
+    let sql = `insert channelssubscriptions (channelId, eventName) value (${channelId}, '${event}')`
 
     return query({ sqlString: sql });
 }

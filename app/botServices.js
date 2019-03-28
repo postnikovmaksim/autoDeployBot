@@ -20,6 +20,7 @@ const addDeployEventToChannelWithIdRegex = /\\(\d+)_add_deploy_\S+$/;
 const addDeployEventToChannelWithNameRegex = /\"(\S+)\"_add_deploy_\S+$/;
 const addNewrelicEventToChannelWithIdRegex = /\\(\d+)_add_newrelic_\S+$/;
 const addNewrelicEventToChannelWithNameRegex = /\\(\S+)_add_newrelic_\S+$/;
+const universalSbuscribeChannelToEventRegex = /\\((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")_add_(?<eventType>[(newrelic|zabbix|deploy)]+)_(?<appName>\S+)$/i;
 
 
 class EchoBot {
@@ -162,13 +163,49 @@ class EchoBot {
             return;
         }
 
-        if (message.search(addNewrelicEventToChannelWithNameRegex) === 0) {
-            await createChannelSubscription({ context, message, channelRegex: addNewrelicEventToChannelWithNameRegex, eventRegex: newrelicRegx });
+        if (message.search(universalSbuscribeChannelToEventRegex) === 0) {
+            await createChannelSubscription({ context, message });
             return;
         }
-
         await context.sendActivity('Команда не распознана, используйте \\help, что бы посмотреть доступные команды');
     }
+}
+
+async function createChannelSubscription({ context, message }) {
+    const regexResult = universalSbuscribeChannelToEventRegex.exec(message);
+    const groups = regexResult.groups;
+    const channelId = groups['channelId'];
+    const channelName = groups['channelName'];
+    const eventType = groups['eventType'];
+    const appName = groups['appName'];
+
+    const channel = await channelsServices.getChannel({ id: channelId, name: channelName });
+    if (!channel) {
+        return await context.sendActivity(`Канал ${channelName || channelId} не найден`);
+    }
+
+    if (!isvalidAppNameForChannel(eventType, appName)) {
+        return await responseIsNotValidName(context, appName);
+    }
+
+    const eventName = `${eventType}_${appName}`;
+    await channelsServices.saveSubscription({ channelId: channel.Id, event: `${eventName}` });
+    await context.sendActivity(`Подписка на событие ${eventName} для канала ${channel.Name} успешно сохранена`);
+}
+
+function isvalidAppNameForChannel(eventType, appName) {
+    if (!appName || !eventType || !appName.length) {
+        return false;
+    }
+
+    switch (eventType) {
+        case `newrelic`:
+            return newrelicAppName.isValidName(appName);
+        case `zabbix`:
+            return zabbixAppName.isValidName(appName);
+    }
+
+    return true;
 }
 
 async function responseIsNotValidName(context, appName) {
@@ -336,43 +373,6 @@ async function getChannelsSubscriptions({ context }) {
     }
 
     await context.sendActivity(`Вы ещё не подписались ни на один канал оповещений`);
-}
-
-async function createChannelSubscription({ context, message, channelRegex, eventRegex }) {
-    const user = await getUser({ userId: context.activity.from.id });
-    const channelName = getChannelName({ message, regex: channelRegex });
-    const channelFixedName = channelName.slice(1, -1);
-
-    const channelResponse = await channelsServices.get({ name: channelFixedName });
-    if (!channelResponse || !channelResponse.length) {
-        await context.sendActivity(`Канал ${channelFixedName} не найден`);
-        return;
-    }
-
-    const channelId = channelResponse[0].Id;
-
-
-    const eventName = getEventName({ message, regx: eventRegex });
-    if (!newrelicAppName.isValidName(eventName)) {
-        return await context.sendActivity(`Название события не валидно`);
-    }
-
-    const result = await channelSubscribe({ channelId, userId: user.id, eventName });
-    if (result) {
-        await context.sendActivity(`Подписка на событие ${eventName} для канала ${channelResponse[0].Name} была сохранена успешно\n`);
-        return;
-    }
-
-    await context.sendActivity(`Ошибка при сохранении подписки`);
-}
-
-async function channelSubscribe({ channelId, userId, eventName }) {
-    if (!channelId || !userId || channelId <= 0 || userId <= 0 || !eventName || !eventName.length) {
-        return false;
-    }
-
-    await channelsServices.saveSubscription({ channelId, userId, eventName });
-    return true;
 }
 
 async function sendHelp({ context }) {
