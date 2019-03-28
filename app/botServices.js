@@ -187,7 +187,7 @@ async function sendList ({ context }) {
 
 async function sendHelp ({ context }) {
     await context.sendActivity(
-        '\\help - 1описание всех доступных команд\n' +
+        '\\help - описание всех доступных команд\n' +
         '\n' +
         '\\add_deploy_box** - подписаться на событие deploy для бокса\n' +
         '\\remove_deploy_box** - удалить подписку на событие deploy для бокса\n' +
