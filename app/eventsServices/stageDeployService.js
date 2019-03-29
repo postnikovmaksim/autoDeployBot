@@ -8,6 +8,7 @@ module.exports = {
     async stageDeployEvent ({ req }) {
         const request = JSON.parse(new Buffer.from(req.body.data, 'base64').toString('utf8'));
 
+        const errors = [];
         const result = joinFrontAndBack(request)
             .map(({ name, status, changes }) => {
                 if (status === SUCCESS) {
@@ -16,11 +17,12 @@ module.exports = {
                         : null;
                 }
 
-                return `(fire)**${name}: произошла ошибка**`
+                errors.push(`(fire)**${name}: произошла ошибка**\n${getChangesString(changes)}\n`);
+                return null;
             }).filter(app => !!app);
 
         const timeStump = moment().format(formatDate);
-        const message = `${timeStump} StageDeploy\n${result.join(`\n`)}`;
+        const message = `${timeStump} StageDeploy\n${errors.join('\n')}${result.join(`\n`)}`;
 
         console.log(message);
         sendMessage({ message, eventName: `deploy_stage` });
