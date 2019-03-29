@@ -1,5 +1,4 @@
 const { sendMessage } = require('../dialogServices');
-const { sendToChannels } = require('./channelsSenderService');
 
 module.exports = {
     async newrelicEvent ({ req }) {
@@ -12,7 +11,5 @@ module.exports = {
 
         sendMessage({ message, eventName: `newrelic_${applicationName}` });
         sendMessage({ message, eventName: `newrelic_all` });
-        sendToChannels({ message, eventName: `newrelic_${applicationName}`});
-        sendToChannels({ message, eventName: `newrelic_all`});
     }
 };

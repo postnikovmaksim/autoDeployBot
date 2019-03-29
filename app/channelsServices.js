@@ -7,30 +7,35 @@ module.exports = {
     },
 
     async createChannel({ channelName }) {
-        await createChannel({ channelName });
+        if (!channelName) {
+            throw new Error("createChannel: channelName can't be null");
+        }
+
+        return await createChannel({ channelName });
     },
 
     async subscribeChannel({ channelId, userId }) {
-        if (channelId && userId) {
-            return await subscribeById({ channelId, userId });
+        if (!channelId || !userId) {
+            new Error("subscribeChannel: channelId or userId can't be null");
         }
+
+        return await subscribeById({ channelId, userId });
     },
 
     async unsubscribeChannelById({ channelId, userId }) {
-        if (channelId && userId) {
-            return await unsubscribeChannelById({ channelId, userId });
+        if (!channelId || !userId) {
+            throw new Error("unsubscribeChannelById: channelId or userId can't be null");
         }
+
+        return await unsubscribeChannelById({ channelId, userId });
     },
 
     async getSubscribedChannels({ userId }) {
-        if (userId) {
-            return await getSubscribedChannels({ userId });
+        if (!userId) {
+            new Error("getSubscribedChannels: userId can't be null");
         }
-    },
 
-    async getUserIds({ eventName }) {
-        const userIds = await getUserIds({ eventName });
-        return userIds.map(u => u.userId);
+        return await getSubscribedChannels({ userId });
     },
 
     async get({ id, name }) {
@@ -59,7 +64,7 @@ module.exports = {
     },
 
     async removeSubscription({ channelId, eventName }) {
-        if (!channelId || !eventName ) {
+        if (!channelId || !eventName) {
             throw new Error('removeSubscription: channelId or eventName cannot be null/undefined');
         }
 
@@ -67,11 +72,16 @@ module.exports = {
     },
 
     async removeAllSubscriptionByType({ channelId, eventType }) {
-        if (!channelId || !eventType ) {
+        if (!channelId || !eventType) {
             throw new Error('removeAllSubscriptionByType: channelId or eventType cannot be null/undefined');
         }
 
         await removeByEventType({ channelId, eventType });
+    },
+
+    async getSubscribedUsersId({ eventName }) {
+        const userIds = await getUserIds({ eventName });
+        return userIds.map(u => u.id);
     }
 };
 
@@ -113,7 +123,7 @@ function get({ id, name }) {
 
 function getSubsciption({ channelId, eventName }) {
     if (!channelId && !eventName) {
-        throw new Error("ChannelID and eventName can't be undefined at the same time");
+        throw new Error("ChannelId and eventName can't be undefined at the same time");
     }
 
     let sql = `select channelId, eventName from channelsSubscriptions where channelId = ${channelId} and eventName = '${eventName}'`;
@@ -131,18 +141,27 @@ function getChannelSubsciptions({ channelId }) {
         throw new Error("channelId cant be null/undefined");
     }
     let sql = `select channelId, eventName from channelssubscriptions where channelId = ${channelId}`
-    
+
     return query({ sqlString: sql });
 }
 
 function removeSubscription({ channelId, eventName }) {
     let sql = `delete from channelsSubscriptions where channelId = ${channelId} and eventName = '${eventName}'`;
 
-    return query({sqlString: sql });
+    return query({ sqlString: sql });
 }
 
 function removeByEventType({ channelId, eventType }) {
     let sql = `delete from channelsSubscriptions where channelId = ${channelId} and eventName like '${eventType}%'`;
+
+    return query({ sqlString: sql });
+}
+
+function getUserIds({ eventName }) {
+    let sql = `select distinct(u.id) from messenger_bot.channelssubscriptions cs
+                    join channelsusers cu on cu.channelId = cs.channelId
+                    join users u on cu.UserId = u.Id
+                    where cs.eventName = '${eventName}';`;
 
     return query({ sqlString: sql });
 }

@@ -1,6 +1,5 @@
 const moment = require('moment');
 const { sendMessage } = require('../dialogServices');
-const { sendToChannels } = require('./channelsSenderService');
 
 module.exports = {
     async autoDeployEvent ({ req }) {
@@ -20,7 +19,6 @@ module.exports = {
             (buildResult === 'failed' ? `\n ${buildStatusUrl}` : '');
 
         sendMessage({ message, eventName: `deploy_${buildTarget}` });
-        sendToChannels({ message, eventName: `deploy_${buildTarget}` });
     }
 };
 
