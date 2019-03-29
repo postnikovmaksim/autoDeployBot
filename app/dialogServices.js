@@ -15,7 +15,7 @@ module.exports = {
         const allIds = [...ids, ...userIdsFromChannels];
         const allUniqIds = [...new Set(allIds)]
 
-        const reference = await getReference({ allUniqIds });
+        const reference = await getReference({ ids: allUniqIds });
         asyncForEach(reference, async reference => {
             await adapter.continueConversation(reference, async (context) => {
                 try {
