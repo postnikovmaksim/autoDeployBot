@@ -28,6 +28,7 @@ server.post('/api/messages', (req, res, next) => {
 server.post('/event/deploy', async (req, res, next) => {
     try {
         await autoDeployEvent({ req });
+        res.send(200);
     } catch (e) {
         next(e);
     }
@@ -36,6 +37,7 @@ server.post('/event/deploy', async (req, res, next) => {
 server.post('/event/stageDeploy', async (req, res, next) => {
     try {
         await stageDeployEvent({ req });
+        res.send(200);
     } catch (e) {
         next(e);
     }
@@ -44,6 +46,7 @@ server.post('/event/stageDeploy', async (req, res, next) => {
 server.post('/event/newrelic', async (req, res, next) => {
     try {
         await newrelicEvent({ req });
+        res.send(200);
     } catch (e) {
         next(e);
     }
@@ -52,6 +55,7 @@ server.post('/event/newrelic', async (req, res, next) => {
 server.post('/event/master_auto_complete', async (req, res, next) => {
     try {
         await consoleEvent({ req });
+        res.send(200);
     } catch (e) {
         next(e);
     }
@@ -60,6 +64,7 @@ server.post('/event/master_auto_complete', async (req, res, next) => {
 server.post('/event/zabbix', async (req, res, next) => {
     try {
         await zabbixEvent({ req });
+        res.send(200);
     } catch (e) {
         next(e);
     }
@@ -68,6 +73,7 @@ server.post('/event/zabbix', async (req, res, next) => {
 server.get('/event/test', async (req, res, next) => {
     try {
         await testMessageEvent({ req });
+        res.send(200);
     } catch (e) {
         next(e);
     }
@@ -80,7 +86,7 @@ server.get('/awakening', async (req, res) => {
 
 // из-за ограничений тарифа, бот постоянно выгружается из памяти, что приводит к потере запросов.
 // будем будить бота по таймеру
-function awakening () {
+function awakening() {
     setInterval(() => request.get({ uri: `${process.env.selfUrl}/awakening` }), 60000)
 }
 
