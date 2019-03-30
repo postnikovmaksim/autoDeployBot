@@ -82,6 +82,14 @@ module.exports = {
     async getSubscribedUsersId({ eventName }) {
         const userIds = await getUserIds({ eventName });
         return userIds.map(u => u.id);
+    },
+
+    async deleteChannel({ channelId }) {
+        if (!channelId) {
+            throw new Error('deleteChannel: channelId cannot be null/undefined');
+        }
+
+        return await finallyDeleteChannel({ channelId });
     }
 };
 
@@ -92,6 +100,15 @@ function getAll() {
 
 function createChannel({ channelName }) {
     let sql = `insert into channels (Name) values ('${channelName}')`;
+    return query({ sqlString: sql });
+}
+
+//удаление через джоин не завелось :(
+function finallyDeleteChannel({ channelId }) {
+    let sql = ` delete from channelssubscriptions where channelId = ${channelId}; 
+                delete from channelsusers where channelId = ${channelId};
+                delete from channels where id = ${channelId}`;
+    
     return query({ sqlString: sql });
 }
 
