@@ -10,18 +10,19 @@ const listUserChannelsRegex = /\\list_my_channels$/;
 // \12_show_events или \"channelName"_show_events
 const listEventsByChanelRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_list_events$/i;
 
-const createRegx = /\\create_channel_"(?<channelName>\S+)"$/i;
-const subscribeRegex = /\\subscribe_channel_((?<channelId>\d+)|("(?<channelName>\S+)"))$/i;
-const unsubscribeRegex = /\\unsubscribe_channel_((?<channelId>\d+)|("(?<channelName>\S+)"))$/i;
+const createChannelRegx = /\\create_channel_(\"|&quot;)(?<channelName>\S+)(\"|&quot;)$/i;
+const createRegx = /\\create_channel_("|&quot;)(?<channelName>\S+)("|&quot;)$/i;
+const subscribeRegex = /\\subscribe_channel_((?<channelId>\d+)|(("|&quot;)(?<channelName>\S+)("|&quot;)))$/i;
+const unsubscribeRegex = /\\unsubscribe_channel_((?<channelId>\d+)|(("|&quot;)(?<channelName>\S+)("|&quot;)))$/i;
 
 // eventType мб несколько раз, но для newrelic и zabbix есть валидация, подумаю об улучшении регулярки
 // \"testChannel"_add_zabbix_OfficeWebApp
 // \1_add_newrelic_OfficeWebApp
-const addEventInChannelRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_add_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
+const addEventInChannelRegex = /\\((?<channelId>\d+)|(("|&quot;)(?<channelName>\D\S+))("|&quot;))_add_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
 
 // \"testChannel"_remove_zabbix_OfficeWebApp
 // \1_remove_newrelic_OfficeWebApp
-const removeEventInChannelRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_remove_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
+const removeEventInChannelRegex = /\\((?<channelId>\d+)|(("|&quot;)(?<channelName>\D\S+))("|&quot;))_remove_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
 
 // todo прикрутить удаление каналов?
 // const removeChannelRegex = /\\i_swear_i_want_to_delete_channel_((?<channelId>\d+)|("(?<channelName>\D\S+))")$/i;
