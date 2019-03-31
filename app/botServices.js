@@ -227,10 +227,11 @@ async function sendList ({ context, channelId }) {
         ? await channelsServices.getSubscribedEventsName({ channelId })
         : await subscriptionsServices.getSubscriptions({ userId: user.id });
 
-    const deploySubscriptions = subscriptions.filter(s => !!s.match(deployBoxRegx));
-    const newrelicSubscriptions = subscriptions.filter(s => !!s.match(newrelicRegx));
-    const zabbixSubscriptions = subscriptions.filter(s => !!s.match(zabbixRegx));
-    const outherSubscriptions = subscriptions.filter(s => !s.match(deployBoxRegx) && !s.match(newrelicRegx) && !s.match(zabbixRegx));
+    const eventNames = subscriptions.map(s => s.eventName);
+    const deploySubscriptions = eventNames.filter(s => !!s.match(deployBoxRegx));
+    const newrelicSubscriptions = eventNames.filter(s => !!s.match(newrelicRegx));
+    const zabbixSubscriptions = eventNames.filter(s => !!s.match(zabbixRegx));
+    const outherSubscriptions = eventNames.filter(s => !s.match(deployBoxRegx) && !s.match(newrelicRegx) && !s.match(zabbixRegx));
 
     let result = '';
 
