@@ -16,9 +16,8 @@ module.exports = {
         return result.map(r => r.userId);
     },
 
-    async getSubscriptions ({ userId }) {
-        const result = await get({ userId });
-        return result.map(r => r.eventName);
+    async getSubscriptions ({ userId, eventPrefix }) {
+        return get({ userId, eventPrefix });
     },
 
     async removeSubscriptions ({ userId, eventName }) {
@@ -43,10 +42,11 @@ function save ({ userId, eventName }) {
     return query({ sqlString: sql });
 }
 
-function get ({ userId, eventName }) {
+function get ({ userId, eventName, eventPrefix }) {
     let sql = `select * from userssubscriptions where 1 = 1`;
     userId && (sql += ` and userId = '${userId}'`);
     eventName && (sql += ` and eventName = '${eventName}'`);
+    eventPrefix && (sql += ` and eventName like '${eventPrefix}%'`);
 
     return query({ sqlString: sql });
 }
