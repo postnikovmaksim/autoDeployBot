@@ -10,7 +10,6 @@ const listUserChannelsRegex = /\\list_my_channels$/;
 // \12_show_events или \"channelName"_show_events
 const listEventsByChanelRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_list_events$/i;
 
-const createChannelRegx = /\\create_channel_(\"|&quot;)(?<channelName>\S+)(\"|&quot;)$/i;
 const createRegx = /\\create_channel_("|&quot;)(?<channelName>\S+)("|&quot;)$/i;
 const subscribeRegex = /\\subscribe_channel_((?<channelId>\d+)|(("|&quot;)(?<channelName>\S+)("|&quot;)))$/i;
 const unsubscribeRegex = /\\unsubscribe_channel_((?<channelId>\d+)|(("|&quot;)(?<channelName>\S+)("|&quot;)))$/i;
@@ -25,7 +24,7 @@ const addEventInChannelRegex = /\\((?<channelId>\d+)|(("|&quot;)(?<channelName>\
 const removeEventInChannelRegex = /\\((?<channelId>\d+)|(("|&quot;)(?<channelName>\D\S+))("|&quot;))_remove_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
 
 // todo прикрутить удаление каналов?
-// const removeChannelRegex = /\\i_swear_i_want_to_delete_channel_((?<channelId>\d+)|("(?<channelName>\D\S+))")$/i;
+// const removeChannelRegex = /\\i_swear_i_want_to_delete_channel_((?<channelId>\d+)|(("|&quot;)(?<channelName>\D\S+))("|&quot;))$/i;
 
 module.exports = {
     async search ({ context, userId, message }) {
