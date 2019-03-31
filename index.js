@@ -8,6 +8,7 @@ const { newrelicEvent } = require('./app/eventsServices/newrelicServices');
 const { consoleEvent } = require('./app/eventsServices/masterAutoCompleteServices');
 const { zabbixEvent } = require('./app/eventsServices/zabbixService');
 const { testMessageEvent } = require('./app/eventsServices/testMessageService');
+const { timeReportTask } = require('./app/taskServices/timeReportServices');
 
 server.listen(port, () => {
     console.log(`\n${server.name} listening to ${server.url}`);
@@ -91,3 +92,5 @@ function awakening() {
 }
 
 (() => awakening())();
+
+(() => timeReportTask())();
