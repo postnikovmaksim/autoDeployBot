@@ -1,16 +1,37 @@
 const _ = require('underscore');
 const moment = require('moment');
 const request = require('request-promise-native');
-const { getSubscriptions } = require('./../subscriptionsServices');
-const { sendMessageByUserId } = require('./../dialogServices');
+const { getSubscriptions, saveSubscriptions, removeSubscriptions } = require('./../subscriptionsServices');
 const { saveError } = require('./../logService');
 const WeekDay = require('./../enums/WeekDay');
+
+const addRegx = /\\add_timeReport_\S+/;
+const removeRegx = /\\remove_timeReport_\S+/;
+const eventRegx = /timeReport_\S+/;
 
 const username = 'restapi';
 const password = 'aCkko5IQWxRZl3ROtppxRHReCdZMSQDd';
 const sendTime = moment({ hours: 10, minutes: 0 });
 
 module.exports = {
+    async search ({ context, userId, message }) {
+        if (message.search(addRegx) === 0) {
+            const eventName = message.match(eventRegx)[0];
+            await saveSubscriptions({ userId, eventName });
+            await context.sendActivity(`Включена подписка на событие ${eventName}`);
+            return true;
+        }
+
+        if (message.search(removeRegx) === 0) {
+            const eventName = message.match(eventRegx)[0];
+            await removeSubscriptions({ userId, eventName });
+            await context.sendActivity(`Удалена подписка на событие ${eventName}`);
+            return true;
+        }
+
+        return false;
+    },
+
     async timeReportTask () {
         try {
             const now = moment();

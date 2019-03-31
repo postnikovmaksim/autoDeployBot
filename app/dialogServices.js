@@ -1,38 +1,31 @@
 const { adapter } = require('./../botFrameworkServices');
-const { getReference, updateReference } = require('./userServices');
-const { getUserIds } = require('./subscriptionsServices');
+const { getReference, updateReference, getUser } = require('./userServices');
+const subscriptionsServices = require('./subscriptionsServices');
+const channelsServices = require('./channelsServices');
 const { asyncForEach } = require('./utils');
-const { getSubscribedUsersId } = require('./channelsServices');
 
 module.exports = {
     async sendMessage ({ message, eventName }) {
-        const ids = await getUserIds({ eventName }) || [];
-        const userIdsFromChannels = await getSubscribedUsersId({ eventName }) || [];
+        const idsByEvent = await subscriptionsServices.getUserIds({ eventName }) || [];
+        const idsByChannel = await channelsServices.getUserIds({ eventName }) || [];
 
-        if (!ids.length && !userIdsFromChannels.length) {
+        if (!idsByEvent.length && !idsByChannel.length) {
             return;
         }
-        const allIds = [...ids, ...userIdsFromChannels];
+
+        const allIds = [...idsByEvent, ...idsByChannel];
         const allUniqIds = [...new Set(allIds)];
 
-        await send({ message, ids: allUniqIds });
-    },
-
-    async sendMessageByUserId ({ message, userId }) {
-        await send({ message, ids: [userId] });
+        const reference = await getReference({ ids: allUniqIds });
+        asyncForEach(reference, async reference => {
+            await adapter.continueConversation(reference, async (context) => {
+                try {
+                    const reply = await context.sendActivity(message);
+                    updateReference({ context, reply });
+                } catch (e) {
+                    console.log(e);
+                }
+            })
+        });
     }
 };
-
-async function send ({ message, ids }) {
-    const reference = await getReference({ ids });
-    asyncForEach(reference, async reference => {
-        await adapter.continueConversation(reference, async (context) => {
-            try {
-                const reply = await context.sendActivity(message);
-                updateReference({ context, reply });
-            } catch (e) {
-                console.log(e);
-            }
-        })
-    })
-}

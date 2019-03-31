@@ -43,22 +43,37 @@ module.exports = {
 };
 
 function get ({ ids }) {
-    let sql = 'select * from users where 1 = 1';
+    let sql = `select id,
+                user_id as userId,
+                user_name as userName,
+                activity
+                from users 
+                where 1 = 1`;
     ids && ids.length && (sql += ` and id in (${ids.join(',')})`);
-
     return query({ sqlString: sql })
 }
 
 async function getUser ({ userId }) {
-    return query({ sqlString: `select * from users where userId = '${userId}'` });
+    let sql = `select id,
+                user_id as userId,
+                user_name as userName,
+                activity
+                from users 
+                where user_id = '${userId}'`;
+    return query({ sqlString: sql });
 }
 
 async function saveUser ({ userId, name, activity }) {
-    const sql = `insert into users (userId, userName, activity) values ('${userId}', '${name}', '${activity}')`;
+    const sql = `insert into users 
+                (user_id, user_name, activity) 
+                values ('${userId}', '${name}', '${activity}')`;
     return query({ sqlString: sql });
 }
 
 async function updateUser ({ userId, name, activity }) {
-    const sql = `update users set activity = '${activity}', userName = '${name}' where userId = '${userId}'`;
+    const sql = `update users set 
+                activity = '${activity}', 
+                user_name = '${name}' 
+                where user_id = '${userId}'`;
     return query({ sqlString: sql });
 }

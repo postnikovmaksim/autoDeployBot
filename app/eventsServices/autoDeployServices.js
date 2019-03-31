@@ -1,7 +1,38 @@
 const moment = require('moment');
 const { sendMessage } = require('../dialogServices');
+const { saveSubscriptions, removeSubscriptions, removeAllTypeSubscriptions } = require('../subscriptionsServices');
+
+const addRegx = /\\add_deploy_\S+/;
+const removeRegx = /\\remove_deploy_\S+/;
+const removeAllRegx = /\\remove_all_deploy/;
+const eventRegx = /deploy_\S+/;
 
 module.exports = {
+    async search ({ context, userId, message }) {
+        if (message.search(addRegx) === 0) {
+            const eventName = message.match(eventRegx)[0];
+            await saveSubscriptions({ userId, eventName });
+            await context.sendActivity(`Включена подписка на событие ${eventName}`);
+            return true;
+        }
+
+        if (message.search(removeRegx) === 0) {
+            const eventName = message.match(eventRegx)[0];
+            await removeSubscriptions({ userId, eventName });
+            await context.sendActivity(`Удалена подписка на событие ${eventName}`);
+            return true;
+        }
+
+        if (message.search(removeAllRegx) === 0) {
+            const eventName = message.match(eventRegx)[0];
+            await removeAllTypeSubscriptions({ userId, like: 'deploy_' });
+            await context.sendActivity(`Удалена подписка на событие ${eventName}`);
+            return true;
+        }
+
+        return false;
+    },
+
     async autoDeployEvent ({ req }) {
         const {
             teamcityProperties,

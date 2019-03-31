@@ -1,181 +1,323 @@
+const newrelicAppName = require('./eventsName/newrelicAppName');
+const zabbixAppName = require('./eventsName/zabbixAppName');
+const EventType = require('./enums/EventType');
 const { query } = require('./mysqlServices');
+const { getUser } = require('./userServices');
+
+const helpRegex = /\\help_channels$/i;
+const listRegex = /\\list_channels$/i;
+const listUserChannelsRegex = /\\list_my_channels$/;
+// \12_show_events или \"channelName"_show_events
+const listEventsByChanelRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_list_events$/i;
+
+const createRegx = /\\create_channel_"(?<channelName>\S+)"$/i;
+const subscribeRegex = /\\subscribe_channel_((?<channelId>\d+)|("(?<channelName>\S+)"))$/i;
+const unsubscribeRegex = /\\unsubscribe_channel_((?<channelId>\d+)|("(?<channelName>\S+)"))$/i;
+
+// eventType мб несколько раз, но для newrelic и zabbix есть валидация, подумаю об улучшении регулярки
+// \"testChannel"_add_zabbix_OfficeWebApp
+// \1_add_newrelic_OfficeWebApp
+const addEventInChannelRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_add_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
+
+// \"testChannel"_remove_zabbix_OfficeWebApp
+// \1_remove_newrelic_OfficeWebApp
+const removeEventInChannelRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_remove_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
+
+// todo прикрутить удаление каналов?
+// const removeChannelRegex = /\\i_swear_i_want_to_delete_channel_((?<channelId>\d+)|("(?<channelName>\D\S+))")$/i;
 
 module.exports = {
-    async getChannels () {
-        return await getAll();
-    },
-
-    async createChannel ({ channelName }) {
-        if (!channelName) {
-            throw new Error("createChannel: channelName can't be null");
+    async search ({ context, userId, message }) {
+        if (message.search(helpRegex) === 0) {
+            await context.sendActivity(getHelpMessage());
+            return true;
         }
 
-        return await createChannel({ channelName });
-    },
+        if (message.search(listRegex) === 0) {
+            const channels = await getChannels({});
+            const text = !channels || !channels.length
+                ? `Ни одного канала не найдено. Создайте первый`
+                : channels.map(c => `id: ${c.id} name: ${c.name}`).join(`\n`);
 
-    async subscribeChannel ({ channelId, userId }) {
-        if (!channelId || !userId) {
-            new Error("subscribeChannel: channelId or userId can't be null");
+            await context.sendActivity(text);
+            return true;
         }
 
-        return await subscribeById({ channelId, userId });
-    },
+        if (message.search(listUserChannelsRegex) === 0) {
+            const user = await getUser({ userId });
+            const channels = await getChannelsByUser({ userId: user.id });
 
-    async unsubscribeChannelById ({ channelId, userId }) {
-        if (!channelId || !userId) {
-            throw new Error("unsubscribeChannelById: channelId or userId can't be null");
+            if (channels && channels.length) {
+                let text = channels.map(c => `id: ${c.id} name: ${c.name}`).join(`\n`);
+                await context.sendActivity(`Ваши подписки на каналы:\n ${text}`);
+            } else {
+                await context.sendActivity(`Вы ещё не подписались ни на один канал оповещений`);
+            }
+
+            return true;
         }
 
-        return await unsubscribeChannelById({ channelId, userId });
-    },
+        if (message.search(listEventsByChanelRegex) === 0) {
+            const groups = listEventsByChanelRegex.exec(message).groups;
+            const channelId = groups['channelId'];
+            const channelName = groups['channelName'];
 
-    async getSubscribedChannels ({ userId }) {
-        if (!userId) {
-            new Error("getSubscribedChannels: userId can't be null");
+            const channels = await getChannels({ id: channelId, name: channelName });
+            if (!channels) {
+                await context.sendActivity(`Канал ${channelName || channelId} не найден`);
+                return true;
+            }
+
+            const listEvents = await getListEvents({ channelId: channels[0].id });
+            await context.sendActivity(`Канал **${channelName || channelId}** содержит:\n${listEvents}`);
+            return true;
         }
 
-        return await getSubscribedChannels({ userId });
-    },
+        if (message.search(createRegx) === 0) {
+            if (!createRegx.test(message)) {
+                await context.sendActivity(`Некорректное название канала`);
+                return true;
+            }
 
-    async get ({ id, name }) {
-        const channels = await get({ id, name });
-        return channels;
-    },
+            const channelName = createRegx.exec(message).groups['channelName'];
+            const foundChannels = await getChannels({ name: channelName });
+            if (foundChannels && foundChannels.length) {
+                await context.sendActivity(`Канал **${channelName}** уже существует`);
+                return true;
+            }
 
-    async getChannel ({ id, name }) {
-        const result = await get({ id, name });
-        if (result && result.length) {
-            return result[0];
+            await createChannel({ name: channelName });
+            await context.sendActivity(`Канал уведомлений **${channelName}** был успешно создан`);
+            return true;
+        }
+
+        if (message.search(subscribeRegex) === 0) {
+            const regexResult = subscribeRegex.exec(message);
+            const channelId = regexResult.groups['channelId'];
+            const channelName = regexResult.groups['channelName'];
+
+            const foundChannels = await getChannels({ id: channelId, name: channelName });
+
+            if (!foundChannels || !foundChannels.length) {
+                await context.sendActivity(`Канал **${channelName || channelId}** не найден`);
+                return true;
+            }
+
+            const user = await getUser({ userId });
+            await subscribeChannel({ channelId: foundChannels[0].id, userId: user.id });
+            await context.sendActivity(`Подписка на канал **${foundChannels[0].name}** активна`);
+            return true;
+        }
+
+        if (message.search(unsubscribeRegex) === 0) {
+            const regexResult = unsubscribeRegex.exec(message);
+            const channelId = regexResult.groups['channelId'];
+            const channelName = regexResult.groups['channelName'];
+
+            const foundChannels = await getChannels({ id: channelId, name: channelName });
+
+            if (!foundChannels || !foundChannels.length) {
+                await context.sendActivity(`Канал **${channelName || channelId}** не найден`);
+                return true;
+            }
+
+            const user = await getUser({ userId });
+            await unsubscribeChannel({ channelId: foundChannels[0].id, userId: user.id });
+            await context.sendActivity(`Подписка на канал **${foundChannels[0].name}** была удалена.`);
+            return true;
+        }
+
+        if (message.search(addEventInChannelRegex) === 0) {
+            const groups = addEventInChannelRegex.exec(message).groups;
+            const channelId = groups['channelId'];
+            const channelName = groups['channelName'];
+            const eventType = groups['eventType'];
+            const appName = groups['appName'];
+            const fullEventName = `${eventType}_${appName}`;
+
+            const foundChannels = await getChannels({ id: channelId, name: channelName });
+            if (!foundChannels || !foundChannels.length) {
+                await context.sendActivity(`Канал **${channelName || channelId}** не найден`);
+                return true;
+            }
+
+            if (!isValidAppName({ eventType, appName })) {
+                await context.sendActivity(`Имя [${appName}] не валидно. Событие в канал не добавлено`);
+                return true;
+            }
+
+            await addEvent({ channelId: foundChannels[0].id, eventName: fullEventName });
+            await context.sendActivity(`Подписка на событие **${fullEventName}** для канала **${foundChannels[0].name}** успешно сохранена`);
+            return true;
+        }
+
+        if (message.search(removeEventInChannelRegex) === 0) {
+            const groups = removeEventInChannelRegex.exec(message).groups;
+            const channelId = groups['channelId'];
+            const channelName = groups['channelName'];
+            const eventType = groups['eventType'];
+            const appName = groups['appName'];
+            const fullEventName = `${eventType}_${appName}`;
+
+            const foundChannels = await getChannels({ id: channelId, name: channelName });
+            if (!foundChannels || !foundChannels.length) {
+                await context.sendActivity(`Канал **${channelName || channelId}** не найден`);
+                return true;
+            }
+
+            // todo реализовать отписку от всех собыйтий для канала (или от группы событий по префиксу)
+            // if (appName.search(/^all$/i) === 0) {
+            //     await channelsServices.removeAllSubscriptionByType({ channelId: channel.Id, eventType });
+            //     return await context.sendActivity(`Вы отписали канал **${channel.Name}** от всех событий с типом **${eventType}**.`);
+            // }
+
+            // todo добавить проверку на наичиие подписки на событие
+
+            await removeEvent({ channelId: foundChannels[0].id, eventName: fullEventName });
+            await context.sendActivity(`Вы отписали канал **${foundChannels[0].name}** от события **${fullEventName}**`);
+            return true;
         }
     },
 
-    async saveSubscription ({ channelId, event }) {
-        const subscription = await getSubsciption({ channelId, eventName: event });
-        if (!subscription || !subscription.length) {
-            await saveSub({ channelId, event });
-        }
+    async getUserIds ({ eventName }) {
+        const result = await getUserIds({ eventName });
+        return result.map(x => x.userId);
     },
 
-    async getSubscribedEventsName ({ channelId }) {
-        return getChannelSubsciptions({ channelId });
-    },
-
-    async removeSubscription ({ channelId, eventName }) {
-        if (!channelId || !eventName) {
-            throw new Error('removeSubscription: channelId or eventName cannot be null/undefined');
-        }
-
-        return await removeSubscription({ channelId, eventName });
-    },
-
-    async removeAllSubscriptionByType ({ channelId, eventType }) {
-        if (!channelId || !eventType) {
-            throw new Error('removeAllSubscriptionByType: channelId or eventType cannot be null/undefined');
-        }
-
-        await removeByEventType({ channelId, eventType });
-    },
-
-    async getSubscribedUsersId ({ eventName }) {
-        const userIds = await getUserIds({ eventName });
-        return userIds.map(u => u.id);
-    },
-
-    async deleteChannel ({ channelId }) {
-        if (!channelId) {
-            throw new Error('deleteChannel: channelId cannot be null/undefined');
-        }
-
-        return await finallyDeleteChannel({ channelId });
+    async getChannels ({ userId }) {
+        return getChannelsByUser({ userId });
     }
 };
 
-function getAll () {
-    let sql = `select Id, Name from channels`;
-    return query({ sqlString: sql });
+function isValidAppName ({ eventType, appName }) {
+    switch (eventType) {
+    case EventType.newrelic:
+        return newrelicAppName.isValidName(appName);
+    case EventType.zabbix:
+        return zabbixAppName.isValidName(appName);
+    }
+
+    return false;
 }
 
-function createChannel ({ channelName }) {
-    let sql = `insert into channels (Name) values ('${channelName}')`;
-    return query({ sqlString: sql });
+async function getListEvents ({ channelId }) {
+    const subscriptions = await getEvents({ channelId });
+    const eventNames = subscriptions.map(s => s.eventName);
+    const newrelicSubscriptions = eventNames.filter(s => s.indexOf(EventType.newrelic) >= 0);
+    const zabbixSubscriptions = eventNames.filter(s => s.indexOf(EventType.zabbix) >= 0);
+
+    let result = '';
+
+    if (newrelicSubscriptions.length) {
+        result += '**newrelic**:\n';
+        result += `${newrelicSubscriptions.map(eventName => `${eventName}`).join(`\n`)}\n`;
+    }
+
+    if (zabbixSubscriptions.length) {
+        result += '**zabbix**:\n';
+        result += `${zabbixSubscriptions.map(eventName => `${eventName}`).join(`\n`)}\n`;
+    }
+
+    return result || `Нет подписок`;
 }
 
-// удаление через джоин не завелось :(
-function finallyDeleteChannel ({ channelId }) {
-    let sql = ` delete from channelssubscriptions where channelId = ${channelId}; 
-                delete from channelsusers where channelId = ${channelId};
-                delete from channels where id = ${channelId}`;
-
-    return query({ sqlString: sql });
+function getHelpMessage () {
+    return '***Команды каналов оповещений***\n\n' +
+        'На текущий момент подписка возможна только на события newrelic и zabbix\n' +
+        '\n' +
+        '**\\list_channels** - показать все существующие каналы\n' +
+        '**\\list_my_channels** - каналы, подписка на которые активна\n' +
+        '**\\create_channel_"ChannelName"** - создать новый канал (кавычки обязательны, без пробелов)\n' +
+        '**\\subscribe_channel_{id}** - подписаться на канал по Id\n' +
+        '**\\subscribe_channel_"ChannelName"** - подписаться на канал по названию\n' +
+        '**\\{id}_list_events** - отобразить список подписок канала по Id\n' +
+        '**\\"ChannelName"_list_events** - то же, но по названию канала\n' +
+        '\n' +
+        '***Добавление подписки на событие для каналов***:\n\n' +
+        'к шаблону добавляется название (в кавычках) или Id канала:\n' +
+        '**\\"ChannelName"_add_newrelic_Test** или \n ' +
+        '**\\{id}_add_newrelic_Test**\n' +
+        '\n' +
+        '***Отписка канала от события***\n\n' +
+        '**\\\\"channelName"_remove_zabbix_nameApplication** - отписка канала от события по имени канала\n' +
+        '**\\\\id_remove_zabbix_all** - удалить все подписки на события из zabbix для канала по id\n' +
+        '**\\\\"Test"_remove_newrelic_TestApp** - удалить подписку на событие newrelic_TestApp для канала Test\n' +
+        '**\\\\"Test"_remove_newrelic_all** - удалить все подписки на события из newrelic для канала Test\n';
 }
 
-function subscribeById ({ channelId, userId }) {
-    let sql = `insert ignore into channelsusers (channelId, userId) value (${channelId}, ${userId})`;
-    return query({ sqlString: sql });
-}
-
-function unsubscribeChannelById ({ channelId, userId }) {
-    let sql = `delete from channelsusers where userId = ${userId} and channelId = ${channelId}`;
-    return query({ sqlString: sql });
-}
-
-function getSubscribedChannels ({ userId }) {
-    let sql = `select ch.Id as Id, ch.Name as Name from channels ch 
-                join channelsusers cu on cu.channelId = ch.id
-                where cu.userId = ${userId} 
-                order by ch.Id`;
-    return query({ sqlString: sql });
-}
-
-function get ({ id, name }) {
-    let sql = `select Id, Name from channels where 1=1`;
-    id && id > 0 && (sql += ` and id = ${id}`);
+// Обращения к базе, вынести отдельно
+async function getChannels ({ id, name }) {
+    let sql = `select 
+                id, 
+                name 
+                from channels 
+                where 1 = 1`;
+    id && (sql += ` and id = '${id}'`);
     name && (sql += ` and name = '${name}'`);
-
     return query({ sqlString: sql });
 }
 
-function getSubsciption ({ channelId, eventName }) {
-    if (!channelId && !eventName) {
-        throw new Error("ChannelId and eventName can't be undefined at the same time");
-    }
-
-    let sql = `select channelId, eventName from channelsSubscriptions where channelId = ${channelId} and eventName = '${eventName}'`;
+function createChannel ({ name }) {
+    let sql = `insert into channels 
+                (name) 
+                values ('${name}')`;
     return query({ sqlString: sql });
 }
 
-function saveSub ({ channelId, event }) {
-    let sql = `insert channelssubscriptions (channelId, eventName) value (${channelId}, '${event}')`
-
+function subscribeChannel ({ channelId, userId }) {
+    let sql = `insert into channels_users 
+                (channel_id, user_id) 
+                value (${channelId}, ${userId})`;
     return query({ sqlString: sql });
 }
 
-function getChannelSubsciptions ({ channelId }) {
-    if (!channelId) {
-        throw new Error('channelId cant be null/undefined');
-    }
-    let sql = `select channelId, eventName from channelssubscriptions where channelId = ${channelId}`
-
+function unsubscribeChannel ({ channelId, userId }) {
+    let sql = `delete 
+                from channels_users
+                where channel_id = ${channelId}
+                and user_id = ${userId}`;
     return query({ sqlString: sql });
 }
 
-function removeSubscription ({ channelId, eventName }) {
-    let sql = `delete from channelsSubscriptions where channelId = ${channelId} and eventName = '${eventName}'`;
-
+function getChannelsByUser ({ userId }) {
+    let sql = `select 
+                ch.id as id, 
+                ch.name as name 
+                from channels as ch 
+                join channels_users as cu on cu.channel_id = ch.id
+                where cu.user_id = ${userId} 
+                order by ch.id`;
     return query({ sqlString: sql });
 }
 
-function removeByEventType ({ channelId, eventType }) {
-    let sql = `delete from channelsSubscriptions where channelId = ${channelId} and eventName like '${eventType}%'`;
+function addEvent ({ channelId, eventName }) {
+    let sql = `insert into channels_subscriptions 
+                (channel_id, event_name) 
+                value (${channelId}, '${eventName}')`;
+    return query({ sqlString: sql });
+}
 
+function removeEvent ({ channelId, eventName }) {
+    let sql = `delete 
+                from channels_subscriptions 
+                where channel_id = ${channelId} 
+                and event_name = '${eventName}'`;
+    return query({ sqlString: sql });
+}
+
+function getEvents ({ channelId }) {
+    let sql = `select 
+                event_name as eventName 
+                from channels_subscriptions 
+                where channel_id = ${channelId}`;
     return query({ sqlString: sql });
 }
 
 function getUserIds ({ eventName }) {
-    let sql = `select distinct(u.id) from messenger_bot.channelssubscriptions cs
-                    join channelsusers cu on cu.channelId = cs.channelId
-                    join users u on cu.UserId = u.Id
-                    where cs.eventName = '${eventName}';`;
-
+    let sql = `select 
+                distinct(cu.user_id) as userId
+                from channels_subscriptions as cs
+                join channels_users as cu on cu.channel_id = cs.channel_id
+                where cs.event_name = '${eventName}'`;
     return query({ sqlString: sql });
 }

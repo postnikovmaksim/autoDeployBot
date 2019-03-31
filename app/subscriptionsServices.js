@@ -37,32 +37,41 @@ module.exports = {
 };
 
 function save ({ userId, eventName }) {
-    const sql = `insert into userssubscriptions (userId, eventName) values ('${userId}', '${eventName}')`;
-
+    const sql = `insert into users_subscriptions 
+                (user_id, event_name) 
+                values ('${userId}', '${eventName}')`;
     return query({ sqlString: sql });
 }
 
 function get ({ userId, eventName, eventPrefix }) {
-    let sql = `select * from userssubscriptions where 1 = 1`;
-    userId && (sql += ` and userId = '${userId}'`);
-    eventName && (sql += ` and eventName = '${eventName}'`);
-    eventPrefix && (sql += ` and eventName like '${eventPrefix}%'`);
+    let sql = `select id,
+                user_id as userId,
+                event_name as eventName
+                from users_subscriptions 
+                where 1 = 1`;
+    userId && (sql += ` and user_id = '${userId}'`);
+    eventName && (sql += ` and event_name = '${eventName}'`);
+    eventPrefix && (sql += ` and event_name like '${eventPrefix}%'`);
 
     return query({ sqlString: sql });
 }
 
 function remove ({ userId, eventName }) {
-    let sql = `delete from userssubscriptions where 1 = 1`;
-    userId && (sql += ` and userId = '${userId}'`);
-    eventName && (sql += ` and eventName = '${eventName}'`);
+    let sql = `delete 
+                from users_subscriptions 
+                where 1 = 1`;
+    userId && (sql += ` and user_id = '${userId}'`);
+    eventName && (sql += ` and event_name = '${eventName}'`);
 
     return query({ sqlString: sql });
 }
 
 function removeByType ({ userId, like }) {
-    let sql = `delete from userssubscriptions where 1 = 1`;
-    userId && (sql += ` and userId = '${userId}'`);
-    like && (sql += ` and eventName like '%${like}%'`);
+    let sql = `delete 
+                from users_subscriptions 
+                where 1 = 1`;
+    userId && (sql += ` and user_id = '${userId}'`);
+    like && (sql += ` and event_name like '%${like}%'`);
 
     return query({ sqlString: sql });
 }

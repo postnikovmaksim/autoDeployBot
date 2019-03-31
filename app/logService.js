@@ -4,7 +4,9 @@ const { queryWithParams } = require('./mysqlServices');
 module.exports = {
     async saveRequest ({ url, json }) {
         await queryWithParams({
-            sqlString: `insert into requests (url, date, json) values ('${url}', '${getDate()}', ?)`,
+            sqlString: `insert into requests 
+                        (url, date, json) 
+                        values ('${url}', '${getDate()}', ?)`,
             values: [json]
         });
     },
@@ -16,7 +18,9 @@ module.exports = {
         });
 
         await queryWithParams({
-            sqlString: `insert into errors (url, date, json) values ('${url}', '${getDate()}', ?)`,
+            sqlString: `insert into errors 
+                        (url, date, json) 
+                        values ('${url}', '${getDate()}', ?)`,
             values: [json]
         });
     }
