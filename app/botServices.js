@@ -14,22 +14,22 @@ const testRegx = /test/;
 
 const channelsHelpRegex = /\\help_channels$/i;
 const allChanellsRegex = /\\all_channels$/i;
-const createChannelRegx = /\\create_channel_\"(?<channelName>\S+)\"$/i;
-const subscribeToChannelByIdOrNameRegex = /\\add_channel_((?<channelId>\d+)|(\"(?<channelName>\S+)\"))$/i;
+const createChannelRegx = /\\create_channel_"(?<channelName>\S+)"$/i;
+const subscribeToChannelByIdOrNameRegex = /\\add_channel_((?<channelId>\d+)|("(?<channelName>\S+)"))$/i;
 
-const unsubscibeFromChannelRegex = /\\remove_channel_((?<channelId>\d+)|(\"(?<channelName>\S+)\"))$/i;
+const unsubscibeFromChannelRegex = /\\remove_channel_((?<channelId>\d+)|("(?<channelName>\S+)"))$/i;
 const listUserChannelsRegex = /\\my_channels$/;
 
 // \1_add_newrelic_OfficeWebApp //eventType мб несколько раз, но для newrelic и zabbix есть валидация, подумаю об улучшении регулярки
 // \"testChannel"_add_zabbix_OfficeWebApp
-const subscribeChannelToEventRegex = /\\((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")_add_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
+const subscribeChannelToEventRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_add_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
 
 // \"testChannel"_remove_zabbix_OfficeWebApp
-const unsubscribeChannelFromEventRegex = /\\((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")_remove_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
+const unsubscribeChannelFromEventRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_remove_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
 
 // \12_show_events или \"channelName"_show_events
-const showChannelEventsRegex = /\\((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")_show_events$/i;
-const removeChannelRegex = /\\i_swear_i_want_to_delete_channel_((?<channelId>\d+)|(\"(?<channelName>\D\S+))\")$/i; // todo прикрутить удаление каналов?
+const showChannelEventsRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_show_events$/i;
+const removeChannelRegex = /\\i_swear_i_want_to_delete_channel_((?<channelId>\d+)|("(?<channelName>\D\S+))")$/i; // todo прикрутить удаление каналов?
 
 class EchoBot {
     async onTurn (context) {
