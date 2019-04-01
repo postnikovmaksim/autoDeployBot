@@ -8,23 +8,23 @@ const helpRegex = /\\help_channels$/i;
 const listRegex = /\\list_channels$/i;
 const listUserChannelsRegex = /\\list_my_channels$/;
 // \12_show_events или \"channelName"_show_events
-const listEventsByChanelRegex = /\\((?<channelId>\d+)|("(?<channelName>\D\S+))")_list_events$/i;
+const listEventsByChanelRegex = /\\((?<channelId>\d+)|(("|&quot;|'|&apos;)(?<channelName>\D\S+))("|&quot;|'|&apos;))_list_events$/i;
 
-const createRegx = /\\create_channel_("|&quot;)(?<channelName>\S+)("|&quot;)$/i;
-const subscribeRegex = /\\subscribe_channel_((?<channelId>\d+)|(("|&quot;)(?<channelName>\S+)("|&quot;)))$/i;
-const unsubscribeRegex = /\\unsubscribe_channel_((?<channelId>\d+)|(("|&quot;)(?<channelName>\S+)("|&quot;)))$/i;
+const createRegx = /\\create_channel_("|&quot;|'|&apos;)(?<channelName>\S+)("|&quot;|'|&apos;)$/i;
+const subscribeRegex = /\\subscribe_channel_((?<channelId>\d+)|(("|&quot;|'|&apos;)(?<channelName>\S+)("|&quot;|'|&apos;)))$/i;
+const unsubscribeRegex = /\\unsubscribe_channel_((?<channelId>\d+)|(("|&quot;|'|&apos;)(?<channelName>\S+)("|&quot;|'|&apos;)))$/i;
 
 // eventType мб несколько раз, но для newrelic и zabbix есть валидация, подумаю об улучшении регулярки
 // \"testChannel"_add_zabbix_OfficeWebApp
 // \1_add_newrelic_OfficeWebApp
-const addEventInChannelRegex = /\\((?<channelId>\d+)|(("|&quot;)(?<channelName>\D\S+))("|&quot;))_add_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
+const addEventInChannelRegex = /\\((?<channelId>\d+)|(("|&quot;|'|&apos;)(?<channelName>\D\S+))("|&quot;|'|&apos;))_add_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
 
 // \"testChannel"_remove_zabbix_OfficeWebApp
 // \1_remove_newrelic_OfficeWebApp
-const removeEventInChannelRegex = /\\((?<channelId>\d+)|(("|&quot;)(?<channelName>\D\S+))("|&quot;))_remove_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
+const removeEventInChannelRegex = /\\((?<channelId>\d+)|(("|&quot;|'|&apos;)(?<channelName>\D\S+))("|&quot;|'|&apos;))_remove_(?<eventType>[(newrelic|zabbix)]+)_(?<appName>\S+)$/i;
 
 // todo прикрутить удаление каналов?
-// const removeChannelRegex = /\\i_swear_i_want_to_delete_channel_((?<channelId>\d+)|(("|&quot;)(?<channelName>\D\S+))("|&quot;))$/i;
+// const removeChannelRegex = /\\i_swear_i_want_to_delete_channel_((?<channelId>\d+)|(("|&quot;|'|&apos;)(?<channelName>\D\S+))("|&quot;|'|&apos;))$/i;
 
 module.exports = {
     async search ({ context, userId, message }) {
