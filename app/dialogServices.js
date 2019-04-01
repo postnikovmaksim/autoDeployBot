@@ -1,5 +1,5 @@
 const { adapter } = require('./../botFrameworkServices');
-const { getReference, updateReference, getUser } = require('./userServices');
+const { getReference, updateReference } = require('./userServices');
 const subscriptionsServices = require('./subscriptionsServices');
 const channelsServices = require('./channelsServices');
 const { asyncForEach } = require('./utils');
@@ -16,16 +16,24 @@ module.exports = {
         const allIds = [...idsByEvent, ...idsByChannel];
         const allUniqIds = [...new Set(allIds)];
 
-        const reference = await getReference({ ids: allUniqIds });
-        asyncForEach(reference, async reference => {
-            await adapter.continueConversation(reference, async (context) => {
-                try {
-                    const reply = await context.sendActivity(message);
-                    updateReference({ context, reply });
-                } catch (e) {
-                    console.log(e);
-                }
-            })
-        });
+        await send({ message, ids: allUniqIds })
+    },
+
+    async sendMessageByUserId ({ message, id }) {
+        await send({ message, ids: [id] })
     }
 };
+
+async function send ({ message, ids }) {
+    const reference = await getReference({ ids });
+    asyncForEach(reference, async reference => {
+        await adapter.continueConversation(reference, async (context) => {
+            try {
+                const reply = await context.sendActivity(message);
+                updateReference({ context, reply });
+            } catch (e) {
+                console.log(e);
+            }
+        })
+    });
+}

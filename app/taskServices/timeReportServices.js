@@ -3,6 +3,7 @@ const moment = require('moment');
 const request = require('request-promise-native');
 const { getSubscriptions, saveSubscriptions, removeSubscriptions } = require('./../subscriptionsServices');
 const { saveError } = require('./../logService');
+const { sendMessageByUserId } = require('./../dialogServices');
 const WeekDay = require('./../enums/WeekDay');
 
 const addRegx = /\\add_timeReport_\S+/;
@@ -11,7 +12,7 @@ const eventRegx = /timeReport_\S+/;
 
 const username = 'restapi';
 const password = 'aCkko5IQWxRZl3ROtppxRHReCdZMSQDd';
-const sendTime = moment({ hours: 10, minutes: 0 });
+const sendTime = moment({ hours: 10, minutes: 50 });
 
 module.exports = {
     async search ({ context, userId, message }) {
@@ -76,7 +77,7 @@ async function timeReportSend () {
         });
         const message = `Отчет по времени:\n${works.join(`\n`)}`;
 
-        sendMessageByUserId({ userId: x.userId, message })
+        sendMessageByUserId({ message, id: x.id })
     });
 }
 
