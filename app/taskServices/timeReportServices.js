@@ -12,7 +12,7 @@ const eventRegx = /timeReport_\S+/;
 
 const username = 'restapi';
 const password = 'aCkko5IQWxRZl3ROtppxRHReCdZMSQDd';
-const sendTime = moment({ hours: 15, minutes: 50 }).subtract(3, 'hour');
+const sendTime = moment({ hours: 10, minutes: 0 }).subtract(3, 'hour');
 
 const timeReportService = {
     async search ({ context, userId, message }) {
@@ -48,7 +48,6 @@ const timeReportService = {
             const addDay = sendTime.dayOfYear(now.dayOfYear()).isBefore(now) ? 1 : 0;
 
             const timeout = sendTime.dayOfYear(now.dayOfYear() + addDay).diff(now, 'milliseconds');
-            console.log(`Выставлен таймер для timeReportSend на ${moment().add(timeReportSend, 'milliseconds').format('DD.MM.YY hh:mm:ss')}`);
             setTimeout(async () => {
                 await timeReportSend();
                 timeReportService.timeReportTask();
@@ -60,7 +59,6 @@ const timeReportService = {
 };
 
 async function timeReportSend () {
-    console.log(`Сработал таймер для timeReportSend в ${moment().format('DD.MM.YY hh:mm:ss')}`);
     const day = moment().day();
     if (day === WeekDay.Sunday || day === WeekDay.Saturday) {
         return;
