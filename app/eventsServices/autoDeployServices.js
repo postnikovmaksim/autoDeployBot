@@ -52,7 +52,7 @@ function getChanges ({ changesBase64 }) {
     }`;
 }
 
-function format ({ change }) {
+function format (change) {
     const text = change.search(/\n\n*/) >= 0
         ? change.match(/.+\n\n*/)[0].replace(/\n\n*/, '')
         : change.replace(/\n/, '');
