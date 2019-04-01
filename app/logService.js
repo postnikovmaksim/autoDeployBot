@@ -2,7 +2,7 @@ const moment = require('moment');
 const { queryWithParams } = require('./mysqlServices');
 
 module.exports = {
-    async saveRequest ({ url, json }) {
+    async saveRequest ({ url, json = '' }) {
         await queryWithParams({
             sqlString: `insert into requests 
                         (url, date, json) 
