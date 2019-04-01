@@ -71,7 +71,8 @@ async function timeReportSend () {
         eventNames: subscriptions.filter(x => x.userId === userId).map(x => x.eventName)
     }));
     const usersYouTrack = await getUsers();
-    await changeReport();
+    const date = getDateLastWorkDay();
+    await changeReport({ date });
     await calculateReport();
     const reportYouTrack = await getTimeReport();
 
@@ -82,7 +83,7 @@ async function timeReportSend () {
             const report = reportYouTrack.find(report => report.userId === userYouTrack.ringId);
             return `**${userYouTrack.fullName}**\n${getWorkType(report)}`;
         });
-        const message = `Отчет по времени:\n${works.join(`\n`)}`;
+        const message = `Отчет по времени за ${date.format('DD.MM.YYYY')}:\n${works.join(`\n`)}`;
 
         sendMessageByUserId({ message, id: x.userId })
     });
@@ -144,9 +145,8 @@ async function calculateReport () {
     });
 }
 
-async function changeReport () {
+async function changeReport ({ date }) {
     const url = 'https://youtrack.moedelo.org/youtrack/api/reports/98-850';
-    const date = getDateLastWorkDay().valueOf();
     await request.post(url, {
         auth: {
             user: username,
@@ -155,8 +155,8 @@ async function changeReport () {
         body: {
             range: {
                 '$type': 'jetbrains.youtrack.reports.impl.gap.ranges.FixedTimeRange',
-                from: date,
-                to: date
+                from: date.valueOf(),
+                to: date.valueOf()
             }
         },
         json: true
