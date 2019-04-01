@@ -34,32 +34,23 @@ module.exports = {
     },
 
     async autoDeployEvent ({ req }) {
-        const {
-            teamcityProperties,
-            buildResult,
-            buildName,
-            buildStatusUrl
-        } = req.body.build;
-        const buildTarget = teamcityProperties.find(p => p.name === 'BoxSelector').value;
-        const buildDate = teamcityProperties.find(p => p.name === 'build.formatted.timestamp').value;
-        const changeMessage = teamcityProperties.find(p => p.name === 'ChangeMessage').value;
-        const timestamp = moment(buildDate).add(3, 'hour').format('DD.MM.YYYY HH:mm');
+        const { boxSelector, buildName, changes } = req.body;
+        const timestamp = moment().add(3, 'hour').format('DD.MM.YYYY HH:mm');
 
-        const message = `${timestamp} ${getStringBuildResult({ buildResult })} ${buildName} на ${buildTarget}` +
-            `\n изменения: ${new Buffer.from(changeMessage, 'base64').toString('utf8')}` +
-            (buildResult === 'failed' ? `\n ${buildStatusUrl}` : '');
+        let message = `${timestamp} успешно выложен ${buildName} на ${boxSelector}`;
+        changes && (message += getChanges({ changesBase64: changes }));
 
-        sendMessage({ message, eventName: `deploy_${buildTarget}` });
+        sendMessage({ message, eventName: `deploy_${boxSelector}` });
     }
 };
 
-function getStringBuildResult ({ buildResult }) {
-    switch (buildResult) {
-    case 'success' :
-        return 'успешно выложен';
-    case 'failed' :
-        return 'произошла ошибка при выкладке';
-    default :
-        return '';
-    }
+function getChanges ({ changesBase64 }) {
+    const changes = JSON.parse(new Buffer.from(changesBase64, 'base64').toString('utf8'));
+    return `\n изменения:\n${changes.map(change => {
+        const text = change.search(/\n\n*/) >= 0
+            ? change.match(/.+\n\n*/)[0].replace(/\n\n*/, '')
+            : change.replace(/\n/, '');
+
+        return `-- ${text}`
+    }).join(`\n`)}`;
 }

@@ -58,7 +58,6 @@ function getChangesString (changes) {
             ? comment.match(/.+\n\n*/)[0].replace(/\n\n*/, '')
             : comment.replace(/\n/, '');
 
-        console.log(text);
         return `-- ${text} (${user} ${moment(date).format(formatDate)})`;
     }).join(`\n`);
 }
