@@ -12,7 +12,7 @@ const eventRegx = /timeReport_\S+/;
 
 const username = 'restapi';
 const password = 'aCkko5IQWxRZl3ROtppxRHReCdZMSQDd';
-const sendTime = moment({ hours: 14, minutes: 0 });
+const sendTime = moment({ hours: 15, minutes: 12 });
 
 const timeReportService = {
     async search ({ context, userId, message }) {
