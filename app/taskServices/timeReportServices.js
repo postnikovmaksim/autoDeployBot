@@ -48,6 +48,7 @@ const timeReportService = {
             const addDay = sendTime.dayOfYear(now.dayOfYear()).isBefore(now) ? 1 : 0;
 
             const timeout = sendTime.dayOfYear(now.dayOfYear() + addDay).diff(now, 'milliseconds');
+            console.log(`Выставлен таймер для timeReportSend на ${moment().add(timeReportSend, 'milliseconds').format('DD.MM.YY hh:mm:ss')}`);
             setTimeout(async () => {
                 await timeReportSend();
                 timeReportService.timeReportTask();
@@ -59,6 +60,7 @@ const timeReportService = {
 };
 
 async function timeReportSend () {
+    console.log(`Сработал таймер для timeReportSend в ${moment().format('DD.MM.YY hh:mm:ss')}`);
     const day = moment().day();
     if (day === WeekDay.Sunday || day === WeekDay.Saturday) {
         return;
