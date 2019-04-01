@@ -1,4 +1,3 @@
-const { adapter } = require('./../botFrameworkServices');
 const { getReference, updateReference } = require('./userServices');
 const subscriptionsServices = require('./subscriptionsServices');
 const channelsServices = require('./channelsServices');
@@ -27,7 +26,7 @@ module.exports = {
 async function send ({ message, ids }) {
     const reference = await getReference({ ids });
     asyncForEach(reference, async reference => {
-        await adapter.continueConversation(reference, async (context) => {
+        await process.adapter.continueConversation(reference, async (context) => {
             try {
                 const reply = await context.sendActivity(message);
                 updateReference({ context, reply });

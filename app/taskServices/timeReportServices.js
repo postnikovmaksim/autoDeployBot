@@ -12,21 +12,28 @@ const eventRegx = /timeReport_\S+/;
 
 const username = 'restapi';
 const password = 'aCkko5IQWxRZl3ROtppxRHReCdZMSQDd';
-const sendTime = moment({ hours: 10, minutes: 50 });
+const sendTime = moment({ hours: 14, minutes: 0 });
 
-module.exports = {
+const timeReportService = {
     async search ({ context, userId, message }) {
         if (message.search(addRegx) === 0) {
             const eventName = message.match(eventRegx)[0];
+            const usersYouTrack = await getUsers();
+            const userName = eventName.replace('timeReport_', '');
+            if (!usersYouTrack.find(u => u.login === userName)) {
+                await context.sendActivity(`Пользователь с логином **${userName}** не найден в youtrack`);
+                return true;
+            }
+
             await saveSubscriptions({ userId, eventName });
-            await context.sendActivity(`Включена подписка на событие ${eventName}`);
+            await context.sendActivity(`Включена подписка на событие **${eventName}**`);
             return true;
         }
 
         if (message.search(removeRegx) === 0) {
             const eventName = message.match(eventRegx)[0];
             await removeSubscriptions({ userId, eventName });
-            await context.sendActivity(`Удалена подписка на событие ${eventName}`);
+            await context.sendActivity(`Удалена подписка на событие **${eventName}**`);
             return true;
         }
 
@@ -38,12 +45,12 @@ module.exports = {
             const now = moment();
             // если текущее время после момента отправки, поставить отправку отчета на следующий день
             // иначе на текущий день
-            const addDay = sendTime.dayOfYear(now.dayOfYear()).isAfter(now) ? 1 : 0;
+            const addDay = sendTime.dayOfYear(now.dayOfYear()).isBefore(now) ? 1 : 0;
 
-            const timeout = now.diff(sendTime.dayOfYear(now.dayOfYear() + addDay), 'milliseconds');
+            const timeout = sendTime.dayOfYear(now.dayOfYear() + addDay).diff(now, 'milliseconds');
             setTimeout(async () => {
                 await timeReportSend();
-                this.timeReportTask();
+                timeReportService.timeReportTask();
             }, timeout)
         } catch (e) {
             saveError({ url: 'timeReportTask', error: e })
@@ -77,7 +84,7 @@ async function timeReportSend () {
         });
         const message = `Отчет по времени:\n${works.join(`\n`)}`;
 
-        sendMessageByUserId({ message, id: x.id })
+        sendMessageByUserId({ message, id: x.userId })
     });
 }
 
@@ -114,10 +121,12 @@ async function getTimeReport () {
         });
 
         if (result.status.calculationInProgress) {
-            resolve(await getTimeReport())
+            setTimeout(async () => {
+                resolve(await getTimeReport())
+            }, 100);
+        } else {
+            resolve(result.data.groups[0].lines);
         }
-
-        resolve(result.data.groups[0].lines);
     });
 }
 
@@ -158,8 +167,10 @@ function getDateLastWorkDay () {
     const day = moment().day();
 
     if (day === WeekDay.Monday) {
-        return moment().subtract(2, 'day');
+        return moment().subtract(3, 'day');
     }
 
     return moment().subtract(1, 'day');
 }
+
+module.exports = timeReportService;

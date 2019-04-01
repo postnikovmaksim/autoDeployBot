@@ -51,4 +51,5 @@ const bot = new EchoBot(conversationState);
 
 const port = process.env.port || process.env.PORT || 3978;
 
+process.adapter = adapter;
 module.exports = { adapter, bot, port };
