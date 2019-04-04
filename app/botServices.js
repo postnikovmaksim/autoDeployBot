@@ -16,28 +16,30 @@ class EchoBot {
             return;
         }
 
-        console.log(`Получено сообщение от ${context.activity.from.name}:`, context.activity.text);
-
-        await saveOrUpdateUser({ context });
-        const message = context.activity.text;
-        const userId = context.activity.from.id;
-        let isFound = false;
-
-        isFound = isFound || await timeReportServices.search({ context, userId, message });
-        isFound = isFound || await autoDeployServices.search({ context, userId, message });
-        isFound = isFound || await newrelicServices.search({ context, userId, message });
-        isFound = isFound || await zabbixService.search({ context, userId, message });
-        isFound = isFound || await masterAutoCompleteServices.search({ context, userId, message });
-        isFound = isFound || await testMessageService.search({ context, userId, message });
-        isFound = isFound || await channelsServices.search({ context, userId, message });
-
-        isFound = isFound || await removeAll({ context, userId, message });
-        isFound = isFound || await listSubscriptions({ context, userId, message });
-        isFound = isFound || await help({ context, userId, message });
-
-        if (!isFound) {
-            await context.sendActivity(`Команда не распознана, используйте \\help, что бы посмотреть доступные команды`);
-        }
+        // console.log(`Получено сообщение от ${context.activity.from.name}:`, context.activity.text);
+        //
+        // await saveOrUpdateUser({ context });
+        // const message = context.activity.text;
+        // const userId = context.activity.from.id;
+        // let isFound = false;
+        //
+        // isFound = isFound || await timeReportServices.search({ context, userId, message });
+        // isFound = isFound || await autoDeployServices.search({ context, userId, message });
+        // isFound = isFound || await newrelicServices.search({ context, userId, message });
+        // isFound = isFound || await zabbixService.search({ context, userId, message });
+        // isFound = isFound || await masterAutoCompleteServices.search({ context, userId, message });
+        // isFound = isFound || await testMessageService.search({ context, userId, message });
+        // isFound = isFound || await channelsServices.search({ context, userId, message });
+        //
+        // isFound = isFound || await removeAll({ context, userId, message });
+        // isFound = isFound || await listSubscriptions({ context, userId, message });
+        // isFound = isFound || await help({ context, userId, message });
+        //
+        // if (!isFound) {
+        await context.sendActivity(`Бот переехал в корпаративный Azure, по этой причине пришлось сменить App Id.
+        Для продолжения работы с ботом, нужно добавить нового https://join.skype.com/bot/1ff5b681-f737-4e84-a83b-a610d6461f9d
+        Все подписки и настройки будут сохранены (Если что-то не сохранилось обращайтесь к Максиму Постникову, перенесем ручками)`);
+        // }
     }
 }
 

@@ -4,11 +4,15 @@ const request = require('request-promise-native');
 const { getSubscriptions, saveSubscriptions, removeSubscriptions } = require('./../subscriptionsServices');
 const { saveError } = require('./../logService');
 const { sendMessageByUserId } = require('./../dialogServices');
+const { getUser } = require('./../userServices');
 const WeekDay = require('./../enums/WeekDay');
 
-const addRegx = /\\add_timeReport_\S+/;
-const removeRegx = /\\remove_timeReport_\S+/;
-const eventRegx = /timeReport_\S+/;
+const eventRegx = /time_report_\S+/;
+const help = /\\help_time_report/;
+const list = /\\list_time_report/;
+const getReport = /\\get_time_report/;
+const addRegx = /\\add_time_report_\S+/;
+const removeRegx = /\\remove_time_report_\S+/;
 
 const username = 'restapi';
 const password = 'aCkko5IQWxRZl3ROtppxRHReCdZMSQDd';
@@ -16,10 +20,15 @@ const sendTime = moment({ hours: 10, minutes: 0 }).subtract(3, 'hour');
 
 const timeReportService = {
     async search ({ context, userId, message }) {
+        if (message.search(help) === 0) {
+            await context.sendActivity(getHelpMessage());
+            return true;
+        }
+
         if (message.search(addRegx) === 0) {
             const eventName = message.match(eventRegx)[0];
             const usersYouTrack = await getUsers();
-            const userName = eventName.replace('timeReport_', '');
+            const userName = eventName.replace('time_report_', '');
             if (!usersYouTrack.find(u => u.login === userName)) {
                 await context.sendActivity(`Пользователь с логином **${userName}** не найден в youtrack`);
                 return true;
@@ -37,6 +46,12 @@ const timeReportService = {
             return true;
         }
 
+        if (message.search(getReport) === 0) {
+            const user = await getUser({ userId });
+            await timeReportSend({ userId: user.id });
+            return true;
+        }
+
         return false;
     },
 
@@ -49,7 +64,7 @@ const timeReportService = {
 
             const timeout = sendTime.dayOfYear(now.dayOfYear() + addDay).diff(now, 'milliseconds');
             setTimeout(async () => {
-                await timeReportSend();
+                await timeReportTaskSend();
                 timeReportService.timeReportTask();
             }, timeout)
         } catch (e) {
@@ -58,18 +73,31 @@ const timeReportService = {
     }
 };
 
-async function timeReportSend () {
+async function timeReportSend ({ userId }) {
+    const subscriptions = await getSubscriptions({ userId, eventPrefix: 'time_report' });
+    const user = {
+        userId: userId,
+        eventNames: subscriptions.filter(x => x.userId === userId).map(x => x.eventName)
+    };
+    await send({ users: [user] });
+}
+
+async function timeReportTaskSend () {
     const day = moment().day();
     if (day === WeekDay.Sunday || day === WeekDay.Saturday) {
         return;
     }
 
-    const subscriptions = await getSubscriptions({ eventPrefix: 'timeReport' });
+    const subscriptions = await getSubscriptions({ eventPrefix: 'time_report' });
     const userIds = _.uniq(subscriptions.map(x => x.userId));
     const users = userIds.map(userId => ({
         userId: userId,
         eventNames: subscriptions.filter(x => x.userId === userId).map(x => x.eventName)
     }));
+    await send({ users });
+}
+
+async function send ({ users }) {
     const usersYouTrack = await getUsers();
     const date = getDateLastWorkDay();
     await changeReport({ date });
@@ -78,7 +106,7 @@ async function timeReportSend () {
 
     users.forEach(x => {
         const works = x.eventNames.map(eventName => {
-            const userLogin = eventName.replace(`timeReport_`, ``);
+            const userLogin = eventName.replace(`time_report_`, ``);
             const userYouTrack = usersYouTrack.find(u => u.login === userLogin);
             const report = reportYouTrack.find(report => report.userId === userYouTrack.ringId);
             return `**${userYouTrack.fullName}**\n${getWorkType(report)}`;
@@ -171,6 +199,12 @@ function getDateLastWorkDay () {
     }
 
     return moment().subtract(1, 'day');
+}
+
+function getHelpMessage () {
+    return `Подсказка для раздела **управление временем**\n
+    Список команд:\n
+    \\`
 }
 
 module.exports = timeReportService;
