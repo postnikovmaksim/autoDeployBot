@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require('./../libs/moment');
 const { queryWithParams } = require('./mysqlServices');
 
 module.exports = {
@@ -27,5 +27,5 @@ module.exports = {
 };
 
 function getDate () {
-    return moment().utcOffset('+0300').format('YYYY-MM-DD HH:mm:ss')
+    return moment().format('YYYY-MM-DD HH:mm:ss')
 }

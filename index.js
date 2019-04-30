@@ -1,25 +1,27 @@
-const moment = require('moment');
+// Грузим параметры как можно быстрее
+const dotenv = require('dotenv');
+const path = require('path');
+
+const ENV_FILE = path.join(__dirname, '.env');
+dotenv.config({ path: ENV_FILE });
+// ------------------------------------
+
+const moment = require('./app/libs/moment');
 const request = require('request-promise-native');
 const { server } = require('./httpServerServices');
-const { adapter, bot, port } = require('./botFrameworkServices');
-const { autoDeployEvent } = require('./app/eventsServices/autoDeployServices');
-const { stageDeployEvent } = require('./app/eventsServices/stageDeployService');
-const { newrelicEvent } = require('./app/eventsServices/newrelicServices');
-const { consoleEvent } = require('./app/eventsServices/masterAutoCompleteServices');
-const { zabbixEvent } = require('./app/eventsServices/zabbixService');
-const { testMessageEvent } = require('./app/eventsServices/testMessageService');
-const { timeReportTask } = require('./app/taskServices/timeReportServices');
-
-server.listen(port, () => {
-    console.log(`\n${server.name} listening to ${server.url}`);
-    console.log('\nGet Bot Framework Emulator: https://aka.ms/botframework-emulator');
-    console.log('\nTo talk to your bot, open echoBot-with-counter.bot file in the Emulator');
-});
+const { adapter, bot } = require('./botFrameworkServices');
+const autoDeployServices = require('./app/eventsServices/deploy/autoDeployServices');
+const stageDeployService = require('./app/eventsServices/deploy/stageDeployService');
+const newrelicServices = require('./app/eventsServices/newrelic/newrelicServices');
+const zabbixService = require('./app/eventsServices/zabbix/zabbixService');
+const kibanaServices = require('./app/eventsServices/kibana/kibanaServices');
+const customEventService = require('./app/eventsServices/customEventService');
+const timeReportServices = require('./app/taskServices/timeReportServices');
 
 server.post('/api/messages', (req, res, next) => {
     try {
         adapter.processActivity(req, res, async (context) => {
-            await bot.onTurn(context);
+            await bot.run(context);
         });
     } catch (e) {
         next(e);
@@ -28,7 +30,7 @@ server.post('/api/messages', (req, res, next) => {
 
 server.post('/event/deploy', async (req, res, next) => {
     try {
-        await autoDeployEvent({ req });
+        await autoDeployServices.event({ req });
         res.send(200);
     } catch (e) {
         next(e);
@@ -37,7 +39,7 @@ server.post('/event/deploy', async (req, res, next) => {
 
 server.post('/event/stageDeploy', async (req, res, next) => {
     try {
-        await stageDeployEvent({ req });
+        await stageDeployService.event({ req });
         res.send(200);
     } catch (e) {
         next(e);
@@ -46,16 +48,7 @@ server.post('/event/stageDeploy', async (req, res, next) => {
 
 server.post('/event/newrelic', async (req, res, next) => {
     try {
-        await newrelicEvent({ req });
-        res.send(200);
-    } catch (e) {
-        next(e);
-    }
-});
-
-server.post('/event/master_auto_complete', async (req, res, next) => {
-    try {
-        await consoleEvent({ req });
+        await newrelicServices.event({ req });
         res.send(200);
     } catch (e) {
         next(e);
@@ -64,16 +57,34 @@ server.post('/event/master_auto_complete', async (req, res, next) => {
 
 server.post('/event/zabbix', async (req, res, next) => {
     try {
-        await zabbixEvent({ req });
+        await zabbixService.event({ req });
         res.send(200);
     } catch (e) {
         next(e);
     }
 });
 
-server.get('/event/test', async (req, res, next) => {
+server.post('/event/kibana/error', async (req, res, next) => {
     try {
-        await testMessageEvent({ req });
+        await kibanaServices.eventError({ req });
+        res.send(200);
+    } catch (e) {
+        next(e);
+    }
+});
+
+server.post('/event/kibana/fatal', async (req, res, next) => {
+    try {
+        await kibanaServices.eventFatal({ req });
+        res.send(200);
+    } catch (e) {
+        next(e);
+    }
+});
+
+server.post('/event/custom', async (req, res, next) => {
+    try {
+        await customEventService.event({ req });
         res.send(200);
     } catch (e) {
         next(e);
@@ -87,10 +98,10 @@ server.get('/awakening', async (req, res) => {
 
 // из-за ограничений тарифа, бот постоянно выгружается из памяти, что приводит к потере запросов.
 // будем будить бота по таймеру
-function awakening() {
+function awakening () {
     setInterval(() => request.get({ uri: `${process.env.selfUrl}/awakening` }), 60000)
 }
 
+// задачи выполняемые по расписанию
 (() => awakening())();
-
-(() => timeReportTask())();
+(() => timeReportServices.task())();

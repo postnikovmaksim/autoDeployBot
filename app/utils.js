@@ -1,7 +1,11 @@
 module.exports = {
-    asyncForEach: async function (array, callback) {
+    async asyncForEach (array, callback) {
         for (let index = 0; index < array.length; index++) {
             await callback(array[index], index, array);
         }
+    },
+
+    replaceHelp (regexp) {
+        return `${regexp.source.replace(/\\\\/, '\\').replace('$', '')}`;
     }
 };

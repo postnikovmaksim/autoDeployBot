@@ -1,12 +1,13 @@
-const { getReference, updateReference } = require('./userServices');
-const subscriptionsServices = require('./subscriptionsServices');
-const channelsServices = require('./channelsServices');
+const { getReference, updateReference } = require('./dao/userServices');
+const subscriptionsServices = require('./dao/subscriptionsServices');
+const channelEventsService = require('./dao/channelEventsServices');
 const { asyncForEach } = require('./utils');
+const { saveError } = require('./dao/logService');
 
 module.exports = {
     async sendMessage ({ message, eventName }) {
         const idsByEvent = await subscriptionsServices.getUserIds({ eventName }) || [];
-        const idsByChannel = await channelsServices.getUserIds({ eventName }) || [];
+        const idsByChannel = await channelEventsService.getUserIds({ eventName }) || [];
 
         if (!idsByEvent.length && !idsByChannel.length) {
             return;
@@ -26,13 +27,13 @@ module.exports = {
 async function send ({ message, ids }) {
     const reference = await getReference({ ids });
     asyncForEach(reference, async reference => {
-        await process.adapter.continueConversation(reference, async (context) => {
-            try {
+        try {
+            await process.adapter.continueConversation(reference, async (context) => {
                 const reply = await context.sendActivity(message);
                 updateReference({ context, reply });
-            } catch (e) {
-                console.log(e);
-            }
-        })
+            })
+        } catch (error) {
+            saveError({ url: `dialogService`, error });
+        }
     });
 }

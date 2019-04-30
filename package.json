@@ -1,27 +1,25 @@
 {
-  "name": "echobot-with-counter",
+  "name": "MDNotification",
   "version": "1.0.0",
-  "description": "Bot Builder v4 echo bot sample",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
+    "start": "yarn & node index.js",
     "watch": "yarn & nodemon index.js",
     "initdb": "node initDb.js",
     "lt": "lt --port 3978"
   },
-  "author": "Microsoft",
   "license": "MIT",
   "dependencies": {
-    "botbuilder": "^4.2.1",
+    "botbuilder": "^4.3.4",
     "botbuilder-azure": "^4.2.1",
     "botframework-config": "^4.2.1",
     "dotenv": "^6.1.0",
     "moment": "^2.23.0",
+    "moment-timezone": "^0.5.23",
     "mysql": "^2.16.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.5",
-    "restify": "^7.2.2",
+    "restify": "^7.2.3",
     "underscore": "^1.9.1"
   },
   "devDependencies": {

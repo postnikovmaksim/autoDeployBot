@@ -1,10 +1,18 @@
 module.exports = {
-    isValidName: function (appName) {
-        return !!validName.find(x => x === appName);
+    async isValidName (appName) {
+        let appNames = [].concat([{ name: `all` }]);
+        appNames = appNames.concat(validName);
+
+        return appNames.find(app => app.name.toLowerCase() === appName.toLowerCase());
+    },
+
+    async getApps () {
+        return { mainApp: validName };
     }
 };
 
 const validName = [
+    'all',
     'Accounting',
     'Agents',
     'App',

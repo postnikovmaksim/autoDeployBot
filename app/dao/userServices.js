@@ -7,11 +7,21 @@ module.exports = {
         const reference = TurnContext.getConversationReference(context.activity);
 
         if (!user || !user.length) {
-            await saveUser({
-                userId: context.activity.from.id,
-                name: context.activity.from.name,
-                activity: JSON.stringify(reference)
-            })
+            const user = await getUser({ userName: context.activity.from.name });
+            // ищем пользователя по имени. Для замены старого канала
+            if (user && user.length && context.activity.from.name) {
+                await updateUserByName({
+                    userId: context.activity.from.id,
+                    name: context.activity.from.name,
+                    activity: JSON.stringify(reference)
+                })
+            } else {
+                await saveUser({
+                    userId: context.activity.from.id,
+                    name: context.activity.from.name,
+                    activity: JSON.stringify(reference)
+                })
+            }
         } else {
             await updateUser({
                 userId: context.activity.from.id,
@@ -53,13 +63,15 @@ function get ({ ids }) {
     return query({ sqlString: sql })
 }
 
-async function getUser ({ userId }) {
+async function getUser ({ userId, userName }) {
     let sql = `select id,
                 user_id as userId,
                 user_name as userName,
                 activity
                 from users 
-                where user_id = '${userId}'`;
+                 where 1 = 1`;
+    userId && (sql += ` and user_id = '${userId}'`);
+    userName && (sql += ` and user_name = '${userName}'`);
     return query({ sqlString: sql });
 }
 
@@ -75,5 +87,13 @@ async function updateUser ({ userId, name, activity }) {
                 activity = '${activity}', 
                 user_name = '${name}' 
                 where user_id = '${userId}'`;
+    return query({ sqlString: sql });
+}
+
+async function updateUserByName ({ userId, name, activity }) {
+    const sql = `update users set 
+                user_id = '${userId}',
+                activity = '${activity}'
+                where user_name = '${name}'`;
     return query({ sqlString: sql });
 }

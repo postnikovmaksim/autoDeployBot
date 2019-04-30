@@ -1,0 +1,1190 @@
+[
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153813+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145226+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_SberbankEdsBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153813+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145226+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105545+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_SberbankEdsFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153807+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145234+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T144749+0300",
+                            "user":  "Максим Постников",
+                            "comment":  "fix SP-3055 Корректное определение ОСНО (#125)\n\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_DocsFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153723+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145238+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105534+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_AudittrailFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153933+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145346+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_MainOutsourceBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153933+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145346+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T110418+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_MainOutsourceFront"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_BankintegrationsPublic"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_AccountManagement"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T161146+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T145349+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105727+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190410T225803+0300",
+                            "user":  "Илья Шишов",
+                            "comment":  "fix for new build\n"
+                        },
+                        {
+                            "date":  "20190410T220426+0300",
+                            "user":  "Илья Шишов",
+                            "comment":  "packages upgrade (#8)\n\n* packages upgrade\r\n\r\n* fix for new build\r\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_ManufacturingFront"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Account"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Accpostings"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Address"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Agents"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153723+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145238+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_AudittrailBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Azure"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153809+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T153123+0300",
+                            "user":  "Дмитрий Попов",
+                            "comment":  "RP-3266 report update (#694)\n\n* RP-3270 Агенты, ВИП (front)\r\n\r\n* Fix build issue\r\n"
+                        },
+                        {
+                            "date":  "20190411T145233+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_BackofficeBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Bankintegrations"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Billing"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153830+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145229+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_BizBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Bookkeeping"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Cash"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Catalog"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Commonapi"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153811+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145234+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_ConsultationsBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153852+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145239+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_ContractsBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Crmapi"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153807+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145234+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T144749+0300",
+                            "user":  "Максим Постников",
+                            "comment":  "fix SP-3055 Корректное определение ОСНО (#125)\n\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_DocsBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153924+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145223+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_EdmBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153930+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145232+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T130920+0300",
+                            "user":  "Денис Чуканов",
+                            "comment":  "eRP-791 GetRequiredDocuments падает, если в базе есть дубли документов. (#190)\n\n* берем последний загруженны, если имеются дубли документов\r\n\r\n* small fix\r\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_EreportsBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Externalbilling"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_FinancesBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Header"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Historicallogs"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153905+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T153702+0300",
+                            "user":  "Ярослав Ломов",
+                            "comment":  "MP-5892 обновляю получени полей для создание задачи (#200)\n\n\r\n"
+                        },
+                        {
+                            "date":  "20190411T145233+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_HomeBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153909+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145206+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_IdBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153938+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145326+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_MainBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154024+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145348+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_MarketingBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Mobile"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154045+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145406+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_OfficeBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Outsystemsintegration"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Partnerapiauth"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154028+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145343+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_PayBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_PaymentImport"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154015+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145404+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_PayrollBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Postings"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_PublicIntegrations"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Registration"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154025+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145358+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T144715+0300",
+                            "user":  "Дмитрий Попов",
+                            "comment":  "RP-3266 report update (#223)\n\n* RP-3266 доработка отчета отчетов\r\n\r\n* Fix rebase issue\r\n\r\n* upd sub\r\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_ReportsBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154026+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145313+0300",
+                            "user":  "Дмитрий Попов",
+                            "comment":  "RP-3266 report update (#314)\n\n* Расширена модель CommonCalendarEventDto\r\n\r\n* md-commonv2 сребейжен от мастера\r\n\r\n* Upds subs\r\n"
+                        },
+                        {
+                            "date":  "20190411T131059+0300",
+                            "user":  "Денис Чуканов",
+                            "comment":  "eRP-791 GetRequiredDocuments падает, если в базе есть дубли документов. (#313)\n\n* Единоразовая отправка документов\r\n\r\n* fix one time function execution\r\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_RequisitesBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Spam"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154058+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145402+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_StockBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Tags"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Taxpostings"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Tester"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154049+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145354+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_UiAppBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Uploadedfiles"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T145233+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T114858+0300",
+                            "user":  "Алексей Спиридонов",
+                            "comment":  "updated submodules + fix compiler errors\n"
+                        },
+                        {
+                            "date":  "20190411T105555+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T104210+0300",
+                            "user":  "Алексей Спиридонов",
+                            "comment":  "removed usused code (no functionality changed)\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_BackofficeFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153924+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145223+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105545+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_EdmFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153830+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145229+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105552+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_BizFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153811+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145234+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105549+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_ConsultationsFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153852+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145239+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105602+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_ContractsFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153930+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145232+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T130920+0300",
+                            "user":  "Денис Чуканов",
+                            "comment":  "eRP-791 GetRequiredDocuments падает, если в базе есть дубли документов. (#190)\n\n* берем последний загруженны, если имеются дубли документов\r\n\r\n* small fix\r\n"
+                        },
+                        {
+                            "date":  "20190411T123448+0300",
+                            "user":  "Денис Чуканов",
+                            "comment":  "eRP-829 Лишние вызовы запроса (#189)\n\nУвеличил задержку между запросами до 1 минуты"
+                        },
+                        {
+                            "date":  "20190411T105601+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_EreportsFront"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_FinancesFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153905+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T153702+0300",
+                            "user":  "Ярослав Ломов",
+                            "comment":  "MP-5892 обновляю получени полей для создание задачи (#200)\n\n\r\n"
+                        },
+                        {
+                            "date":  "20190411T145233+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105550+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_HomeFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153909+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145206+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105535+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_IdFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T153938+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145326+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105558+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_MainFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154024+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145348+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105624+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105410+0300",
+                            "user":  "Александр Ерёмин",
+                            "comment":  "MP-5647 редирект на страницу авторизации после смены пароля (#74)\n\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_MarketingFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154045+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145406+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105717+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_OfficeFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154028+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145343+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105645+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_PayFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154015+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145404+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105704+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_PayrollFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154025+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145358+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T144715+0300",
+                            "user":  "Дмитрий Попов",
+                            "comment":  "RP-3266 report update (#223)\n\n* RP-3266 доработка отчета отчетов\r\n\r\n* Fix rebase issue\r\n\r\n* upd sub\r\n"
+                        },
+                        {
+                            "date":  "20190411T110315+0300",
+                            "user":  "Дмитрий Попов",
+                            "comment":  "Repair bot notifications (#222)\n\n* изменен адрес и способ отправки сообщения в скайп\r\n\r\n* добавлен await в клиент\r\n\r\n* upd enums \u0026 infrastructure\r\n"
+                        },
+                        {
+                            "date":  "20190411T105702+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_ReportsFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154026+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145313+0300",
+                            "user":  "Дмитрий Попов",
+                            "comment":  "RP-3266 report update (#314)\n\n* Расширена модель CommonCalendarEventDto\r\n\r\n* md-commonv2 сребейжен от мастера\r\n\r\n* Upds subs\r\n"
+                        },
+                        {
+                            "date":  "20190411T131059+0300",
+                            "user":  "Денис Чуканов",
+                            "comment":  "eRP-791 GetRequiredDocuments падает, если в базе есть дубли документов. (#313)\n\n* Единоразовая отправка документов\r\n\r\n* fix one time function execution\r\n"
+                        },
+                        {
+                            "date":  "20190411T115006+0300",
+                            "user":  "Дмитрий Храмушин",
+                            "comment":  "BP-5995 Не удаляется расчетный счет\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_RequisitesFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154058+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145402+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105721+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_StockFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154049+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145354+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T124548+0300",
+                            "user":  "Максим Постников",
+                            "comment":  "Ap 3968 message error (#454)\n\n* Обработка ошибок\r\n\r\n* объединил с беком\r\n\r\n* сообщение об ошибках\r\n\r\n* fix появления ошибки\r\n\r\n* fix name file\r\n\r\n* fix regexp\r\n\r\n* fix review\r\n"
+                        },
+                        {
+                            "date":  "20190411T105706+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_UiAppFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154045+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145359+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_SpsBack"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154045+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145359+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105715+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_SpsFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154023+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145331+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        },
+                        {
+                            "date":  "20190411T105601+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_KontragentsFront"
+    },
+    {
+        "changes":  [
+                        {
+                            "date":  "20190411T154023+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build@4.2.0 version\n"
+                        },
+                        {
+                            "date":  "20190411T145331+0300",
+                            "user":  "̿ ̿\u0027 ̿\u0027\\̵͇̿̿\\з=(•̪●)=ε/̵͇̿̿/\u0027̿\u0027\u0027̿ ̿",
+                            "comment":  "update @moedelo/webpack2-build version\n"
+                        }
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_KontragentsBack"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_Taxremains"
+    },
+    {
+        "changes":  [
+
+                    ],
+        "status":  "SUCCESS",
+        "name":  "Net_Deploy_Stage_ManufacturingBack"
+    }
+]

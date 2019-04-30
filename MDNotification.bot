@@ -1,0 +1,19 @@
+{
+    "name": "MDNotification",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "1ff5b681-f737-4e84-a83b-a610d6461f9d",
+            "appPassword": "Lx9YbgPB)3qjX{cJ/N}NIx5k$Wy&E8K",
+            "channelService": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "id": "e6adb840-5550-11e9-88b1-d1a16318b064",
+            "name": "http://localhost:3978/api/messages"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "overrides": null,
+    "path": "C:\\git\\md-autoDeployBot\\MDNotification.bot"
+}

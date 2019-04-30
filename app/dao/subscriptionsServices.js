@@ -2,7 +2,7 @@ const { query } = require('./mysqlServices');
 const { getUser } = require('./userServices');
 
 module.exports = {
-    async saveSubscriptions ({ userId, eventName }) {
+    async save ({ userId, eventName }) {
         const user = await getUser({ userId });
         const events = await get({ userId: user.id, eventName });
 
@@ -16,27 +16,32 @@ module.exports = {
         return result.map(r => r.userId);
     },
 
-    async getSubscriptions ({ userId, eventPrefix }) {
-        return get({ userId, eventPrefix });
+    async get ({ userId, eventName, eventPrefix }) {
+        return get({ userId, eventName, eventPrefix });
     },
 
-    async removeSubscriptions ({ userId, eventName }) {
+    async remove ({ userId, eventName }) {
         const user = await getUser({ userId });
         return remove({ userId: user.id, eventName });
     },
 
-    async removeAllTypeSubscriptions ({ userId, like }) {
+    async removeAllType ({ userId, eventPrefix }) {
         const user = await getUser({ userId });
-        return removeByType({ userId: user.id, like });
+        return removeByType({ userId: user.id, eventPrefix });
     },
 
-    async removeAllSubscriptions ({ userId }) {
+    async removeAll ({ userId }) {
         const user = await getUser({ userId });
         return remove({ userId: user.id });
     }
 };
 
 function save ({ userId, eventName }) {
+    if (!userId || !eventName) {
+        console.log(`Ошибка подписки на событие userId=${userId} eventName=${eventName}`);
+        return;
+    }
+
     const sql = `insert into users_subscriptions 
                 (user_id, event_name) 
                 values ('${userId}', '${eventName}')`;
@@ -57,6 +62,11 @@ function get ({ userId, eventName, eventPrefix }) {
 }
 
 function remove ({ userId, eventName }) {
+    if (!userId) {
+        console.log(`Ошибка подписки на событие userId=${userId} eventName=${eventName}`);
+        return;
+    }
+
     let sql = `delete 
                 from users_subscriptions 
                 where 1 = 1`;
@@ -66,12 +76,17 @@ function remove ({ userId, eventName }) {
     return query({ sqlString: sql });
 }
 
-function removeByType ({ userId, like }) {
+function removeByType ({ userId, eventPrefix }) {
+    if (!userId || !eventPrefix) {
+        console.log(`Ошибка удаления по типу userId=${userId} eventPrefix=${eventPrefix}`);
+        return;
+    }
+
     let sql = `delete 
                 from users_subscriptions 
                 where 1 = 1`;
     userId && (sql += ` and user_id = '${userId}'`);
-    like && (sql += ` and event_name like '%${like}%'`);
+    eventPrefix && (sql += ` and event_name like '${eventPrefix}%'`);
 
     return query({ sqlString: sql });
 }

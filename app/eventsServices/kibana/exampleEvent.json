@@ -1,0 +1,22 @@
+{
+    "errorThreshold": 100,
+    "fatalThreshold": 10,
+    "repetitionRate": 5,
+    "data": [
+        {
+            "key": "SherlockCRM.WebApi",
+            "errors": 238,
+            "fatals": 33
+        },
+        {
+            "key": "Tariffs.Api",
+            "errors": 2323,
+            "fatals": 45
+        },
+        {
+            "key": "RegistrationOoo",
+            "errors": 453,
+            "fatals": 55
+        }
+    ]
+}

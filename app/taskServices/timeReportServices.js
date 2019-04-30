@@ -1,52 +1,80 @@
 const _ = require('underscore');
-const moment = require('moment');
 const request = require('request-promise-native');
-const { getSubscriptions, saveSubscriptions, removeSubscriptions } = require('./../subscriptionsServices');
-const { saveError } = require('./../logService');
+const moment = require('./../libs/moment');
+const { replaceHelp } = require('./../utils');
+const { get, save, remove } = require('./../dao/subscriptionsServices');
+const { saveError } = require('./../dao/logService');
 const { sendMessageByUserId } = require('./../dialogServices');
-const { getUser } = require('./../userServices');
+const { getUser } = require('./../dao/userServices');
 const WeekDay = require('./../enums/WeekDay');
 
 const eventRegx = /time_report_\S+/;
-const help = /\\help_time_report/;
-const list = /\\list_time_report/;
-const getReport = /\\get_time_report/;
-const addRegx = /\\add_time_report_\S+/;
-const removeRegx = /\\remove_time_report_\S+/;
+const eventPrefix = 'time_report_';
 
-const username = 'restapi';
-const password = 'aCkko5IQWxRZl3ROtppxRHReCdZMSQDd';
-const sendTime = moment({ hours: 10, minutes: 0 }).subtract(3, 'hour');
+const helpRegx = /help_time_report$/i;
+const listRegx = /list_time_report$/i;
+const addRegx = /add_time_report_\S+$/i;
+const removeRegx = /remove_time_report_\S+$/i;
+const getReportRegx = /get_time_report$/i;
 
 const timeReportService = {
+    getHelpMessage () {
+        return `${replaceHelp(helpRegx)} - помощь раздела отчеты по времени`
+    },
+
+    getListMessage ({ userId }) {
+        return getListMessage({ userId });
+    },
+
     async search ({ context, userId, message }) {
-        if (message.search(help) === 0) {
+        if (message.search(helpRegx) === 0) {
             await context.sendActivity(getHelpMessage());
+            return true;
+        }
+
+        if (message.search(listRegx) === 0) {
+            await context.sendActivity(await getListMessage({ userId }));
             return true;
         }
 
         if (message.search(addRegx) === 0) {
             const eventName = message.match(eventRegx)[0];
-            const usersYouTrack = await getUsers();
-            const userName = eventName.replace('time_report_', '');
-            if (!usersYouTrack.find(u => u.login === userName)) {
+            const userName = eventName.replace(eventPrefix, '');
+
+            if (!timeReportService.isValidName({ userName })) {
                 await context.sendActivity(`Пользователь с логином **${userName}** не найден в youtrack`);
                 return true;
             }
 
-            await saveSubscriptions({ userId, eventName });
-            await context.sendActivity(`Включена подписка на событие **${eventName}**`);
+            const user = await getUser({ userId });
+            const subscription = await get({ userId: user.id, eventName });
+            if (subscription && subscription.length) {
+                await context.sendActivity(`Подписка на пользователя **${userName}** уже существует`);
+                return true;
+            }
+
+            await save({ userId, eventName });
+            await context.sendActivity(`Включена подписка на отчеты для пользователя **${userName}**`);
             return true;
         }
 
         if (message.search(removeRegx) === 0) {
             const eventName = message.match(eventRegx)[0];
-            await removeSubscriptions({ userId, eventName });
-            await context.sendActivity(`Удалена подписка на событие **${eventName}**`);
+            const userName = eventName.replace(eventPrefix, '');
+
+            const user = await getUser({ userId });
+            const subscription = await get({ userId: user.id, eventName });
+            if (!subscription || !subscription.length) {
+                await context.sendActivity(`Подписки на пользователя **${userName}** не существует`);
+                return true;
+            }
+
+            await remove({ userId, eventName });
+            await context.sendActivity(`Удалена подписка на все события с перфиксом **${eventPrefix}**`);
             return true;
         }
 
-        if (message.search(getReport) === 0) {
+        if (message.search(getReportRegx) === 0) {
             const user = await getUser({ userId });
             await timeReportSend({ userId: user.id });
             return true;
@@ -55,9 +83,17 @@ const timeReportService = {
         return false;
     },
 
-    async timeReportTask () {
+    async isValidName ({ userName }) {
+        const usersYouTrack = await getUsers();
+        return usersYouTrack.find(u => u.login === userName);
+    },
+
+    async task () {
         try {
             const now = moment();
+            const time = process.env.SendTimeReport.split(':');
+            const sendTime = moment({ hours: time[0], minutes: time[1] });
+
             // если текущее время после момента отправки, поставить отправку отчета на следующий день
             // иначе на текущий день
             const addDay = sendTime.dayOfYear(now.dayOfYear()).isBefore(now) ? 1 : 0;
@@ -65,7 +101,7 @@ const timeReportService = {
             const timeout = sendTime.dayOfYear(now.dayOfYear() + addDay).diff(now, 'milliseconds');
             setTimeout(async () => {
                 await timeReportTaskSend();
-                timeReportService.timeReportTask();
+                timeReportService.task();
             }, timeout)
         } catch (e) {
             saveError({ url: 'timeReportTask', error: e })
@@ -74,7 +110,7 @@ const timeReportService = {
 };
 
 async function timeReportSend ({ userId }) {
-    const subscriptions = await getSubscriptions({ userId, eventPrefix: 'time_report' });
+    const subscriptions = await get({ userId, eventPrefix });
     const user = {
         userId: userId,
         eventNames: subscriptions.filter(x => x.userId === userId).map(x => x.eventName)
@@ -88,7 +124,7 @@ async function timeReportTaskSend () {
         return;
     }
 
-    const subscriptions = await getSubscriptions({ eventPrefix: 'time_report' });
+    const subscriptions = await get({ eventPrefix });
     const userIds = _.uniq(subscriptions.map(x => x.userId));
     const users = userIds.map(userId => ({
         userId: userId,
@@ -106,7 +142,7 @@ async function send ({ users }) {
 
     users.forEach(x => {
         const works = x.eventNames.map(eventName => {
-            const userLogin = eventName.replace(`time_report_`, ``);
+            const userLogin = eventName.replace(eventPrefix, ``);
             const userYouTrack = usersYouTrack.find(u => u.login === userLogin);
             const report = reportYouTrack.find(report => report.userId === userYouTrack.ringId);
             return `**${userYouTrack.fullName}**\n${getWorkType(report)}`;
@@ -130,8 +166,8 @@ async function getUsers () {
     const url = 'https://youtrack.moedelo.org/youtrack/api/admin/users?$skip=0&$top=2000&fields=login,ringId,fullName';
     return request.get(url, {
         auth: {
-            user: username,
-            pass: password
+            user: process.env.YouTrackLogin,
+            pass: process.env.YouTrackPassword
         },
         json: true
     });
@@ -143,8 +179,8 @@ async function getTimeReport () {
     return new Promise(async resolve => {
         const result = await request.get(url, {
             auth: {
-                user: username,
-                pass: password
+                user: process.env.YouTrackLogin,
+                pass: process.env.YouTrackPassword
             },
             json: true
         });
@@ -163,8 +199,8 @@ async function calculateReport () {
     const url = 'https://youtrack.moedelo.org/youtrack/api/reports/98-850/status';
     await request.post(url, {
         auth: {
-            user: username,
-            pass: password
+            user: process.env.YouTrackLogin,
+            pass: process.env.YouTrackPassword
         },
         body: {
             calculationInProgress: true
@@ -177,8 +213,8 @@ async function changeReport ({ date }) {
     const url = 'https://youtrack.moedelo.org/youtrack/api/reports/98-850';
     await request.post(url, {
         auth: {
-            user: username,
-            pass: password
+            user: process.env.YouTrackLogin,
+            pass: process.env.YouTrackPassword
         },
         body: {
             range: {
@@ -201,10 +237,27 @@ function getDateLastWorkDay () {
     return moment().subtract(1, 'day');
 }
 
+async function getListMessage ({ userId }) {
+    const user = await getUser({ userId });
+    const subscriptions = await get({ userId: user.id, eventPrefix });
+
+    const list = subscriptions && subscriptions.length
+        ? subscriptions.map(s => `-- ${s.eventName.replace(eventPrefix, '')}`).sort().join(`\n`)
+        : `Нет действующих подписок`;
+
+    return `**Подписки на отчеты по времени**:\n${list}`;
+}
+
 function getHelpMessage () {
-    return `Подсказка для раздела **управление временем**\n
-    Список команд:\n
-    \\`
+    return `Подсказка для раздела **управление временем**\n` +
+        `Раздел этого бота предназначен для управения отчетами из YouTrack о списаном рабочем времени\n` +
+        `Каждый день в ${process.env.SendTimeReport} будет сформирован и отправлен отчет\n` +
+        `Список команд:\n` +
+        `${replaceHelp(helpRegx)} - подсказка раздела\n` +
+        `${replaceHelp(listRegx)} - список действующих подписок\n` +
+        `${replaceHelp(getReportRegx)} - показать отчет за предыдущий рабочий день\n` +
+        `${replaceHelp(addRegx).replace(/\\S\+/, `{логин пользователя из YouTrack}`)} - подписаться на получени отчетов для конкретного пользователя\n` +
+        `${replaceHelp(removeRegx).replace(/\\S\+/, `{логин пользователя из YouTrack}`)} - удалить подписку для конкретного пользователя`
 }
 
 module.exports = timeReportService;
