@@ -7,7 +7,7 @@ module.exports = {
             return;
         }
 
-        let sql = `insert into channels_subscriptions 
+        let sql = `insert into channels_subscriptions_test 
                 (channel_id, event_name) 
                 value (${channelId}, '${eventName}')`;
         return query({ sqlString: sql });
@@ -20,7 +20,7 @@ module.exports = {
         }
 
         let sql = `delete 
-                from channels_subscriptions 
+                from channels_subscriptions_test 
                 where channel_id = ${channelId} 
                 and event_name = '${eventName}'`;
         return query({ sqlString: sql });
@@ -29,7 +29,7 @@ module.exports = {
     getEvents ({ channelId, eventName }) {
         let sql = `select 
                 event_name as eventName 
-                from channels_subscriptions 
+                from channels_subscriptions_test 
                 where 1 = 1`;
         channelId && (sql += ` and channel_id = '${channelId}'`);
         eventName && (sql += ` and event_name = '${eventName}'`);
@@ -45,8 +45,8 @@ module.exports = {
 function getUserIds ({ eventName }) {
     let sql = `select 
                 distinct(cu.user_id) as userId
-                from channels_subscriptions as cs
-                join channels_users as cu on cu.channel_id = cs.channel_id
+                from channels_subscriptions_test as cs
+                join channels_users_test as cu on cu.channel_id = cs.channel_id
                 where cs.event_name = '${eventName}'`;
     return query({ sqlString: sql });
 }

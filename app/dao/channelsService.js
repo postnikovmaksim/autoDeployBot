@@ -5,7 +5,7 @@ module.exports = {
         let sql = `select 
                 id, 
                 name 
-                from channels 
+                from channels_test 
                 where 1 = 1`;
         id && (sql += ` and id = '${id}'`);
         name && (sql += ` and name = '${name}'`);
@@ -13,14 +13,14 @@ module.exports = {
     },
 
     createChannel ({ name }) {
-        let sql = `insert into channels 
+        let sql = `insert into channels_test 
                 (name) 
                 values ('${name}')`;
         return query({ sqlString: sql });
     },
 
     subscribeChannel ({ channelId, userId }) {
-        let sql = `insert into channels_users 
+        let sql = `insert into channels_users_test 
                 (channel_id, user_id) 
                 value (${channelId}, ${userId})`;
         return query({ sqlString: sql });
@@ -28,7 +28,7 @@ module.exports = {
 
     unsubscribeChannel ({ channelId, userId }) {
         let sql = `delete 
-                from channels_users
+                from channels_users_test
                 where channel_id = ${channelId}
                 and user_id = ${userId}`;
         return query({ sqlString: sql });
@@ -38,8 +38,8 @@ module.exports = {
         let sql = `select 
                 ch.id as id, 
                 ch.name as name 
-                from channels as ch 
-                join channels_users as cu on cu.channel_id = ch.id
+                from channels_test as ch 
+                join channels_users_test as cu on cu.channel_id = ch.id
                 where cu.user_id = ${userId}`;
         name && (sql += ` and ch.name = '${name}'`);
         return query({ sqlString: sql });

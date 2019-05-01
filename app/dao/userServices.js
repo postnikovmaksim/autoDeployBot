@@ -57,7 +57,7 @@ function get ({ ids }) {
                 user_id as userId,
                 user_name as userName,
                 activity
-                from users 
+                from users_test
                 where 1 = 1`;
     ids && ids.length && (sql += ` and id in (${ids.join(',')})`);
     return query({ sqlString: sql })
@@ -68,7 +68,7 @@ async function getUser ({ userId, userName }) {
                 user_id as userId,
                 user_name as userName,
                 activity
-                from users 
+                from users_test 
                  where 1 = 1`;
     userId && (sql += ` and user_id = '${userId}'`);
     userName && (sql += ` and user_name = '${userName}'`);
@@ -76,14 +76,14 @@ async function getUser ({ userId, userName }) {
 }
 
 async function saveUser ({ userId, name, activity }) {
-    const sql = `insert into users 
+    const sql = `insert into users_test 
                 (user_id, user_name, activity) 
                 values ('${userId}', '${name}', '${activity}')`;
     return query({ sqlString: sql });
 }
 
 async function updateUser ({ userId, name, activity }) {
-    const sql = `update users set 
+    const sql = `update users_test set 
                 activity = '${activity}', 
                 user_name = '${name}' 
                 where user_id = '${userId}'`;
@@ -91,7 +91,7 @@ async function updateUser ({ userId, name, activity }) {
 }
 
 async function updateUserByName ({ userId, name, activity }) {
-    const sql = `update users set 
+    const sql = `update users_test set 
                 user_id = '${userId}',
                 activity = '${activity}'
                 where user_name = '${name}'`;
