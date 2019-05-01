@@ -102,6 +102,19 @@ function awakening () {
     setInterval(() => request.get({ uri: `${process.env.selfUrl}/awakening` }), 60000)
 }
 
+function customEvent () {
+    setInterval(() => request({
+        method: 'POST',
+        uri: `${process.env.selfUrl}/event/custom`,
+        json: true,
+        body: {
+            eventName: `custom_test`,
+            message: moment().format('DD-MM-YYYY HH:mm')
+        }
+    }), 60000)
+}
+
 // задачи выполняемые по расписанию
 (() => awakening())();
+(() => customEvent())();
 (() => timeReportServices.task())();
