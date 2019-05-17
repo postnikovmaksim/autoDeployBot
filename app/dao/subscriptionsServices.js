@@ -42,7 +42,7 @@ function save ({ userId, eventName }) {
         return;
     }
 
-    const sql = `insert into users_subscriptions_test 
+    const sql = `insert into users_subscriptions 
                 (user_id, event_name) 
                 values ('${userId}', '${eventName}')`;
     return query({ sqlString: sql });
@@ -52,7 +52,7 @@ function get ({ userId, eventName, eventPrefix }) {
     let sql = `select id,
                 user_id as userId,
                 event_name as eventName
-                from users_subscriptions_test 
+                from users_subscriptions 
                 where 1 = 1`;
     userId && (sql += ` and user_id = '${userId}'`);
     eventName && (sql += ` and event_name = '${eventName}'`);
@@ -68,7 +68,7 @@ function remove ({ userId, eventName }) {
     }
 
     let sql = `delete 
-                from users_subscriptions_test 
+                from users_subscriptions 
                 where 1 = 1`;
     userId && (sql += ` and user_id = '${userId}'`);
     eventName && (sql += ` and event_name = '${eventName}'`);
@@ -83,7 +83,7 @@ function removeByType ({ userId, eventPrefix }) {
     }
 
     let sql = `delete 
-                from users_subscriptions_test 
+                from users_subscriptions 
                 where 1 = 1`;
     userId && (sql += ` and user_id = '${userId}'`);
     eventPrefix && (sql += ` and event_name like '${eventPrefix}%'`);

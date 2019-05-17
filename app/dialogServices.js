@@ -2,7 +2,7 @@ const { getReference, updateReference } = require('./dao/userServices');
 const subscriptionsServices = require('./dao/subscriptionsServices');
 const channelEventsService = require('./dao/channelEventsServices');
 const { asyncForEach } = require('./utils');
-const { saveError } = require('./dao/logService');
+const { saveError, saveRequest } = require('./dao/logService');
 
 module.exports = {
     async sendMessage ({ message, eventName }) {
@@ -34,6 +34,7 @@ async function send ({ message, ids }) {
             })
         } catch (error) {
             saveError({ url: `dialogService`, error });
+            saveRequest({ url: `dialogService`, json: JSON.stringify(reference) });
         }
     });
 }
